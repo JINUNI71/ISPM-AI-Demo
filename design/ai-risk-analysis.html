@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AgentOn Console · Security · AI 위험 분석 (화면 구성안 v0.1)" />
+  <title>AgentOn Console — AI 위험 분석</title>
+  <link rel="icon" type="image/png" href="data:image/png;base64,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" />
+  <style>
+    /* ============================================================
+     * AgentOn Console — Security › AI 위험 분석 (화면 구성안 v0.1 · 2026-09-30)
+     *
+     * 단일 파일 프로토타입. 셸(사이드바·topbar)·디자인 토큰은 mnu-120-connections.html 과 동일.
+     *   · A 분석 범위 · B 위험 요약 = AgentOn 콘솔 기본 톤(흰 패널 · soft shadow · 스카이 액센트)
+     *   · C·D·E·F 카드 내부 = "Claude Cowork 응답 스타일" — AI 가 제안하고 담당자가 판단한다는
+     *     설계 원칙을 시각적으로 드러내기 위해 카드 행을 AI 응답 메시지 형태로 표현한다.
+     *     (크림 배경 · 스파크 아바타 · 한 줄 판단 + 근거 목록 · '판단 과정 보기' 접기 · 피드백 액션바)
+     *     이 영역 전용 토큰은 --cl-* 접두어로 분리한다. 콘솔 공통 토큰(--sky-* 등)은 건드리지 않는다.
+     *   · 배지 원칙: 예외(KEV · 결합 위험 · 추정)만 색 강조, 유형(CVE/CCE)·인프라는 뉴트럴
+     *   · 숫자 정합: B 의 모든 숫자는 카드에 렌더된 데이터에서 계산한다 (B = 카드, 항상 일치)
+     * ============================================================ */
+    :root {
+      --sky: #6db3e8; --sky-light: #a9d4f5; --sky-dark: #3d8fd4; --sky-deep: #2f74b5;
+      --bg: #eaf3fb; --panel: #ffffff; --panel-2: #f4f8fd;
+      --ink: #1f2a3a; --ink-soft: #586374; --ink-faint: #8a93a6;
+      --line: #e2e8f1; --line-strong: #cfd9e6;
+      --accent: var(--sky-dark); --accent-hover: var(--sky-deep); --accent-soft: #e7f2fc;
+      --danger: #d23a3a; --danger-soft: #fdecec;
+      --ok: #1f9d6b; --ok-soft: #eaf6f0;
+      --warn: #d4a017; --warn-soft: #fdf6e3; --warn-ink: #8a6410;
+      --navy-1: #20407e; --navy-2: #0c2340;
+      --band-1: #354b69; --band-2: #172437;
+      --icon: #0c2340;
+      --radius: 10px;
+      --shadow-sm: 0 1px 2px rgba(45, 110, 175, .06), 0 6px 20px rgba(45, 110, 175, .07);
+      --focus: 0 0 0 3px rgba(61, 143, 212, .28);
+      --chip-bg: #eef2f7; --input-bg: #ffffff;
+      --topbar-1: rgba(234, 243, 251, .94); --topbar-2: rgba(255, 255, 255, .9);
+      --mono: "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+
+      /* Claude Cowork 응답 스타일 토큰 — C·D·E·F 카드 내부 전용 */
+      --cl-paper: #faf9f5; --cl-paper-2: #f3f1ea; --cl-line: #e8e5db; --cl-line-2: #d9d5c8;
+      --cl-ink: #1f1e1d; --cl-ink-soft: #5e5d59; --cl-ink-faint: #8f8d86;
+      --cl-accent: #d97757; --cl-accent-ink: #b8582f; --cl-accent-soft: #fbeee7;
+      --cl-code: #efece3; --cl-msg: #ffffff;
+      color-scheme: light;
+    }
+
+    * { box-sizing: border-box; }
+    html { height: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0; min-height: 100vh;
+      display: grid; grid-template-columns: 236px minmax(0, 1fr);
+      background: var(--bg); color: var(--ink);
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-size: 15px; font-weight: 500; -webkit-font-smoothing: antialiased;
+    }
+    [hidden] { display: none !important; }
+    .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    button, input, select, textarea { font-family: inherit; }
+    :focus-visible { outline: none; box-shadow: var(--focus); }
+
+    /* ============================================================
+     * 1. 셸 — 사이드바 · topbar (mnu-120 과 동일)
+     * ============================================================ */
+    .sidebar { position: sticky; top: 0; align-self: start; height: 100vh; display: flex; flex-direction: column; color: #fff; background: var(--sky-deep); overflow-y: auto; }
+    .side-brand { display: flex; align-items: center; gap: 9px; padding: 20px 18px 18px; color: #fff; text-decoration: none; }
+    .side-brand img { width: 32px; height: 32px; object-fit: contain; flex: none; filter: drop-shadow(0 2px 4px rgba(8, 24, 48, .4)); }
+    .side-brand .nm { font-size: 17px; font-weight: 800; letter-spacing: .2px; line-height: 1.15; }
+    .side-brand .nm span { opacity: .9; font-weight: 700; }
+    .side-brand .nm small { display: block; font-size: 10.5px; font-weight: 600; letter-spacing: .04em; opacity: .75; }
+    .side-nav { padding: 8px 12px; flex: 1; }
+    .nav-item, .nav-child, .nav-parent {
+      display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border-radius: 8px; margin-bottom: 2px;
+      background: none; border: none; cursor: pointer; text-align: left; text-decoration: none; color: #fff;
+      font-size: 14.5px; font-weight: 600; letter-spacing: .1px; min-height: 40px; transition: background .12s;
+    }
+    .nav-child { padding-left: 38px; font-size: 14px; font-weight: 500; color: rgba(255, 255, 255, .72); min-height: 35px; }
+    .nav-item:hover, .nav-child:hover, .nav-parent:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+    .nav-item > svg, .nav-parent > svg:first-child { width: 17px; height: 17px; flex: none; color: var(--navy-2); }
+    .np-label { flex: 1; min-width: 0; }
+    .np-chev { width: 14px; height: 14px; opacity: .65; transition: transform .18s; flex: none; margin-left: auto; }
+    .nav-group[data-open="true"] .np-chev { transform: rotate(180deg); }
+    .nav-children { display: none; margin-bottom: 4px; }
+    .nav-group[data-open="true"] .nav-children { display: block; }
+    .nav-child.active {
+      background: linear-gradient(135deg, var(--band-1) 0%, var(--band-2) 100%); color: #fff; font-weight: 700;
+      width: calc(100% + 24px); margin-left: -12px; border-radius: 0; padding-left: 50px;
+      box-shadow: 0 6px 14px -6px rgba(8, 24, 48, .6), inset 0 1px 0 rgba(255, 255, 255, .16), inset 0 -1px 0 rgba(0, 0, 0, .28);
+    }
+    .side-foot { padding: 14px 20px 18px; font-size: 12px; color: rgba(255, 255, 255, .7); border-top: 1px solid rgba(255, 255, 255, .18); display: flex; justify-content: space-between; gap: 10px; font-variant-numeric: tabular-nums; }
+
+    .main { min-width: 0; display: flex; flex-direction: column; background: var(--panel); }
+    .topbar {
+      position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 12px;
+      background: linear-gradient(180deg, var(--topbar-1) 0%, var(--topbar-2) 100%); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line); padding: 11px 24px; min-height: 60px;
+    }
+    .crumb { font-size: 11.5px; color: var(--ink-faint); display: flex; align-items: center; gap: 7px; line-height: 1.2; min-width: 0; }
+    .crumb b { color: var(--ink-soft); font-weight: 600; font-size: 13px; }
+    .crumb .sep { opacity: .5; }
+    .topbar .spacer { flex: 1; }
+    .ic-btn { position: relative; background: none; border: none; padding: 5px; cursor: pointer; display: grid; place-items: center; border-radius: 9px; color: var(--icon); flex: none; }
+    .ic-btn:hover { background: var(--panel-2); }
+    .ic-btn svg { width: 22px; height: 22px; }
+    .menu-toggle { display: none; }
+    .user { display: flex; align-items: center; gap: 9px; padding: 4px 8px 4px 6px; background: none; border: 1px solid transparent; border-radius: 9px; cursor: pointer; }
+    .user:hover { background: var(--panel-2); border-color: var(--line); }
+    .user .avatar { width: 30px; height: 30px; display: grid; place-items: center; flex: none; }
+    .user .avatar svg { width: 24px; height: 24px; }
+    .user .u-meta { text-align: left; }
+    .user .u-name { font-size: 14px; font-weight: 600; color: var(--ink); display: block; }
+    .user .u-role { font-size: 12px; color: var(--ink-faint); display: block; }
+    .content { padding: 22px 24px 60px; width: 100%; }
+
+    .phead { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 18px; flex-wrap: wrap; }
+    .phead h1 { margin: 0; font-size: 23px; font-weight: 700; letter-spacing: -.02em; display: flex; align-items: center; gap: 8px; }
+    .phead .psub { margin: 5px 0 0; font-size: 13.5px; color: var(--ink-soft); }
+    .phead .pright { display: flex; align-items: center; gap: 12px; font-size: 12.5px; color: var(--ink-faint); }
+    .phead .pright b { color: var(--ink-soft); font-weight: 600; }
+    .ver-badge { display: inline-flex; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: var(--chip-bg); color: var(--ink-faint); vertical-align: 1px; }
+
+    /* ============================================================
+     * 2. 공통 컨트롤
+     * ============================================================ */
+    .btn {
+      font-size: 14px; font-weight: 600; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--input-bg); color: var(--ink);
+      height: 36px; padding: 0 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; transition: border-color .12s, filter .12s, transform .04s; white-space: nowrap;
+    }
+    .btn:hover { border-color: var(--accent); }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary { color: #fff; border: none; background: linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 100%); }
+    .btn.primary:hover { filter: brightness(1.12); }
+    .btn.sm { height: 30px; padding: 0 11px; font-size: 13px; border-radius: 7px; }
+    .btn.ghost { background: none; border-color: transparent; color: var(--ink-soft); }
+    .btn.ghost:hover { border-color: var(--line-strong); color: var(--ink); }
+    .btn svg { width: 15px; height: 15px; flex: none; }
+    .input { width: 100%; height: 36px; padding: 0 12px; font-size: 13.5px; color: var(--ink); background: var(--input-bg); border: 1px solid var(--line-strong); border-radius: 8px; outline: none; font-weight: 500; transition: border-color .15s, box-shadow .15s; }
+    .input:focus { border-color: var(--accent); box-shadow: var(--focus); }
+    .seg { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 3px; border-radius: 9px; background: var(--panel-2); }
+    .seg button { height: 30px; padding: 0 12px; border: none; border-radius: 7px; background: none; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+    .seg button:hover { color: var(--ink); }
+    .seg button.on { background: var(--panel); color: var(--sky-deep); box-shadow: 0 1px 3px rgba(8, 24, 48, .12); }
+    .seg.mini button { height: 26px; padding: 0 10px; font-size: 12.5px; }
+
+    .panel { background: var(--panel); border-radius: 12px; box-shadow: var(--shadow-sm); padding: 16px 18px; }
+    .sec-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .sec-key { width: 24px; height: 24px; border-radius: 7px; display: grid; place-items: center; font-size: 12.5px; font-weight: 800; color: var(--sky-deep); background: var(--accent-soft); font-family: var(--mono); flex: none; }
+    .sec-head h2 { margin: 0; font-size: 15.5px; font-weight: 700; letter-spacing: -.01em; display: flex; align-items: baseline; gap: 7px; }
+    .sec-head h2 small { font-size: 11.5px; font-weight: 600; color: var(--ink-faint); letter-spacing: .02em; }
+    .sec-note { margin-left: auto; font-size: 12px; color: var(--ink-faint); }
+
+    /* ============================================================
+     * 3. A — 분석 범위
+     * ============================================================ */
+    .scope { margin-bottom: 14px; }
+    .scope-row { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+    .fld { display: flex; flex-direction: column; gap: 6px; }
+    .fld > label { font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+    .fld.grow { flex: 0 1 300px; min-width: 220px; }
+    .scope-row { gap: 14px; }
+    .scope-row .seg button { padding: 0 10px; }
+    /* 초기화 — 아이콘 버튼(되돌리기 화살표) · 툴팁 */
+    .reset-btn { align-self: flex-end; width: 36px; height: 36px; border: 1px solid transparent; color: var(--ink-soft); }
+    .reset-btn svg { width: 18px; height: 18px; }
+    .reset-btn:hover { color: var(--sky-deep); border-color: var(--line); }
+    .reset-btn::after { content: attr(data-tip); position: absolute; left: 50%; top: calc(100% + 6px); transform: translateX(-50%); white-space: nowrap; padding: 4px 8px; border-radius: 6px; background: var(--navy-2); color: #fff; font-size: 11px; font-weight: 500; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .12s; z-index: 5; }
+    .reset-btn:hover::after, .reset-btn:focus-visible::after { opacity: 1; visibility: visible; }
+
+    /* 정보시스템 — 검색형 콤보(멀티 선택 · 위험순 정렬 · 담당 시스템 기본) */
+    .combo { position: relative; }
+    .combo-btn { width: 100%; height: 36px; padding: 0 32px 0 12px; text-align: left; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--input-bg); cursor: pointer; font-size: 13.5px; font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 8px; position: relative; }
+    .combo-btn:hover, .combo-btn[aria-expanded="true"] { border-color: var(--accent); }
+    .combo-btn .n { font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 5px; background: var(--accent-soft); color: var(--sky-deep); font-family: var(--mono); }
+    .combo-btn .sum { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .combo-btn::after { content: ""; position: absolute; right: 11px; top: 50%; width: 13px; height: 13px; margin-top: -6px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a93a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat; }
+    .combo-menu { position: absolute; left: 0; top: calc(100% + 6px); z-index: 40; width: max(100%, 380px); padding: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 34px rgba(45, 110, 175, .18); }
+    .combo-search { display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 10px; border: 1px solid var(--line-strong); border-radius: 8px; margin-bottom: 6px; }
+    .combo-search svg { width: 14px; height: 14px; color: var(--ink-faint); flex: none; }
+    .combo-search input { border: none; outline: none; background: none; font-size: 13px; flex: 1; min-width: 0; color: var(--ink); }
+    .combo-quick { display: flex; gap: 6px; padding: 2px 2px 6px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+    .combo-quick button { font-size: 12px; font-weight: 700; color: var(--sky-deep); background: none; border: none; cursor: pointer; padding: 4px 6px; border-radius: 6px; }
+    .combo-quick button:hover { background: var(--accent-soft); }
+    .combo-list { max-height: 280px; overflow: auto; }
+    .combo-list label { display: flex; align-items: center; gap: 9px; padding: 7px 8px; border-radius: 7px; font-size: 13px; cursor: pointer; }
+    .combo-list label:hover { background: var(--panel-2); }
+    .combo-list input { accent-color: var(--sky-deep); flex: none; }
+    .combo-list .cs-name { flex: 1; min-width: 0; font-weight: 600; }
+    .combo-list .cs-mine { font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: var(--accent-soft); color: var(--sky-deep); }
+    .combo-list .cs-risk { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--ink-soft); min-width: 56px; text-align: right; }
+    .combo-list .cs-risk b { color: var(--ink); }
+    .combo-list .cs-risk.zero { color: var(--ink-faint); }
+
+    .applied { display: flex; align-items: center; gap: 6px; margin-left: auto; align-self: flex-end; min-height: 36px; padding: 4px 10px; background: var(--accent-soft); border: 1px solid #cfe0f5; border-radius: 9px; font-size: 12.5px; flex-wrap: wrap; }
+    .af-label { color: var(--sky-deep); font-weight: 700; font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; }
+    .af-chip { display: inline-flex; align-items: center; gap: 5px; background: var(--panel); border: 1px solid var(--line-strong); border-radius: 20px; padding: 1px 9px; font-weight: 600; color: var(--ink); font-size: 12px; white-space: nowrap; }
+    .af-chip i { font-style: normal; color: var(--ink-faint); font-weight: 600; }
+    .af-count b { color: var(--ink); }
+
+    /* ============================================================
+     * 4. B — 위험 요약
+     * ============================================================ */
+    .summary { margin-bottom: 16px; }
+    .sum-grid { display: grid; grid-template-columns: minmax(300px, 1.1fr) repeat(4, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
+    .cmp { background: var(--panel-2); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+    .cmp-row { display: flex; align-items: baseline; gap: 10px; }
+    .cmp-row .cl { font-size: 12.5px; font-weight: 700; color: var(--ink-soft); min-width: 60px; }
+    .cmp-row .cn { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 22px; font-weight: 700; letter-spacing: -.02em; color: var(--ink-soft); }
+    .cmp-row .cs { font-size: 11.5px; color: var(--ink-faint); font-weight: 600; font-family: var(--mono); white-space: nowrap; }
+    .cmp-row.hi .cn { font-size: 30px; color: var(--sky-deep); }
+    .cmp-row.hi .cl { color: var(--ink); }
+    .cmp-arrow { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--sky-deep); padding: 2px 0 2px 2px; }
+    .cmp-arrow svg { width: 14px; height: 14px; }
+    .cmp-arrow .rate { padding: 1px 7px; border-radius: 5px; background: var(--accent-soft); font-family: var(--mono); }
+    .cmp-row.hi { align-items: center; }
+    .cs-stack { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; }
+    .cs-stack .cs { font-size: 12px; }
+    .cmp-infra { display: flex; align-items: center; gap: 4px; margin-left: -6px; font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12px; color: var(--ink-faint); }
+    .cmp-infra .dot { opacity: .6; }
+    .cmp-infra { white-space: nowrap; }
+    .cmp-infra button { white-space: nowrap; border: 1px solid transparent; background: none; padding: 1px 6px; border-radius: 6px; cursor: pointer; font: inherit; font-weight: 600; color: var(--ink-soft); }
+    .cmp-infra button b { color: var(--ink); font-weight: 700; }
+    .cmp-infra button:hover { background: var(--panel); border-color: var(--sky-light); }
+    .cmp-infra button.on { background: var(--accent-soft); border-color: var(--sky-light); color: var(--sky-deep); }
+    .cmp-infra button.on b { color: var(--sky-deep); }
+    .cmp-infra button.zero, .cmp-infra button.zero b { color: var(--ink-faint); font-weight: 500; }
+
+    .tile { position: relative; text-align: left; background: var(--panel); border: 1px solid transparent; border-radius: 12px; padding: 13px 12px 12px; cursor: pointer; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 2px; color: inherit; transition: box-shadow .12s, transform .08s; min-width: 0; }
+    .tile:hover { box-shadow: 0 6px 18px rgba(8, 24, 48, .13); transform: translateY(-1px); }
+    .tile.kev { border-color: var(--danger); box-shadow: 0 0 0 1px var(--danger) inset, var(--shadow-sm); }
+    .tile .t-name { font-size: 13px; font-weight: 700; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
+    .tile .t-name .k { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); }
+    .tile .t-num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 30px; font-weight: 700; letter-spacing: -.02em; line-height: 1.15; margin-top: 4px; }
+    .tile .t-num.zero { color: var(--ink-faint); font-weight: 500; }
+    .tile .t-sub { font-size: 12px; color: var(--ink-faint); font-weight: 600; font-family: var(--mono); line-height: 1.5; }
+    .tile .t-sub .kev { color: var(--danger); }
+    .tile .t-sub { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; font-size: 11px; letter-spacing: -.02em; }
+    .tile .t-sub.ok { color: var(--ok); font-family: inherit; }
+
+    /* ============================================================
+     * 5. C·D·E·F 카드 — 컨테이너(콘솔 톤) + 내부(Claude Cowork 응답 스타일)
+     * ============================================================ */
+    .cards { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 14px; align-items: stretch; }   /* C | D | (E 위, F 아래) 3열 · C·D 높이 동일 */
+    #cardC .tbl-wrap, #cardD .tbl-wrap { flex: 1 1 auto; }   /* 짧은 쪽(D)이 C 높이까지 늘어난다 */
+    /* E·F 열: C·D 행 높이를 기준으로 절반씩 나눠 채운다 (height:0 으로 행 높이 산정에서 제외, min-height:100% 로 행 높이만큼 늘림) */
+    .col-ef { height: 0; min-height: 100%; }
+    #cardE, #cardF { flex: 1 1 0; min-height: 0; }
+    #cardE .tbl-wrap, #cardF .tbl-wrap { flex: 1 1 auto; min-height: 0; max-height: none; }
+    .col-ef { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+    .card { background: var(--panel); border-radius: 12px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; min-width: 0; transition: box-shadow .2s; scroll-margin-top: 76px; }
+    .card.hi { box-shadow: 0 0 0 2px var(--sky-dark), 0 10px 30px rgba(45, 110, 175, .22); }
+    .card-head { display: flex; align-items: center; gap: 9px; padding: 14px 16px 8px; flex-wrap: wrap; }
+    .card-head h2 { margin: 0; font-size: 15.5px; font-weight: 700; display: flex; align-items: baseline; gap: 6px; letter-spacing: -.01em; }
+    .card-head h2 small { font-size: 11px; font-weight: 600; color: var(--ink-faint); letter-spacing: .02em; }
+    .card-head .cnt { font-family: var(--mono); font-size: 12px; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: var(--chip-bg); color: var(--ink-soft); }
+    .card-head .cnt.kev { background: var(--danger-soft); color: var(--danger); }
+    /* 세그먼트(보기 전환·세그먼트)는 제목 아래 줄 좌측 정렬 — 헤더 전폭을 차지해 다음 줄로 내려간다 */
+    .card-head .ctl { flex-basis: 100%; display: flex; align-items: center; gap: 8px; justify-content: flex-start; margin-top: 2px; min-height: 30px; }
+    .card-head .ctl .cnt { margin-left: auto; }   /* 집계 정보 = 2줄 우측 끝 (C·D·E·F 공통) */
+    /* Excel 저장 — 아이콘 버튼(툴팁). 카드에 표시된 표(필터·정렬·그룹 반영)를 .xlsx 로 내려받는다 */
+    .card { position: relative; }
+    .card-head { padding-right: 52px; }   /* 우측 상단 Excel 버튼 자리 */
+    .pdf-btn { position: absolute; top: 11px; right: 12px; z-index: 2; width: 30px; height: 30px; border: 1px solid transparent; border-radius: 8px; background: none; color: var(--ink-soft); cursor: pointer; display: grid; place-items: center; flex: none; transition: background .12s, color .12s, border-color .12s; }
+    .pdf-btn svg { width: 16px; height: 16px; }
+    .pdf-btn:hover { background: var(--panel-2); color: var(--sky-deep); border-color: var(--line); }
+    .pdf-btn::after { content: "Excel 저장"; position: absolute; right: 0; top: calc(100% + 6px); white-space: nowrap; padding: 4px 8px; border-radius: 6px; background: var(--navy-2); color: #fff; font-size: 11px; font-weight: 500; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .12s; z-index: 5; }
+    .pdf-btn:hover::after, .pdf-btn:focus-visible::after { opacity: 1; visibility: visible; }
+    /* 카드 설명 — ⓘ 아이콘 hover/focus 시 툴팁으로 노출 */
+    .card-info { position: relative; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; color: var(--ink-faint); cursor: help; }
+    .card-info svg { width: 15px; height: 15px; }
+    .card-info:hover, .card-info:focus-visible { color: var(--sky-deep); background: var(--panel-2); }
+    .card-info .tip { position: absolute; left: 0; top: calc(100% + 6px); z-index: 30; width: max-content; max-width: 340px; padding: 9px 12px; border-radius: 8px; background: var(--navy-2); color: #fff; font-size: 12.5px; font-weight: 500; line-height: 1.55; text-align: left; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .12s; box-shadow: 0 8px 22px rgba(12, 35, 64, .22); }
+    .card-info .tip b { color: #fff; font-weight: 700; }
+    .card-info:hover .tip, .card-info:focus-visible .tip { opacity: 1; visibility: visible; }
+    #cardE .card-info .tip, #cardF .card-info .tip { left: auto; right: 0; }
+
+    /* ---- 공통 컬럼 표: 대상 · 영향 대상 · 분석 결과 · 주요 근거 · 상태 · 상세 ---- */
+    .tbl-wrap { overflow: auto; overscroll-behavior: contain; border-radius: 0 0 12px 12px; max-height: 720px; }
+    /* 컴팩트 표 — 카드 폭(3열)에 맞춰 여백·글자·칩 최소화. 폭이 모자라면 카드 안에서 가로 스크롤 */
+    .rt { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 560px; table-layout: fixed; }
+    .rt col.w-target { width: 132px; } .rt col.w-impact { width: 104px; } .rt col.w-result { width: auto; } .rt col.w-ev { width: 124px; } .rt col.w-st { width: 78px; } .rt col.w-det { width: 58px; }
+    /* 상태 · 상세 컬럼은 우측 고정 — 가로 스크롤 시에도 항상 보이게 */
+    .rt tbody tr { background: var(--panel); }
+    .rt th.th-st, .rt td.c-st { position: sticky; right: 58px; z-index: 1; background: inherit; }
+    .rt th.th-det, .rt td.c-det { position: sticky; right: 0; z-index: 1; background: inherit; }
+    .rt th.th-st { z-index: 2; } .rt th.th-det { z-index: 2; }
+    .rt td.c-st::before, .rt th.th-st::before { content: ""; position: absolute; left: -8px; top: 0; bottom: 0; width: 8px; background: linear-gradient(90deg, rgba(31, 42, 58, 0), rgba(31, 42, 58, .06)); pointer-events: none; }
+    .rt-detail td { position: relative; }
+    .rt thead tr { background: var(--panel-2); }
+    .rt thead th { position: sticky; top: 0; z-index: 1; text-align: left; font-size: 11px; font-weight: 650; color: var(--ink-soft); letter-spacing: .02em; padding: 6px 8px; border-bottom: 1px solid var(--line); background: var(--panel-2); white-space: nowrap; }
+    .rt thead th.th-det { padding: 6px 2px; font-size: 0; }
+    .rt thead th.th-st { font-size: 11px; }
+    .rt tbody td { padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 12px; color: var(--ink); line-height: 1.4; }
+    .rt tbody tr.rt-row { cursor: pointer; }
+    .rt tbody tr.rt-row:hover { background: var(--panel-2); }
+    .rt tbody tr.rt-row.open { background: var(--accent-soft); }
+    .rt tbody tr.rt-row.new .tg-line b { text-decoration: underline; text-decoration-color: var(--cl-accent); text-underline-offset: 3px; }
+    .rt tbody tr.rt-row.fb-done td { color: var(--ink-faint); }
+    .rt tbody tr.rt-row.fb-done .tg-line b { text-decoration: line-through; text-decoration-color: var(--ink-faint); }
+    .rt-group td { background: var(--panel-2); font-size: 11.5px; font-weight: 700; color: var(--ink-soft); padding: 4px 8px; }
+    .rt-group td .n { font-family: var(--mono); color: var(--ink-faint); margin-left: 6px; }
+    .tg-line { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+    .tg-line .vt { font-size: 9.5px; padding: 1px 4px; }
+    .tg-line b { font-family: var(--mono); font-weight: 700; font-size: 12px; }
+    .tg-sub { font-size: 11px; color: var(--ink-faint); margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tg-sub.mono { font-size: 10.5px; }
+    .c-result { color: var(--ink); }
+    .ev-chips { display: flex; flex-wrap: wrap; gap: 3px; }
+    .ev { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 4px; background: var(--chip-bg); color: var(--ink-soft); white-space: nowrap; }
+    .ev.kev { background: var(--danger-soft); color: var(--danger); }
+    .ev.comb { background: var(--cl-accent-soft); color: var(--cl-accent-ink); }
+    .ev.est { background: var(--warn-soft); color: var(--warn-ink); }
+    .ev.t1 { background: var(--danger-soft); color: var(--danger); }
+    .ev.mono { font-family: var(--mono); }
+    .st-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; color: var(--ink-soft); white-space: nowrap; }
+    .st-chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: transparent; box-shadow: inset 0 0 0 1.5px var(--ink-faint); flex: none; }
+    .st-chip.kev::before { background: var(--danger); box-shadow: none; }
+    .st-chip.done { color: var(--ok); } .st-chip.done::before { background: var(--ok); box-shadow: none; }
+    .st-sub { display: block; font-size: 10.5px; color: var(--ink-faint); font-weight: 500; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .c-det { padding-left: 2px !important; padding-right: 4px !important; }
+    .det-grp { display: inline-flex; gap: 3px; }
+    .det-btn.ispm { color: var(--sky-deep); }
+    .det-btn { width: 24px; height: 24px; padding: 0; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--panel); color: var(--ink-soft); cursor: pointer; display: inline-grid; place-items: center; }
+    .det-btn:hover { border-color: var(--accent); color: var(--sky-deep); }
+    .det-btn svg { width: 12px; height: 12px; transition: transform .15s; }
+    .det-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+    .rt-detail td { padding: 8px 8px 10px; background: var(--cl-paper); border-bottom: 1px solid var(--line); }
+    .rt-detail .ai-msg { padding: 10px 12px 6px; position: sticky; left: 8px; width: calc(var(--ww, 600px) - 16px); box-sizing: border-box; }   /* 상세 블록은 표가 아닌 카드 가시 폭 기준 */
+    .rt-detail .ai-say { font-size: 13px; }
+
+    /* ---- 상세(근거 펼치기) = Claude Cowork 응답 스타일 ---- */
+    .ai-empty-wrap { background: var(--cl-paper); border-radius: 0 0 12px 12px; }
+    .ai-msg { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; padding: 12px 14px 8px; background: var(--cl-msg); border: 1px solid var(--cl-line); border-radius: 14px; font-weight: 450; line-height: 1.6; transition: border-color .15s, opacity .2s; }
+    .ai-msg:hover { border-color: var(--cl-line-2); }
+    .ai-msg.new { border-color: rgba(217, 119, 87, .45); }
+    .ai-msg.fb-done { opacity: .62; }
+    .ai-msg.fb-done .ai-say, .ai-msg.fb-done .ai-ev, .ai-msg.fb-done .ai-diff, .ai-msg.fb-done .ai-think, .ai-msg.fb-done .ai-meta { display: none; }
+    .ai-av { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--cl-accent-soft); border: 1px solid rgba(217, 119, 87, .3); color: var(--cl-accent); flex: none; margin-top: 1px; }
+    .ai-av svg { width: 16px; height: 16px; }
+    .ai-body { min-width: 0; }
+
+    .ai-top { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
+    .vt { font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: .04em; padding: 2px 6px; border-radius: 5px; background: var(--cl-code); color: var(--cl-ink-soft); }
+    .ai-title { font-size: 14.5px; font-weight: 700; color: var(--cl-ink); letter-spacing: -.01em; }
+    .ai-title.mono { font-size: 13.5px; }
+    .ai-sw { font-size: 13px; color: var(--cl-ink-soft); font-weight: 500; }
+    .bd { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 20px; background: var(--cl-paper-2); color: var(--cl-ink-soft); border: 1px solid transparent; white-space: nowrap; }
+    .bd.kev { background: var(--danger-soft); color: var(--danger); }
+    .bd.comb { background: var(--cl-accent-soft); color: var(--cl-accent-ink); }
+    .bd.est { background: var(--warn-soft); color: var(--warn-ink); }
+    .bd.own { background: transparent; border-color: var(--cl-line-2); color: var(--cl-ink-soft); }
+    .bd.inv { background: transparent; border-color: var(--cl-line-2); color: var(--cl-ink-soft); }
+    .bd.sig { background: var(--cl-paper-2); }
+    .bd.sig.s { color: var(--danger); }
+    .bd.trig { background: var(--cl-accent-soft); color: var(--cl-accent-ink); }
+    .bd.trig.t1 { background: var(--danger-soft); color: var(--danger); }
+
+    .ai-say { margin: 2px 0 6px; font-size: 13.5px; line-height: 1.65; color: var(--cl-ink); }
+    .ai-say b { font-weight: 700; }
+    .ai-say code, .ai-ev code, .ai-meta code, .ai-diff code { font-family: var(--mono); font-size: 12px; background: var(--cl-code); padding: 1px 5px; border-radius: 4px; color: var(--cl-ink); }
+    .ai-ev { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+    .ai-ev li { display: flex; align-items: baseline; gap: 7px; font-size: 12.5px; color: var(--cl-ink-soft); line-height: 1.55; }
+    .ai-ev li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--cl-line-2); flex: none; position: relative; top: -2px; }
+    .ai-ev .k { font-weight: 700; color: var(--cl-ink); flex: none; }
+    .ai-ev .src { margin-left: 6px; font-size: 11px; color: var(--cl-ink-faint); white-space: nowrap; font-weight: 500; }
+    .ai-ev .src::before { content: "— "; }
+    .ai-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12px; color: var(--cl-ink-faint); margin: 2px 0 4px; }
+    .ai-meta .sep { opacity: .5; }
+    .ai-meta .tg { font-size: 11.5px; font-weight: 600; color: var(--cl-ink-soft); }
+    .ai-meta button.assets { background: none; border: none; padding: 0; cursor: pointer; font: inherit; font-weight: 700; color: var(--cl-ink); text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--cl-line-2); }
+    .ai-meta button.assets:hover { text-decoration-color: var(--cl-accent); }
+    .ai-assets { display: none; flex-wrap: wrap; gap: 5px; margin: 0 0 6px; }
+    .ai-assets.open { display: flex; }
+    .ai-assets span { font-family: var(--mono); font-size: 11.5px; padding: 2px 7px; border-radius: 5px; background: var(--cl-code); color: var(--cl-ink-soft); }
+
+    /* 등록값 vs 실제값 (E) · 승인 당시 → 현재 (F) — Claude 코드/diff 블록 톤 */
+    .ai-diff { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: stretch; margin: 2px 0 8px; padding: 9px 11px; background: var(--cl-paper); border: 1px solid var(--cl-line); border-radius: 10px; font-size: 12.5px; }
+    .ai-diff .dh { font-size: 10.5px; font-weight: 700; color: var(--cl-ink-faint); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 2px; }
+    .ai-diff .dv { font-family: var(--mono); font-size: 12.5px; color: var(--cl-ink); word-break: break-all; }
+    .ai-diff .dv.was { color: var(--cl-ink-soft); text-decoration: line-through; text-decoration-color: rgba(210, 58, 58, .5); }
+    .ai-diff .dv.bad { color: var(--danger); font-weight: 700; }
+    .ai-diff .ds { font-size: 11px; color: var(--cl-ink-faint); margin-top: 2px; }
+    .ai-diff .arr { display: grid; place-items: center; color: var(--cl-ink-faint); }
+    .ai-diff .arr svg { width: 14px; height: 14px; }
+    .risk { display: inline-flex; align-items: center; gap: 5px; font-weight: 700; font-family: inherit; }
+    .risk::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink-faint); }
+    .risk.r1::before { background: var(--ok); } .risk.r2::before { background: var(--warn); } .risk.r3::before { background: #e07f1e; } .risk.r4::before { background: var(--danger); }
+    .risk.r4 { color: var(--danger); }
+
+    details.ai-think { margin: 2px 0 6px; }
+    details.ai-think summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: var(--cl-ink-faint); padding: 2px 0; user-select: none; }
+    details.ai-think summary::-webkit-details-marker { display: none; }
+    details.ai-think summary svg { width: 13px; height: 13px; transition: transform .15s; }
+    details.ai-think[open] summary svg { transform: rotate(90deg); }
+    details.ai-think summary:hover { color: var(--cl-ink-soft); }
+    details.ai-think ol { margin: 6px 0 0; padding: 8px 12px 8px 30px; border-left: 2px solid var(--cl-line-2); font-size: 12.5px; color: var(--cl-ink-soft); line-height: 1.6; display: flex; flex-direction: column; gap: 3px; }
+    details.ai-think ol li::marker { color: var(--cl-ink-faint); font-family: var(--mono); font-size: 11px; }
+
+    .ai-acts { display: flex; align-items: center; gap: 6px; margin-top: 4px; padding-top: 6px; border-top: 1px solid var(--cl-line); flex-wrap: wrap; }
+    .ai-fb { display: inline-flex; gap: 2px; }
+    .ai-acts-right { margin-left: auto; }
+    .ai-link { display: inline-flex; align-items: center; gap: 4px; height: 26px; padding: 0 8px; border: none; border-radius: 7px; background: none; font: inherit; font-size: 12px; font-weight: 700; color: var(--cl-accent-ink); cursor: pointer; }
+    .ai-link:hover { background: var(--cl-accent-soft); }
+    .ai-link svg { width: 13px; height: 13px; }
+    .ai-ico { width: 28px; height: 28px; border: none; background: none; border-radius: 7px; cursor: pointer; color: var(--cl-ink-faint); display: grid; place-items: center; transition: background .12s, color .12s; position: relative; }
+    .ai-ico svg { width: 15px; height: 15px; }
+    .ai-ico:hover { background: var(--cl-paper-2); color: var(--cl-ink); }
+    .ai-ico.on { color: var(--cl-accent); background: var(--cl-accent-soft); }
+    .ai-ico[data-tip]::after { content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 6px); transform: translateX(-50%); white-space: nowrap; padding: 4px 8px; border-radius: 6px; background: var(--cl-ink); color: #fff; font-size: 11px; font-weight: 500; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .12s; z-index: 5; }
+    .ai-ico:hover::after { opacity: 1; visibility: visible; }
+    .ai-done { display: none; align-items: center; gap: 8px; font-size: 12.5px; color: var(--cl-ink-soft); margin: 2px 0 4px; }
+    .ai-done svg { width: 14px; height: 14px; color: var(--ok); flex: none; }
+    .ai-done button { background: none; border: none; padding: 0; font: inherit; font-weight: 700; color: var(--cl-accent-ink); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+    .ai-msg.fb-done .ai-done { display: flex; }
+    .ai-msg.fb-done .ai-acts { display: none; }
+
+    .ai-empty { padding: 26px 12px; text-align: center; color: var(--cl-ink-faint); font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .ai-empty .ai-av { margin: 0; }
+    .ai-empty b { color: var(--cl-ink-soft); font-weight: 700; }
+
+    /* 피드백 사유 팝오버 (👎) */
+    .fb-pop { position: absolute; left: 0; top: calc(100% + 4px); z-index: 30; min-width: 190px; padding: 6px; background: var(--cl-msg); border: 1px solid var(--cl-line-2); border-radius: 10px; box-shadow: 0 10px 28px rgba(31, 30, 29, .16); }
+    .fb-pop button { display: block; width: 100%; text-align: left; padding: 7px 9px; border: none; background: none; border-radius: 7px; font-size: 12.5px; font-weight: 600; color: var(--cl-ink); cursor: pointer; }
+    .fb-pop button:hover { background: var(--cl-paper-2); }
+    .fb-pop .ph { padding: 4px 9px 6px; font-size: 11px; color: var(--cl-ink-faint); font-weight: 600; }
+
+    /* ============================================================
+     * 6. 토스트 · 반응형
+     * ============================================================ */
+    .toast { position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 14px); z-index: 90; max-width: min(560px, calc(100vw - 32px)); padding: 12px 16px; border-radius: 11px; background: linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 100%); color: #eaf2fb; font-size: 13px; line-height: 1.6; font-weight: 600; box-shadow: 0 16px 40px rgba(8, 24, 48, .34); opacity: 0; visibility: hidden; transition: opacity .16s, transform .16s; }
+    .toast.open { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+    .toast b { color: #fff; font-weight: 700; }
+
+
+    /* 좁은 폭에서는 카드 제목의 영문 보조 라벨을 숨겨 ⓘ·건수 배지가 첫 줄에 남도록 한다 */
+    @media (max-width: 1720px) { .card-head h2 small { display: none; } }
+    @media (max-width: 1440px) { .sum-grid { grid-template-columns: minmax(290px, 1.05fr) repeat(4, minmax(0, 1fr)); } }
+    @media (max-width: 1280px) {
+      .sum-grid { grid-template-columns: 1fr 1fr 1fr; } .cmp { grid-column: 1 / -1; }
+      .cards { grid-template-columns: 1fr 1fr; } .col-ef { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 900px) {
+      body { grid-template-columns: 1fr; }
+      .sidebar { position: fixed; left: 0; top: 0; width: 236px; height: 100vh; transform: translateX(-100%); transition: transform .2s; z-index: 40; }
+      .sidebar.open { transform: none; }
+      .menu-toggle { display: grid; }
+      .content { padding: 18px 16px 40px; }
+      .topbar { padding: 10px 16px; gap: 8px; }
+      .crumb, .user .u-meta { display: none; }
+      .sum-grid { grid-template-columns: 1fr 1fr; }
+      .cards, .col-ef { grid-template-columns: 1fr; }
+      .fld.grow { width: 100%; }
+      .applied { margin-left: 0; width: 100%; }
+    }
+    @media (max-width: 640px) { .sum-grid { grid-template-columns: 1fr; } .ai-diff { grid-template-columns: 1fr; } .ai-diff .arr { display: none; } }
+  </style>
+</head>
+<body>
+  <!--
+    AgentOn Console > Security > AI 위험 분석 — 화면 구성안 v0.1 (2026-09-30)
+
+    · 설계 원칙: AI 는 제안하고 판단은 담당자가 한다 → "조치" 대신 "확인". 판단 근거 표시, 담당자 피드백 반영
+    · 카드 흐름: C(새로 판단할 것) → D(아직 확인 안 된 것) → E(분석 근거가 틀린 것) → F(다시 판단할 것)
+    · 구분 축 2개: 인프라(Compute / Cloud) × 취약점 유형(CVE / CCE)
+    · 카드 간 중복 규칙: C↔D 배타 · C↔F 배타 · E 는 중복 허용(타 카드 행에 '자산 정보 이슈' 배지)
+    · B 의 숫자는 카드 데이터에서 계산 → 항상 카드와 일치. 4개 타일 합계는 표시하지 않는다
+    · 고객사에서 확보 가능한 데이터만 사용: 스캔 결과 · 자산 인벤토리 · 인사정보 · 예외/유예 이력 · 공개 KEV 목록
+  -->
+  <aside class="sidebar" id="sidebar">
+    <a class="side-brand" href="#" data-nav="Home">
+      <img src="data:image/png;base64,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" alt="" />
+      <span class="nm">AgentOn<span> Console</span><small>Enterprise AI Agent Platform</small></span>
+    </a>
+    <nav class="side-nav" aria-label="AgentOn Console 메뉴">
+      <a class="nav-item" href="#" data-nav="Dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <div class="nav-group" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.66 3.58 3 8 3s8-1.34 8-3V6"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg>
+          <span class="np-label">Data Fabric</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Data Monitor">Data Monitor</a>
+          <a class="nav-child" href="#" data-nav="Data Sync">Data Sync</a>
+          <a class="nav-child" href="mnu-120-connections.html">Connections</a>
+          <a class="nav-child" href="#" data-nav="Mappings">Mappings</a>
+          <a class="nav-child" href="#" data-nav="Workflows">Workflows</a>
+          <a class="nav-child" href="#" data-nav="Schedules">Schedules</a>
+        </div>
+      </div>
+      <div class="nav-group" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.2 7.3 10.8 16M15.8 7.3 13.2 16M8.5 6h7"/></svg>
+          <span class="np-label">Ontology</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Graph Explorer">Graph Explorer</a>
+          <a class="nav-child" href="#" data-nav="Graph Query">Graph Query</a>
+          <a class="nav-child" href="#" data-nav="Modeler">Modeler</a>
+        </div>
+      </div>
+      <div class="nav-group" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="2.5"/><path d="M12 3v4M9 12h.01M15 12h.01M9 16h6"/></svg>
+          <span class="np-label">Agent</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Monitoring">Monitoring</a>
+          <a class="nav-child" href="human-review.html">Human Review</a>
+          <a class="nav-child" href="domain-knowledge.html">Domain Knowledge</a>
+          <a class="nav-child" href="ai-services.html">Configuration</a>
+        </div>
+      </div>
+      <div class="nav-group" data-open="true">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 7.9 8 9 4.6-1.1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span class="np-label">Security</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Risk Monitor">Risk Monitor</a>
+          <a class="nav-child active" href="#" aria-current="page">AI 위험 분석</a>
+          <a class="nav-child" href="mnu-810-topology.html">Topology</a>
+          <a class="nav-child" href="#" data-nav="AI Assistant">AI Assistant</a>
+          <a class="nav-child" href="#" data-nav="Asset Integrity">Asset Integrity</a>
+        </div>
+      </div>
+      <div class="nav-group" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+          <span class="np-label">System</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Users & Permissions">Users &amp; Permissions</a>
+          <a class="nav-child" href="mnu-920-license.html">License</a>
+          <a class="nav-child" href="service-management.html">Service Management</a>
+          <a class="nav-child" href="access-management.html">Access Management</a>
+          <a class="nav-child" href="#" data-nav="Audit Logs">Audit Logs</a>
+        </div>
+      </div>
+    </nav>
+    <div class="side-foot"><span>Ontology Agent Platform</span><span>v1.0.0</span></div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="ic-btn menu-toggle" type="button" id="menuToggle" aria-label="메뉴">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="crumb"><span>Security</span><span class="sep">›</span><b>AI 위험 분석</b></div>
+      <div class="spacer"></div>
+      <button class="user" type="button" data-nav="내 계정">
+        <span class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--icon)"><circle cx="12" cy="8" r="4.2"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg></span>
+        <span class="u-meta"><span class="u-name">kim.dohyun</span><span class="u-role">인프라보안 담당</span></span>
+      </button>
+      <button class="ic-btn" type="button" data-nav="개인 설정" aria-label="개인 설정">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      </button>
+    </div>
+
+    <div class="content">
+      <div class="phead">
+        <div>
+          <h1>AI 위험 분석 <span class="ver-badge">구성안 v0.1</span></h1>
+          <p class="psub">AI가 취약점·자산·위협·예외 정보를 종합 분석하여 우선 확인이 필요한 위험과 자산을 제안하고, 판단 근거를 함께 제공합니다.</p>
+        </div>
+        <div class="pright">
+          <span>마지막 분석 <b class="mono">2026-09-30 06:00</b></span>
+          <button class="btn" type="button" id="btnRerun">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>
+            새로고침
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== A. 분석 범위 ===== -->
+      <section class="panel scope" id="secA" aria-labelledby="hA">
+        <div class="sec-head">
+          <span class="sec-key">A</span>
+          <h2 id="hA">분석 범위 <small>Analysis Scope</small></h2>
+          <span class="sec-note">모든 카드와 위험 요약에 동일하게 적용됩니다</span>
+        </div>
+        <div class="scope-row">
+          <div class="fld grow">
+            <label for="sysBtn">정보시스템</label>
+            <div class="combo" id="sysCombo">
+              <button class="combo-btn" type="button" id="sysBtn" aria-haspopup="listbox" aria-expanded="false"><span class="sum" id="sysSum"></span><span class="n" id="sysN"></span></button>
+              <div class="combo-menu" id="sysMenu" hidden>
+                <div class="combo-search">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                  <input type="text" id="sysQ" placeholder="정보시스템 검색" autocomplete="off" aria-label="정보시스템 검색" />
+                </div>
+                <div class="combo-quick"><button type="button" data-q="mine">담당 시스템만</button><button type="button" data-q="all">전체 선택</button><button type="button" data-q="none">선택 해제</button></div>
+                <div class="combo-list" id="sysList" role="listbox" aria-multiselectable="true"></div>
+              </div>
+            </div>
+          </div>
+          <div class="fld">
+            <label>인프라</label>
+            <div class="seg" id="segInfra" role="group" aria-label="인프라"><button type="button" class="on" data-v="">전체</button><button type="button" data-v="Compute">Compute</button><button type="button" data-v="Cloud">Cloud</button></div>
+          </div>
+          <div class="fld">
+            <label>취약점 유형</label>
+            <div class="seg" id="segType" role="group" aria-label="취약점 유형"><button type="button" class="on" data-v="">전체</button><button type="button" data-v="CVE">CVE</button><button type="button" data-v="CCE">CCE</button></div>
+          </div>
+          <div class="fld">
+            <label for="asof">기준일</label>
+            <input class="input mono" type="date" id="asof" value="2026-09-30" style="width:150px" />
+          </div>
+          <button class="ic-btn reset-btn" type="button" id="btnReset" aria-label="초기화" data-tip="초기화 — 담당 시스템 · 전체 · 전체">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.6-6.4"/><path d="M3 4v5h5"/></svg>
+          </button>
+          <!-- 적용 범위 — 선택 컨트롤과 같은 줄, 우측 정렬 -->
+          <div class="applied" id="applied"></div>
+        </div>
+      </section>
+
+      <!-- ===== B. 위험 요약 ===== -->
+      <section class="panel summary" id="secB" aria-labelledby="hB">
+        <div class="sec-head">
+          <span class="sec-key">B</span>
+          <h2 id="hB">위험 요약 <small>Risk Summary</small></h2>
+          <span class="sec-note">타일을 누르면 해당 카드로 이동 · Compute/Cloud 를 누르면 인프라 필터가 설정됩니다</span>
+        </div>
+        <div class="sum-grid">
+          <div class="cmp" id="cmp"></div>
+          <button class="tile" type="button" data-card="C" id="tileC"></button>
+          <button class="tile" type="button" data-card="D" id="tileD"></button>
+          <button class="tile" type="button" data-card="E" id="tileE"></button>
+          <button class="tile" type="button" data-card="F" id="tileF"></button>
+        </div>
+      </section>
+
+      <!-- ===== C · D · E/F ===== -->
+      <div class="cards">
+        <section class="card" id="cardC" aria-labelledby="hC">
+          <button class="pdf-btn" type="button" data-xlsx="C" aria-label="Excel 저장"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></button>
+          <div class="card-head">
+            <span class="sec-key">C</span>
+            <h2 id="hC">우선 확인 대상 <small>Priority Findings</small></h2>
+            <span class="card-info" tabindex="0" role="img" aria-label="설명"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg><span class="tip" role="tooltip">스캔으로 확인된 취약점 중 AI가 우선순위를 매긴 목록입니다. <b>결합 위험</b>은 같은 자산에 취약한 서비스(CVE)와 약한 설정(CCE)이 함께 있는 경우입니다.</span></span>
+            <div class="ctl"><div class="seg mini" id="segCView" role="group" aria-label="보기 전환"><button type="button" class="on" data-v="vuln">취약점 기준</button><button type="button" data-v="sys">정보시스템 기준</button></div><span class="cnt" id="cntC"></span></div>
+          </div>
+          <div class="tbl-wrap" id="thC"></div>
+        </section>
+
+        <section class="card" id="cardD" aria-labelledby="hD">
+          <button class="pdf-btn" type="button" data-xlsx="D" aria-label="Excel 저장"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></button>
+          <div class="card-head">
+            <span class="sec-key">D</span>
+            <h2 id="hD">점검 필요 자산 <small>Assessment Required</small></h2>
+            <span class="card-info" tabindex="0" role="img" aria-label="설명"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg><span class="tip" role="tooltip">KEV에 등재됐지만 아직 <b>스캔 기록이 없는</b> 영향 추정 자산입니다. 스캔에서 확인되면 C로 이동하고, 미해당이면 종료됩니다.</span></span>
+            <div class="ctl"><span class="cnt" id="cntD"></span></div>
+          </div>
+          <div class="tbl-wrap" id="thD"></div>
+        </section>
+
+        <div class="col-ef">
+          <section class="card" id="cardE" aria-labelledby="hE">
+            <button class="pdf-btn" type="button" data-xlsx="E" aria-label="Excel 저장"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></button>
+            <div class="card-head">
+              <span class="sec-key">E</span>
+              <h2 id="hE">자산 정보 이슈 <small>Asset Data Issues</small></h2>
+              <span class="card-info" tabindex="0" role="img" aria-label="설명"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg><span class="tip" role="tooltip">정렬: 판단을 바꾼 구성 오류 → C·F 해당 자산의 담당자 이슈 → 기타</span></span>
+              <div class="ctl"><div class="seg mini" id="segE" role="group" aria-label="세그먼트"><button type="button" class="on" data-v="owner">담당자 정보</button><button type="button" data-v="config">구성 정보</button></div><span class="cnt" id="cntE"></span></div>
+            </div>
+            <div class="tbl-wrap" id="thE"></div>
+          </section>
+
+          <section class="card" id="cardF" aria-labelledby="hF">
+            <button class="pdf-btn" type="button" data-xlsx="F" aria-label="Excel 저장"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></button>
+            <div class="card-head">
+              <span class="sec-key">F</span>
+              <h2 id="hF">재검토 필요 자산 <small>Re-assessment Required</small></h2>
+              <span class="card-info" tabindex="0" role="img" aria-label="설명"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg><span class="tip" role="tooltip">트리거 우선순위: 유예 후 KEV 등재 → 노출 변화 → 조치 후 재탐지</span></span>
+              <div class="ctl"><span class="cnt" id="cntF"></span></div>
+            </div>
+            <div class="tbl-wrap" id="thF"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    /* ============================================================
+     * 데이터 — 설명용 예시값. === 연동 지점 === : 분석 결과 API 로 대체
+     *   GET /api/risk/analysis?asOf=&systems=&infra=&type=  → { systems, totals, C, D, E, F, removed }
+     * ============================================================ */
+    var SYSTEMS = [
+      { id: "SYS-01", name: "통합회원 포털", mine: true },
+      { id: "SYS-02", name: "커넥티드카 원격제어", mine: true },
+      { id: "SYS-03", name: "부품 수급 EDI", mine: false },
+      { id: "SYS-04", name: "생산 MES 게이트웨이", mine: false },
+      { id: "SYS-05", name: "데이터 레이크(분석)", mine: false },
+      { id: "SYS-06", name: "임직원 HR 포털", mine: false }
+    ];
+    /* 전체 탐지(스캐너 원본) 건수 — 정보시스템 × 인프라 × 유형 */
+    var TOTALS = {
+      "SYS-01": { Compute: { CVE: 212, CCE: 41 }, Cloud: { CVE: 88, CCE: 63 } },
+      "SYS-02": { Compute: { CVE: 176, CCE: 38 }, Cloud: { CVE: 64, CCE: 47 } },
+      "SYS-03": { Compute: { CVE: 118, CCE: 22 }, Cloud: { CVE: 12, CCE: 9 } },
+      "SYS-04": { Compute: { CVE: 142, CCE: 31 }, Cloud: { CVE: 0, CCE: 0 } },
+      "SYS-05": { Compute: { CVE: 36, CCE: 8 }, Cloud: { CVE: 41, CCE: 52 } },
+      "SYS-06": { Compute: { CVE: 27, CCE: 6 }, Cloud: { CVE: 4, CCE: 3 } }
+    };
+
+    /* C. 우선 확인 대상 — 취약점 → 영향 자산 */
+    var C = [
+      { id: "c01", type: "CVE", infra: "Compute", sys: "SYS-01", title: "CVE-2026-21412", sw: "OpenSSH 9.x 인증 우회", assets: ["web-01", "web-02", "web-03"], kev: true, cvss: 9.8, exposure: "외부", combined: true, owner: false, conf: 0.94, isNew: true,
+        say: "KEV에 등재된 인증 우회 취약점이 <b>외부에 노출된 웹 서버 3대</b>에 있습니다. 그중 <code>web-02</code>는 원격 root 접속까지 허용돼 있어 두 취약점이 결합되면 한 번의 접근으로 권한 탈취가 가능합니다. 오늘 가장 먼저 확인하시길 권합니다.",
+        ev: [["KEV 등재", "2026-09-20 · 조치 기한 10-11", "KEV 목록"], ["CVSS", "9.8 (Critical)", "스캔 결과 09-29"], ["외부 노출", "인터넷 → DMZ 443/22 개방", "자산 인벤토리"], ["연결 경로", "web → WAS → 회원 DB(개인정보)", "구성 정보"]],
+        think: ["스캔 결과에서 OpenSSH 9.3p1 검출 3대 확인 (web-01~03)", "KEV 목록 대조 → CVE-2026-21412 등재 확인", "인벤토리 노출 구분 '외부' + 22 포트 개방 → 외부 노출로 판단", "동일 자산 CCE 결과에 CCE-LNX-011(원격 root 허용) 존재 → 결합 위험 부여", "연결 경로에 개인정보 DB 포함 → 자산 중요도 상향"] },
+      { id: "c02", type: "CCE", infra: "Compute", sys: "SYS-01", title: "CCE-LNX-011", sw: "원격 root SSH 접속 허용", assets: ["web-02"], kev: false, cvss: null, exposure: "외부", combined: true, owner: false, conf: 0.90, isNew: false,
+        say: "<code>PermitRootLogin yes</code> 설정이 <b>외부 노출 서버</b>에 남아 있습니다. CVSS는 없지만 같은 자산의 OpenSSH 취약점(CVE-2026-21412)과 결합되므로 설정 변경만으로 결합 위험을 끊을 수 있습니다.",
+        ev: [["설정값", "sshd_config PermitRootLogin yes", "CCE 점검 09-29"], ["외부 노출", "22 포트 인터넷 개방", "자산 인벤토리"], ["결합", "CVE-2026-21412 동일 자산", "AI 대조"]],
+        think: ["CCE 점검 결과에서 원격 root 허용 항목 검출", "노출 구분 외부 → 우선순위 상향", "동일 자산의 CVE 결과와 대조 → 결합 위험"] },
+      { id: "c03", type: "CVE", infra: "Compute", sys: "SYS-01", title: "CVE-2026-30512", sw: "Apache Tomcat 10.1 원격 코드 실행", assets: ["was-01", "was-02"], kev: true, cvss: 9.1, exposure: "내부", combined: false, owner: true, conf: 0.88, isNew: false,
+        say: "내부망 WAS지만 <b>회원 DB에 직접 연결</b>되는 경로에 있고 KEV에 등재된 취약점입니다. <code>was-02</code>는 담당자가 지정되지 않아 확인 요청을 보낼 대상이 없습니다. 담당자 지정과 확인을 함께 진행해 주세요.",
+        ev: [["KEV 등재", "2026-09-18", "KEV 목록"], ["CVSS", "9.1 (Critical)", "스캔 결과 09-29"], ["연결 경로", "web(외부) → WAS → 회원 DB", "구성 정보"], ["담당자", "was-02 미매핑", "자산 정보 이슈 E-①"]],
+        think: ["Tomcat 10.1.18 검출 2대", "KEV 대조 등재 확인", "내부 자산이나 외부 노출 web 과 직접 연결 → 경로 기준 상향", "담당자 미매핑 → E 카드와 연결"] },
+      { id: "c04", type: "CCE", infra: "Cloud", sys: "SYS-01", title: "CCE-AWS-S3-003", sw: "S3 버킷 퍼블릭 읽기 허용", assets: ["s3://hmc-member-export"], kev: false, cvss: null, exposure: "외부", combined: false, owner: false, conf: 0.91, isNew: true,
+        say: "회원 정보 내보내기 버킷이 <b>퍼블릭 읽기</b> 상태입니다. 버킷 태그에 개인정보 등급이 붙어 있어 노출 시 영향이 큽니다. 버킷 정책 확인이 먼저입니다.",
+        ev: [["설정값", "Block Public Access 해제 · ACL public-read", "Cloud API 09-30"], ["자산 중요도", "태그 data-class=PII", "자산 인벤토리"], ["외부 노출", "인터넷 직접 접근 가능", "Cloud API"]],
+        think: ["Cloud 설정 점검에서 퍼블릭 ACL 검출", "버킷 태그로 개인정보 등급 확인 → 자산 중요도 상", "외부 노출 → 우선순위 최상"] },
+      { id: "c05", type: "CVE", infra: "Cloud", sys: "SYS-02", title: "CVE-2026-27890", sw: "ingress-nginx 컨트롤러 설정 주입", assets: ["eks-prd-ingress"], kev: true, cvss: 9.8, exposure: "외부", combined: false, owner: false, conf: 0.90, isNew: true,
+        say: "원격제어 API를 받는 EKS 인그레스가 KEV 등재 취약점 버전입니다. <b>외부 트래픽이 가장 먼저 닿는 지점</b>이라 영향 범위가 클러스터 전체로 번질 수 있습니다.",
+        ev: [["KEV 등재", "2026-09-25", "KEV 목록"], ["CVSS", "9.8 (Critical)", "스캔 결과 09-29"], ["외부 노출", "ALB → ingress 443", "Cloud API"], ["연결 경로", "ingress → 텔레메틱스 API → 차량 명령 큐", "구성 정보"]],
+        think: ["EKS 애드온 버전 v1.11.2 검출", "KEV 대조 등재 확인", "외부 노출 + 차량 명령 경로 → 최상위"] },
+      { id: "c06", type: "CVE", infra: "Compute", sys: "SYS-02", title: "CVE-2026-1892", sw: "nginx 1.25 HTTP/2 메모리 손상", assets: ["api-gw-01", "api-gw-02"], kev: true, cvss: 7.5, exposure: "외부", combined: false, owner: true, conf: 0.81, isNew: false, inv: "up",
+        say: "CVSS는 7.5로 높지 않지만 <b>KEV 등재 + 외부 노출</b>이라 우선순위를 올렸습니다. 등록 담당자가 9월 15일 퇴사해 확인 요청이 전달되지 않습니다.",
+        ev: [["KEV 등재", "2026-09-22", "KEV 목록"], ["CVSS", "7.5 (High) → AI 상향", "스캔 결과"], ["외부 노출", "인터넷 → API GW 443", "자산 인벤토리"], ["담당자", "박○○ 퇴사(09-15)", "인사정보 · E-②"]],
+        think: ["nginx 1.25.3 검출", "KEV 등재 → CVSS 대비 상향", "담당자 이탈 → E 카드 연결"] },
+      { id: "c07", type: "CCE", infra: "Cloud", sys: "SYS-02", title: "CCE-AWS-SG-007", sw: "보안그룹 0.0.0.0/0 → 22 허용", assets: ["sg-0a1b… (bastion-prd)"], kev: false, cvss: null, exposure: "외부", combined: true, owner: false, conf: 0.86, isNew: false,
+        say: "배스천 보안그룹이 <b>전 세계에서 SSH</b>를 받습니다. 같은 인스턴스에서 등록되지 않은 Redis 7.0도 검출돼(E-⑥) 실제 노출 면이 인벤토리보다 넓습니다.",
+        ev: [["설정값", "inbound 0.0.0.0/0 tcp/22", "Cloud API 09-30"], ["외부 노출", "EIP 할당", "Cloud API"], ["결합", "미등록 SW Redis 7.0 검출", "에이전트 수집 · E-⑥"]],
+        think: ["보안그룹 규칙 점검 → 전체 허용 검출", "EIP 할당 → 외부 노출", "동일 인스턴스 미등록 SW → 결합 위험"] },
+      { id: "c08", type: "CCE", infra: "Cloud", sys: "SYS-02", title: "CCE-AWS-IAM-012", sw: "IAM 사용자에 AdministratorAccess 직접 부여", assets: ["iam:svc-telemetry"], kev: false, cvss: null, exposure: "내부", combined: false, owner: false, conf: 0.84, isNew: false,
+        say: "서비스 계정에 <b>관리자 권한이 직접</b> 붙어 있습니다. 액세스 키가 유출되면 계정 전체가 노출되므로 최소 권한 정책으로 교체 여부를 확인해 주세요.",
+        ev: [["설정값", "AttachedPolicy AdministratorAccess", "Cloud API 09-30"], ["액세스 키", "생성 412일 · 미교체", "Cloud API"], ["자산 중요도", "차량 명령 큐 접근 권한", "구성 정보"]],
+        think: ["IAM 점검에서 관리자 정책 직접 부여 검출", "키 수명 장기 → 상향", "접근 대상 중요도 상"] },
+      { id: "c09", type: "CVE", infra: "Compute", sys: "SYS-02", title: "CVE-2026-0456", sw: "PostgreSQL 15 권한 상승", assets: ["db-tel-01"], kev: false, cvss: 8.8, exposure: "내부", combined: false, owner: true, conf: 0.72, isNew: false,
+        say: "내부 전용 DB지만 텔레메틱스 API가 직접 붙는 경로입니다. 등록 담당자가 팀장으로 보임돼 <b>실무 담당자가 맞는지</b> 함께 확인이 필요합니다.",
+        ev: [["CVSS", "8.8 (High)", "스캔 결과 09-29"], ["연결 경로", "텔레메틱스 API → db-tel-01", "구성 정보"], ["담당자", "이○○ 팀장 보임(08-01)", "인사정보 · E-③"]],
+        think: ["PostgreSQL 15.4 검출", "KEV 미등재 · 내부 → 경로 기준으로만 상향", "역할 부적합 의심 → E 연결"] },
+      { id: "c10", type: "CVE", infra: "Compute", sys: "SYS-03", title: "CVE-2026-11023", sw: "Jenkins 2.4xx 스크립트 콘솔 우회", assets: ["ci-01"], kev: false, cvss: 8.1, exposure: "내부", combined: false, owner: false, conf: 0.69, isNew: false, inv: "up",
+        say: "협력사 VPN에서 CI 서버로 직접 접근하는 경로가 있어 CVSS 대비 우선순위를 올렸습니다. CI가 배포 서버 자격증명을 들고 있는 점을 확인해 주세요.",
+        ev: [["CVSS", "8.1 (High) → AI 상향", "스캔 결과"], ["연결 경로", "협력사 VPN → ci-01 → 배포 서버", "구성 정보"], ["자격증명", "배포 키 보관", "구성 정보"]],
+        think: ["Jenkins 2.440 검출", "내부지만 협력사 VPN 경로 → 외부 준하는 노출로 판단", "자격증명 보관 → 상향"] },
+      { id: "c11", type: "CVE", infra: "Compute", sys: "SYS-04", title: "CVE-2026-33001", sw: "VMware ESXi 8 하이퍼바이저 탈출", assets: ["esx-mes-01"], kev: true, cvss: 9.3, exposure: "내부", combined: false, owner: false, conf: 0.87, isNew: true,
+        say: "MES 게이트웨이 VM들이 올라간 하이퍼바이저입니다. 인벤토리에는 8.0U2로 등록됐지만 실제로는 <b>EOS가 지난 7.0U3</b>가 검출됐습니다(E-⑧). 패치 경로 자체가 없을 수 있습니다.",
+        ev: [["KEV 등재", "2026-09-27", "KEV 목록"], ["CVSS", "9.3 (Critical)", "스캔 결과 09-29"], ["OS·EOS", "등록 8.0U2 · 실제 7.0U3 (EOS 2025-10)", "에이전트 수집 · E-⑧"], ["자산 중요도", "생산 라인 게이트웨이 VM 6대 호스팅", "구성 정보"]],
+        think: ["ESXi 빌드 검출 → 등록값과 불일치", "KEV 등재 확인", "호스팅 VM 중요도 상 → 상향"] },
+      { id: "c12", type: "CCE", infra: "Compute", sys: "SYS-04", title: "CCE-LNX-034", sw: "패스워드 복잡도·만료 미설정", assets: ["mes-gw-01", "mes-gw-02", "mes-gw-03"], kev: false, cvss: null, exposure: "내부", combined: false, owner: false, conf: 0.64, isNew: false,
+        say: "생산 게이트웨이 3대가 같은 설정 결함을 가집니다. 내부 전용이지만 <b>자산 중요도</b> 때문에 목록에 올렸습니다.",
+        ev: [["설정값", "PASS_MAX_DAYS 99999 · pam_pwquality 미적용", "CCE 점검 09-29"], ["자산 중요도", "생산 라인 연계", "자산 인벤토리"]],
+        think: ["CCE 점검 3대 동일 항목 검출", "내부 전용 → 중간", "중요도 상 → 목록 포함"] },
+      { id: "c13", type: "CCE", infra: "Cloud", sys: "SYS-05", title: "CCE-AWS-RDS-002", sw: "RDS 퍼블릭 접근 + 스냅샷 공유", assets: ["rds-lake-analytics"], kev: false, cvss: null, exposure: "외부", combined: false, owner: false, conf: 0.89, isNew: false,
+        say: "분석용 RDS가 <b>퍼블릭 접근 가능</b>이고 수동 스냅샷이 다른 계정과 공유돼 있습니다. 데이터 유출 경로가 두 갈래라 우선 확인 대상입니다.",
+        ev: [["설정값", "PubliclyAccessible=true · 스냅샷 공유 2건", "Cloud API 09-30"], ["외부 노출", "5432 보안그룹 0.0.0.0/0", "Cloud API"], ["자산 중요도", "판매·정비 데이터 적재", "자산 인벤토리"]],
+        think: ["RDS 설정 점검 검출", "보안그룹 대조 → 외부 노출", "데이터 등급 상"] },
+      { id: "c14", type: "CVE", infra: "Cloud", sys: "SYS-05", title: "CVE-2026-2109", sw: "Apache Spark 3.5 원격 코드 실행", assets: ["emr-lake-prd"], kev: false, cvss: 8.6, exposure: "내부", combined: false, owner: true, conf: 0.61, isNew: false,
+        say: "EMR 클러스터의 Spark 버전이 취약합니다. 내부 전용이지만 인프라 담당 조직과 정보시스템 담당 조직이 달라(E-④) 확인 요청 경로부터 정리가 필요합니다.",
+        ev: [["CVSS", "8.6 (High)", "스캔 결과 09-28"], ["담당 조직", "인프라 클라우드운영팀 · 시스템 데이터분석팀", "자산 인벤토리 · E-④"]],
+        think: ["Spark 3.5.0 검출", "내부 · KEV 미등재 → 중간", "담당 조직 불일치 → E 연결"] },
+      { id: "c15", type: "CVE", infra: "Compute", sys: "SYS-06", title: "CVE-2026-5561", sw: "Samba 4.19 인증 우회", assets: ["file-hr-01"], kev: false, cvss: 7.8, exposure: "내부", combined: false, owner: false, conf: 0.58, isNew: false, inv: "down",
+        say: "인사 파일 서버지만 격리 대역에 있고 KEV에도 없어 CVSS보다 우선순위를 낮게 봤습니다. 다만 인사 데이터 등급이 높아 목록에는 남겼습니다.",
+        ev: [["CVSS", "7.8 (High) → AI 하향", "스캔 결과"], ["격리", "HR 전용 VLAN · 외부 경로 없음", "구성 정보"], ["자산 중요도", "인사 데이터 등급 상", "자산 인벤토리"]],
+        think: ["Samba 4.19.2 검출", "격리 대역 → 하향", "데이터 등급 상 → 목록 유지"] },
+      { id: "c16", type: "CCE", infra: "Compute", sys: "SYS-06", title: "CCE-LNX-052", sw: "sudo NOPASSWD ALL 부여", assets: ["hr-app-01"], kev: false, cvss: null, exposure: "내부", combined: false, owner: false, conf: 0.70, isNew: false,
+        say: "애플리케이션 계정이 비밀번호 없이 전체 sudo 권한을 가집니다. 내부 전용이지만 계정 탈취 시 바로 root가 되므로 설정 변경 여부를 확인해 주세요.",
+        ev: [["설정값", "/etc/sudoers.d/hrapp ALL=(ALL) NOPASSWD: ALL", "CCE 점검 09-29"], ["자산 중요도", "인사 데이터 등급 상", "자산 인벤토리"]],
+        think: ["sudoers 점검 검출", "내부 → 중간", "데이터 등급 → 목록 포함"] }
+    ];
+
+    /* D. 점검 필요 자산 — KEV 등재 · 스캔 기록 없음 (CVE 기반) */
+    var D = [
+      { id: "d01", infra: "Compute", sys: "SYS-02", cve: "CVE-2026-40021", kevDate: "2026-09-26", sw: "Ivanti Connect Secure 22.7", assets: ["vpn-gw-01", "vpn-gw-02"], basis: "인벤토리 SW 항목 'Ivanti ICS 22.7.x' 매칭", scan: "탐지 규칙 부재", scanNote: "스캐너 플러그인 미배포 (벤더 09-28 릴리스)", conf: 0.82, isNew: true,
+        say: "KEV에 새로 오른 VPN 취약점인데 스캐너가 아직 탐지 규칙이 없습니다. 인벤토리 기준으로 <b>VPN 게이트웨이 2대</b>가 해당 버전으로 추정됩니다. 외부 접점이라 긴급 스캔을 권합니다." },
+      { id: "d02", infra: "Compute", sys: "SYS-01", cve: "CVE-2026-38870", kevDate: "2026-09-24", sw: "Fortinet FortiOS 7.4", assets: ["fw-dmz-01"], basis: "인벤토리 제조사·모델 매칭 (FortiGate 600F)", scan: "장기 미스캔", scanNote: "마지막 스캔 2026-06-12 · 110일 경과", conf: 0.77, isNew: false,
+        say: "DMZ 방화벽이 110일째 스캔되지 않았습니다. 모델 기준으로 영향 버전 범위에 들어가지만 <b>실제 펌웨어 버전은 확인되지 않은</b> 상태입니다." },
+      { id: "d03", infra: "Cloud", sys: "SYS-05", cve: "CVE-2026-37712", kevDate: "2026-09-23", sw: "Grafana 10.x", assets: ["eks-lake-monitoring"], basis: "Helm 릴리스 목록 'grafana 10.4.1' 매칭", scan: "장기 미스캔", scanNote: "EKS 워크로드 스캔 09-01 이후 없음", conf: 0.71, isNew: false,
+        say: "데이터 레이크 모니터링용 Grafana가 영향 버전으로 추정됩니다. 컨테이너 이미지 스캔이 한 달째 없어 <b>패치 여부를 알 수 없습니다.</b>" },
+      { id: "d04", infra: "Compute", sys: "SYS-03", cve: "CVE-2026-36611", kevDate: "2026-09-22", sw: "Citrix NetScaler ADC 14.1", assets: ["adc-edi-01"], basis: "인벤토리 모델 매칭 (NetScaler MPX)", scan: "스캔 범위 외", scanNote: "네트워크 장비 대역 스캔 미포함", conf: 0.66, isNew: false,
+        say: "EDI 앞단 ADC가 스캔 범위 밖의 네트워크 장비 대역에 있습니다. 협력사 연결 접점이라 <b>담당자에게 버전 확인</b>을 요청하는 편이 빠릅니다." },
+      { id: "d05", infra: "Compute", sys: "SYS-04", cve: "CVE-2026-41208", kevDate: "2026-09-29", sw: "Cisco IOS XE 17.x", assets: ["sw-core-01", "sw-core-02"], basis: "인벤토리 제조사·OS 매칭", scan: "스캔 범위 외", scanNote: "네트워크 장비 대역 스캔 미포함", conf: 0.70, isNew: true,
+        say: "어제 KEV에 등재된 코어 스위치 취약점입니다. 생산망 코어라 영향이 크지만 스캔 범위 밖이므로 <b>담당자 확인이 유일한 경로</b>입니다." },
+      { id: "d06", infra: "Compute", sys: "SYS-06", cve: "CVE-2026-39555", kevDate: "2026-09-27", sw: "Oracle WebLogic 14c", assets: ["wls-hr-01"], basis: "인벤토리 SW 항목 매칭", scan: "탐지 규칙 부재", scanNote: "스캐너 규칙 대기 중", conf: 0.74, isNew: false,
+        say: "HR 포털 WAS가 영향 버전으로 추정됩니다. 탐지 규칙이 나오면 자동으로 스캔되지만, 그 전에 <b>긴급 스캔(버전 확인)</b>으로 앞당길 수 있습니다." }
+    ];
+
+    /* E. 자산 정보 이슈 — cat: owner(담당자 정보) / config(구성 정보) */
+    var E = [
+      { id: "e01", cat: "owner", sub: "① 미매핑", infra: "Compute", sys: "SYS-01", asset: "was-02", reg: "담당자 없음", act: "최근 배포자 김○○(개발) · 09-27", src: "배포 이력", impact: null, inCF: "C", signal: null,
+        say: "담당자가 비어 있어 C의 <code>CVE-2026-30512</code> 확인 요청을 보낼 수 없습니다. 배포 이력상 최근 배포자를 후보로 제안합니다.", acts: ["담당자 변경 요청"] },
+      { id: "e02", cat: "owner", sub: "② 이탈", infra: "Compute", sys: "SYS-02", asset: "api-gw-01, api-gw-02", reg: "박○○ (플랫폼팀)", act: "2026-09-15 퇴사", src: "인사정보 09-30", impact: null, inCF: "C", signal: null,
+        say: "등록 담당자가 퇴사했습니다. C의 KEV 취약점(<code>CVE-2026-1892</code>) 확인 요청이 전달되지 않는 상태입니다.", acts: ["담당자 변경 요청"] },
+      { id: "e03", cat: "owner", sub: "③ 역할 부적합 의심", infra: "Compute", sys: "SYS-02", asset: "db-tel-01", reg: "이○○ (지정 2025-03)", act: "2026-08-01 데이터플랫폼팀 팀장 보임", src: "인사정보 09-30", impact: null, inCF: "C", signal: "강",
+        say: "담당 지정 이후 팀장 이상으로 보임됐습니다(신호 강). 실무 담당이 맞다면 확인해 주시면 다음 직책 변경 전까지 다시 표시하지 않습니다.", acts: ["실무 담당 맞음", "담당자 변경 요청"] },
+      { id: "e04", cat: "owner", sub: "④ 담당 조직 불일치", infra: "Cloud", sys: "SYS-05", asset: "emr-lake-prd", reg: "인프라: 클라우드운영팀 최○○", act: "정보시스템: 데이터분석팀", src: "자산 인벤토리", impact: null, inCF: "C", signal: null,
+        say: "인프라 담당 조직과 정보시스템 담당 조직이 다릅니다. C의 <code>CVE-2026-2109</code> 확인 요청을 어느 쪽에 보낼지 정리가 필요합니다.", acts: ["담당자 변경 요청"] },
+      { id: "e05", cat: "owner", sub: "② 전보", infra: "Compute", sys: "SYS-04", asset: "mes-gw-02", reg: "정○○ (생산기술팀)", act: "2026-09-01 구매팀 전보", src: "인사정보 09-30", impact: null, inCF: null, signal: null,
+        say: "담당자가 다른 조직으로 전보됐습니다. 현재 C·F 해당 자산은 아니지만 후임 지정을 권합니다.", acts: ["담당자 변경 요청"] },
+      { id: "e06", cat: "owner", sub: "③ 역할 부적합 의심", infra: "Compute", sys: "SYS-06", asset: "file-hr-01", reg: "한○○ (지정 2024-11)", act: "지정 당시부터 팀장", src: "인사정보", impact: null, inCF: null, signal: "약",
+        say: "지정 당시부터 팀장 직책이었습니다(신호 약). 관행상 팀장이 담당인 경우라면 확인만 해 주세요.", acts: ["실무 담당 맞음", "담당자 변경 요청"] },
+      { id: "e07", cat: "config", sub: "⑤ SW·버전 오기", infra: "Compute", sys: "SYS-01", asset: "web-03", reg: "OpenSSH 9.6", act: "OpenSSH 9.3p1", src: "에이전트 수집 09-29", impact: { missed: 2, kev: true }, inCF: "C", signal: null,
+        say: "등록 버전 기준으로는 해당 없음이던 취약점 <b>2건이 실제 버전에서는 해당</b>됩니다(그중 KEV 1건). 이 차이로 C의 우선순위가 바뀌었습니다.", acts: ["정보 수정 요청"] },
+      { id: "e08", cat: "config", sub: "⑧ OS·EOS 불일치", infra: "Compute", sys: "SYS-04", asset: "esx-mes-01", reg: "ESXi 8.0U2", act: "ESXi 7.0U3 (EOS 2025-10)", src: "에이전트 수집 09-29", impact: { missed: 6, kev: true }, inCF: "C", signal: null,
+        say: "등록 OS와 실제 OS가 다르고 실제 버전은 <b>지원 종료(EOS)</b> 상태입니다. 누락 취약점 6건(KEV 1) 이 발생해 C의 판단에 직접 영향을 줬습니다.", acts: ["정보 수정 요청"] },
+      { id: "e09", cat: "config", sub: "⑥ 미등록 SW", infra: "Cloud", sys: "SYS-02", asset: "bastion-prd", reg: "등록 없음", act: "Redis 7.0.12 검출 (6379 listen)", src: "에이전트 수집 09-29", impact: { missed: 4, kev: false }, inCF: "C", signal: null,
+        say: "인벤토리에 없는 Redis가 배스천에서 구동 중입니다. 등록되지 않아 <b>취약점 4건이 대조에서 빠져</b> 있었습니다.", acts: ["정보 수정 요청"] },
+      { id: "e10", cat: "config", sub: "⑦ 삭제 SW 잔존", infra: "Compute", sys: "SYS-03", asset: "ci-01", reg: "Log4j 2.14.1", act: "미검출 (제거됨)", src: "에이전트 수집 09-28", impact: { missed: 0, kev: false, fp: 3 }, inCF: "C", signal: null,
+        say: "인벤토리에는 남아 있지만 실제로는 제거된 SW입니다. 이로 인한 <b>오탐 3건</b>을 분석에서 제외했습니다. 정보를 정리하면 다음 스캔부터 깨끗해집니다.", acts: ["정보 수정 요청"] },
+      { id: "e11", cat: "config", sub: "⑤ SW·버전 오기", infra: "Cloud", sys: "SYS-05", asset: "rds-lake-analytics", reg: "PostgreSQL 14.10", act: "PostgreSQL 14.7", src: "Cloud API 09-30", impact: { missed: 1, kev: false }, inCF: "C", signal: null,
+        say: "등록 마이너 버전이 실제보다 높게 적혀 있습니다. 누락 취약점 1건이 있으나 KEV는 아닙니다.", acts: ["정보 수정 요청"] }
+    ];
+
+    /* F. 재검토 필요 자산 — trig: 1 유예 후 KEV 등재 · 2 노출 변화 · 3 조치 후 재탐지 */
+    var F = [
+      { id: "f01", type: "CVE", infra: "Compute", sys: "SYS-01", asset: "web-01", title: "CVE-2026-19821", sw: "Apache httpd 2.4 요청 스머글링", trig: 1, riskWas: 2, riskNow: 4, change: "2026-09-25 KEV 등재", reason: "추석 연휴 서비스 무중단 기간 패치 보류", expires: "2026-10-15", approver: "보안팀 한○○", owner: "김○○", isNew: true,
+        say: "유예 승인 이후 이 취약점이 <b>KEV에 등재</b>됐습니다. 승인 당시 전제(공개 익스플로잇 없음)가 바뀌었으므로 유예 유지 여부를 다시 판단해 주세요." },
+      { id: "f02", type: "CCE", infra: "Cloud", sys: "SYS-02", asset: "sg-telemetry-ing", title: "CCE-AWS-SG-007", sw: "보안그룹 광범위 인바운드 허용", trig: 2, riskWas: 1, riskNow: 3, change: "2026-09-27 ALB 연결 · 외부 노출 전환", reason: "내부 테스트 대역 — 외부 경로 없음", expires: "2026-12-31", approver: "보안팀 한○○", owner: "박○○(퇴사)", isNew: true,
+        say: "예외 사유가 '외부 경로 없음'이었는데 27일 ALB가 연결되며 <b>외부 노출로 바뀌었습니다.</b> 담당자도 퇴사 상태라 재검토 주체 지정이 함께 필요합니다." },
+      { id: "f03", type: "CVE", infra: "Cloud", sys: "SYS-05", asset: "emr-lake-stg", title: "CVE-2026-1750", sw: "Hadoop YARN 인증 우회", trig: 1, riskWas: 2, riskNow: 4, change: "2026-09-21 KEV 등재", reason: "스테이징 환경 · 다음 릴리스에 반영 예정", expires: "2026-10-31", approver: "보안팀 오○○", owner: "최○○", isNew: false,
+        say: "스테이징이라는 이유로 유예됐지만 KEV에 올랐습니다. 스테이징이 운영 데이터 사본을 쓰는지 확인이 필요합니다." },
+      { id: "f04", type: "CVE", infra: "Compute", sys: "SYS-03", asset: "edi-01", title: "CVE-2025-60412", sw: "OpenSSL 3.x 인증서 검증 우회", trig: 3, riskWas: 3, riskNow: 3, change: "2026-09-28 재탐지 (조치 완료 09-10)", reason: "조치 완료 처리 — 패키지 업데이트", expires: "—", approver: "보안팀 오○○", owner: "윤○○", isNew: false,
+        say: "9월 10일 조치 완료로 닫혔는데 28일 스캔에서 <b>같은 버전이 다시 검출</b>됐습니다. 이미지 롤백이나 재배포로 되돌아간 것으로 보입니다." },
+      { id: "f05", type: "CCE", infra: "Compute", sys: "SYS-04", asset: "mes-gw-01", title: "CCE-LNX-011", sw: "원격 root SSH 접속 허용", trig: 3, riskWas: 2, riskNow: 2, change: "2026-09-29 재탐지 (조치 완료 09-05)", reason: "벤더 유지보수 계정 필요 — 임시 허용 후 원복", expires: "—", approver: "보안팀 한○○", owner: "정○○(전보)", isNew: false,
+        say: "원복 처리 후 다시 root 원격 접속이 열려 있습니다. 벤더 작업 후 원복이 빠졌을 가능성이 큽니다." }
+    ];
+
+    /* ============================================================
+     * 상태 · 유틸
+     * ============================================================ */
+    var $ = function (id) { return document.getElementById(id); };
+    var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    var fmt = function (n) { return Number(n).toLocaleString("ko-KR"); };
+    var sysName = function (id) { var s = SYSTEMS.filter(function (x) { return x.id === id; })[0]; return s ? s.name : id; };
+    var state = { systems: SYSTEMS.filter(function (s) { return s.mine; }).map(function (s) { return s.id; }), infra: "", type: "", cView: "vuln", eSeg: "owner", fb: {}, open: {} };
+    var toastT;
+    function toast(msg) { var t = $("toast"); t.innerHTML = msg; t.classList.add("open"); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove("open"); }, 3200); }
+
+    function inScope(x) {
+      if (state.systems.length && state.systems.indexOf(x.sys) < 0) return false;
+      if (state.infra && x.infra !== state.infra) return false;
+      if (state.type && x.type && x.type !== state.type) return false;         /* type 이 없는 항목(E)은 유형 필터를 타지 않는다 */
+      return true;
+    }
+    var fC = function () { return C.filter(inScope); };
+    var fD = function () { return D.filter(function (x) { return inScope(x) && (!state.type || state.type === "CVE"); }); };   /* D 는 CVE 기반 → CCE 필터면 0건 */
+    var fE = function () { return E.filter(inScope); };
+    var fF = function () { return F.filter(inScope); };
+    function uniq(arr) { return arr.filter(function (v, i, a) { return a.indexOf(v) === i; }); }
+    var RISK = { 1: "낮음", 2: "중간", 3: "높음", 4: "긴급" };
+    var SPARK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c.5 0 .9.4 1 .9l.9 5.1 4.4-2.8c.4-.3 1-.2 1.3.2.3.4.2 1-.2 1.3L15.6 10l4.8 3.1c.4.3.5.9.2 1.3-.3.4-.9.5-1.3.2l-4.4-2.8-.9 5.1c-.1.5-.5.9-1 .9s-.9-.4-1-.9l-.9-5.1-4.4 2.8c-.4.3-1 .2-1.3-.2-.3-.4-.2-1 .2-1.3L8.4 10 3.6 6.9c-.4-.3-.5-.9-.2-1.3.3-.4.9-.5 1.3-.2l4.4 2.8.9-5.1c.1-.5.5-.9 1-.9z"/></svg>';
+    var ICO = {
+      up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zM7 10l4.5-7a2 2 0 0 1 2 2v5h5.5a2 2 0 0 1 2 2.3l-1.4 7a2 2 0 0 1-2 1.7H7"/></svg>',
+      down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V3h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1zM17 14l-4.5 7a2 2 0 0 1-2-2v-5H5a2 2 0 0 1-2-2.3l1.4-7A2 2 0 0 1 6.4 3H17"/></svg>',
+      copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
+      chev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>',
+      check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4.5 4.5L19 7"/></svg>',
+      arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+    };
+
+    /* ============================================================
+     * A. 분석 범위
+     * ============================================================ */
+    function riskOf(sysId) { return C.filter(function (x) { return x.sys === sysId && (!state.infra || x.infra === state.infra) && (!state.type || x.type === state.type); }).length; }
+    function renderSysCombo() {
+      var q = ($("sysQ").value || "").trim().toLowerCase();
+      var rows = SYSTEMS.slice().sort(function (a, b) { return riskOf(b.id) - riskOf(a.id) || a.name.localeCompare(b.name, "ko"); });
+      $("sysList").innerHTML = rows.filter(function (s) { return !q || s.name.toLowerCase().indexOf(q) >= 0 || s.id.toLowerCase().indexOf(q) >= 0; }).map(function (s) {
+        var r = riskOf(s.id);
+        return '<label role="option" aria-selected="' + (state.systems.indexOf(s.id) >= 0) + '"><input type="checkbox" value="' + s.id + '"' + (state.systems.indexOf(s.id) >= 0 ? " checked" : "") + '><span class="cs-name">' + esc(s.name) + '</span>' + (s.mine ? '<span class="cs-mine">담당</span>' : "") + '<span class="cs-risk' + (r ? "" : " zero") + '">확인 <b>' + r + '</b></span></label>';
+      }).join("") || '<div style="padding:10px;font-size:12.5px;color:var(--ink-faint)">검색 결과가 없습니다</div>';
+      var mineIds = SYSTEMS.filter(function (s) { return s.mine; }).map(function (s) { return s.id; });
+      var isMine = state.systems.length === mineIds.length && mineIds.every(function (id) { return state.systems.indexOf(id) >= 0; });
+      var sum = !state.systems.length ? "전체 정보시스템" : isMine ? "담당 시스템 · " + state.systems.map(sysName).join(", ") : state.systems.map(sysName).join(", ");
+      $("sysSum").textContent = sum;
+      $("sysN").textContent = state.systems.length || SYSTEMS.length;
+    }
+    function renderApplied() {
+      var chips = [];
+      chips.push('<span class="af-chip"><i>정보시스템</i>' + (state.systems.length ? state.systems.length + "개" : "전체") + "</span>");
+      chips.push('<span class="af-chip"><i>인프라</i>' + (state.infra || "전체") + "</span>");
+      chips.push('<span class="af-chip"><i>유형</i>' + (state.type || "전체") + "</span>");
+      /* 기준일·건수 요약은 바로 옆 입력·B 타일과 중복이라 칩에서 제외 (같은 줄 배치를 위해 압축) */
+      $("applied").innerHTML = '<span class="af-label">적용 범위</span>' + chips.join("");
+      $("applied").title = "우선 확인 " + fC().length + " · 점검 필요 " + fD().length + " · 자산 정보 " + uniq(fE().map(function (x) { return x.asset; })).length + " · 재검토 " + fF().length;
+    }
+    function setSeg(id, v) { document.querySelectorAll("#" + id + " button").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-v") === v); }); }
+
+    /* ============================================================
+     * B. 위험 요약
+     * ============================================================ */
+    function renderSummary() {
+      var c = fC(), d = fD(), e = fE(), f = fF();
+      /* ① 압축 수치 */
+      var tot = { CVE: 0, CCE: 0 }, sysIds = state.systems.length ? state.systems : SYSTEMS.map(function (s) { return s.id; });
+      sysIds.forEach(function (id) { ["Compute", "Cloud"].forEach(function (inf) { if (state.infra && inf !== state.infra) return; ["CVE", "CCE"].forEach(function (t) { if (state.type && t !== state.type) return; tot[t] += TOTALS[id][inf][t]; }); }); });
+      var totAll = tot.CVE + tot.CCE, cCVE = c.filter(function (x) { return x.type === "CVE"; }).length, cCCE = c.length - cCVE;
+      var rate = totAll ? Math.round((1 - c.length / totAll) * 1000) / 10 : 0;
+      /* ② 인프라별 우선 확인 건수 — CVE/CCE 구분 없이 단순화. 누르면 인프라 필터 설정(재클릭 해제) */
+      var byInfra = {}; ["Compute", "Cloud"].forEach(function (inf) { byInfra[inf] = C.filter(function (x) { return x.infra === inf && (!state.type || x.type === state.type) && (!state.systems.length || state.systems.indexOf(x.sys) >= 0); }).length; });
+      $("cmp").innerHTML =
+        '<div class="cmp-row"><span class="cl">전체 탐지</span><span class="cn">' + fmt(totAll) + '</span><span class="cs">CVE ' + fmt(tot.CVE) + ' · CCE ' + fmt(tot.CCE) + '</span></div>' +
+        '<div class="cmp-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>AI 분석 <span class="rate">' + rate + '% 압축</span></div>' +
+        /* 우선 확인 건수를 기준으로 우측에 유형(CVE·CCE) · 인프라(Compute·Cloud) 두 줄을 같은 x 에 정렬 */
+        '<div class="cmp-row hi"><span class="cl">우선 확인</span><span class="cn">' + fmt(c.length) + '</span>' +
+          '<span class="cs-stack"><span class="cs">CVE ' + cCVE + ' · CCE ' + cCCE + '</span>' +
+          '<span class="cmp-infra">' + ["Compute", "Cloud"].map(function (inf) { var n = byInfra[inf], on = state.infra === inf; return '<button type="button" data-infra="' + inf + '" class="' + (on ? "on" : "") + (n ? "" : " zero") + '" aria-pressed="' + on + '">' + inf + " <b>" + n + "</b></button>"; }).join('<span class="dot">·</span>') + "</span></span></div>";
+      /* ③ 타일 4개 — 카드와 순서·이름 동일 */
+      var cKev = c.filter(function (x) { return x.kev; }).length, cAssets = uniq([].concat.apply([], c.map(function (x) { return x.assets; }))).length;
+      tile("C", "우선 확인", "Priority Findings", c.length, ["CVE " + cCVE + " · CCE " + cCCE + " · " + (cKev ? '<span class="kev">KEV ' + cKev + "</span> · " : "") + "자산 " + cAssets], cKev > 0);
+      var dKev = uniq(d.map(function (x) { return x.cve; })).length;
+      tile("D", "점검 필요", "Assessment Required", d.length, [dKev ? '<span class="kev">KEV 등재 ' + dKev + "건</span> (CVE 기반)" : "KEV 등재 없음"], dKev > 0);
+      var eAssets = uniq(e.map(function (x) { return x.asset; })).length, eImpact = e.filter(function (x) { return x.impact && (x.impact.missed > 0 || x.impact.fp > 0); }).length;
+      tile("E", "자산 정보", "Asset Data Issues", eAssets, ["판단 영향 " + eImpact + "건"], false);
+      var fCVE = f.filter(function (x) { return x.type === "CVE"; }).length, fKev = f.filter(function (x) { return x.trig === 1; }).length;
+      tile("F", "재검토 필요", "Re-assessment Required", f.length, ["CVE " + fCVE + " · CCE " + (f.length - fCVE) + (fKev ? ' · <span class="kev">유예 후 KEV ' + fKev + "</span>" : "")], fKev > 0);
+    }
+    function tile(key, name, en, num, subs, kev) {
+      var el = $("tile" + key);
+      el.className = "tile" + (kev ? " kev" : "");
+      var body = num === 0
+        ? '<span class="t-num zero">0</span><span class="t-sub ok">이상 없음</span>'
+        : '<span class="t-num">' + fmt(num) + "</span>" + subs.filter(Boolean).map(function (s) { return '<span class="t-sub">' + s + "</span>"; }).join("");   /* 보조 정보 1줄 — 타일 높이 통일. KEV 부분만 <span class="kev"> 강조 */
+      el.innerHTML = '<span class="t-name"><span class="k">' + key + "</span>" + name + "</span>" + body;   /* 영문 서브타이틀 미표시 */
+      el.setAttribute("aria-label", name + " " + num + "건 — 카드로 이동");
+    }
+
+    /* ============================================================
+     * C·D·E·F — Claude Cowork 응답 스타일 렌더
+     * ============================================================ */
+    function av() { return '<div class="ai-av" aria-hidden="true">' + SPARK + "</div>"; }
+    function evList(ev) { return '<ul class="ai-ev">' + ev.map(function (e) { return '<li><span class="k">' + esc(e[0]) + "</span><span>" + esc(e[1]) + '</span><span class="src">' + esc(e[2]) + "</span></li>"; }).join("") + "</ul>"; }
+    function think(steps, label) { return '<details class="ai-think"><summary>' + ICO.chev + (label || "판단 과정 보기") + "</summary><ol>" + steps.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ol></details>"; }
+    function fbBar(id, thumbs) {   /* 항목 액션 = 👍 판단 동의 · 👎 이견(사유) · 요약 복사 */
+      var t = thumbs !== false ? '<div class="ai-fb" data-fb-for="' + id + '"><button class="ai-ico" type="button" data-act="agree" data-id="' + id + '" data-tip="판단에 동의">' + ICO.up + '</button><span style="position:relative;display:inline-flex"><button class="ai-ico" type="button" data-act="disagree" data-id="' + id + '" data-tip="판단에 이견">' + ICO.down + '</button></span><button class="ai-ico" type="button" data-act="copy" data-id="' + id + '" data-tip="요약 복사">' + ICO.copy + "</button></div>" : "";
+      var it = findItem(id), kind = it && it.cat ? "asset" : "vuln", key = it ? (it.cat ? it.asset : (it.title || it.cve)) : "";
+      return '<div class="ai-acts">' + t + (it ? '<span class="ai-acts-right">' + ispmLink(kind, key) + "</span>" : "") + "</div>";
+    }
+    function doneLine(id) { var f = state.fb[id]; return '<div class="ai-done">' + ICO.check + '<span><b>' + esc(f ? f.label : "") + "</b> — 피드백이 기록됐습니다. 다음 분석부터 반영됩니다.</span><button type=\"button\" data-act=\"undo\" data-id=\"" + id + '">되돌리기</button></div>'; }
+    function empty(msg) { return '<div class="ai-empty">' + av() + "<div><b>0 · 이상 없음</b><br>" + msg + "</div></div>"; }
+    function metaLine(parts) { return '<div class="ai-meta">' + parts.filter(Boolean).join('<span class="sep">·</span>') + "</div>"; }
+
+    /* 분석 결과(핵심 한 줄) — 표의 '분석 결과' 컬럼. 상세 행의 판단 문장(say)은 그대로 유지 */
+    var RES = {
+      c01: "KEV 취약점 + 외부 노출 + 결합 위험 — 오늘 최우선 확인", c02: "결합 위험의 설정 축 — 설정 변경만으로 결합 차단 가능", c03: "KEV 등재 · 회원 DB 직결 경로 — 담당자 미지정 상태", c04: "개인정보 버킷 퍼블릭 읽기 — 버킷 정책 우선 확인",
+      c05: "KEV 등재 인그레스, 외부 첫 접점 — 클러스터 전체 영향", c06: "CVSS 7.5이나 KEV + 외부 노출로 상향 — 담당자 퇴사", c07: "전 세계 SSH 허용 배스천 + 미등록 Redis 결합", c08: "서비스 계정에 관리자 권한 직접 부여 — 최소 권한 검토",
+      c09: "내부 DB지만 API 직결 경로 — 실무 담당자 확인 병행", c10: "협력사 VPN 경로로 CVSS 대비 상향 — 배포 키 보관", c11: "KEV 등재 + 실제 OS는 EOS(7.0U3) — 패치 경로 확인", c12: "생산 GW 3대 동일 결함 — 내부지만 자산 중요도로 포함",
+      c13: "RDS 퍼블릭 + 스냅샷 공유 — 유출 경로 2갈래", c14: "Spark 취약 버전 — 담당 조직 불일치로 요청 경로 정리 필요", c15: "격리 대역·KEV 없음으로 하향 — 인사 데이터 등급으로 유지", c16: "앱 계정 NOPASSWD 전체 sudo — 설정 변경 여부 확인",
+      d01: "KEV 신규 · 탐지 규칙 없음 — VPN GW 2대 추정, 긴급 스캔 권고", d02: "110일 미스캔 DMZ 방화벽 — 펌웨어 버전 미확인", d03: "한 달째 이미지 스캔 없음 — 패치 여부 불명", d04: "스캔 범위 밖 ADC — 담당자 버전 확인이 빠름", d05: "어제 KEV 등재 코어 스위치 — 담당자 확인만 가능", d06: "탐지 규칙 대기 — 긴급 스캔으로 앞당길 수 있음",
+      e01: "담당자 없음 → C 확인 요청 전달 불가, 최근 배포자 후보 제안", e02: "담당자 퇴사 → C KEV 취약점 확인 요청 미전달", e03: "지정 후 팀장 보임(신호 강) — 실무 담당 여부 확인", e04: "인프라·정보시스템 담당 조직 불일치 — 요청 대상 정리", e05: "타 조직 전보 — 후임 지정 권고", e06: "지정 당시부터 팀장(신호 약) — 확인만 필요",
+      e07: "버전 오기로 취약점 2건 누락(KEV 1) — C 우선순위 변경", e08: "등록 OS ≠ 실제(EOS) — 누락 6건(KEV 1), C 판단 직접 영향", e09: "미등록 Redis — 취약점 4건 대조 누락", e10: "제거된 SW 잔존 — 오탐 3건 분석 제외", e11: "마이너 버전 오기 — 누락 1건, KEV 아님",
+      f01: "유예 후 KEV 등재 — 승인 전제 변경, 유예 유지 재판단", f02: "예외 사유(외부 경로 없음) 무효 — ALB 연결로 외부 노출", f03: "스테이징 유예 중 KEV 등재 — 운영 데이터 사본 여부 확인", f04: "조치 완료 후 동일 버전 재탐지 — 롤백·재배포 의심", f05: "원복 후 root 원격 접속 재개 — 벤더 작업 후 원복 누락"
+    };
+    /* EPSS 악용 가능성 — FIRST 공개 데이터(30일 내 악용 확률). CVE 항목에만 존재. CCE 는 대상 아님
+       E(구성 정보)는 누락 취약점 중 최대 EPSS. === 연동 지점 === 분석 결과 API 의 epss 필드 */
+    var EPSS = {
+      c01: 0.942, c03: 0.887, c05: 0.911, c06: 0.634, c09: 0.121, c10: 0.083, c11: 0.902, c14: 0.047, c15: 0.012,
+      d01: 0.968, d02: 0.874, d03: 0.412, d04: 0.795, d05: 0.856, d06: 0.731,
+      e07: 0.942, e08: 0.902, e09: 0.213, e11: 0.031,
+      f01: 0.905, f03: 0.667, f04: 0.184
+    };
+    function epssPct(v) { return (Math.round(v * 1000) / 10).toFixed(1) + "%"; }
+    function epssCls(v) { return v >= 0.5 ? "kev" : v >= 0.1 ? "est" : ""; }   /* ≥50% 강조 · 10~50% 주의 · 그 외 뉴트럴 */
+    function epssChip(id, prefix) { var v = EPSS[id]; if (v == null) return ""; return '<span class="ev ' + epssCls(v) + ' mono" title="EPSS 악용 가능성 — 30일 내 악용 확률 (FIRST)">' + (prefix || "EPSS ") + epssPct(v) + "</span>"; }
+    function epssEv(id) { var v = EPSS[id]; return v == null ? [] : [["EPSS", epssPct(v) + " · 30일 내 악용 확률" + (v >= 0.5 ? " (높음)" : v >= 0.1 ? " (주의)" : ""), "FIRST EPSS 09-30"]]; }
+    var TRIG = { 1: "유예 후 KEV 등재", 2: "노출 변화", 3: "조치 후 재탐지" };
+    function findItem(id) { return [].concat(C, D, E, F).filter(function (x) { return x.id === id; })[0]; }
+    function ev(cls, text) { return '<span class="ev ' + (cls || "") + '">' + esc(text) + "</span>"; }
+    function stCell(id, label, kev) {
+      var f = state.fb[id];
+      return f ? '<span class="st-chip done">피드백 반영</span><span class="st-sub">' + esc(f.label) + "</span>" : '<span class="st-chip' + (kev ? " kev" : "") + '">' + esc(label) + "</span>";
+    }
+    /* ISPM 바로가기 — C·D·F: 취약점 ISPM 메뉴(취약점 ID) / E: 자산 ISPM 메뉴(자산명)
+       === 연동 지점 === ISPM_URL.vuln / ISPM_URL.asset 를 실제 라우트로 교체 (새 탭) */
+    var ISPM_URL = { vuln: "/ispm/vulnerabilities/{id}", asset: "/ispm/assets/{id}" };
+    var ICO_EXT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/></svg>';
+    function ispmCell(kind, key) { var lab = kind === "asset" ? "자산 ISPM 바로가기" : "취약점 ISPM 바로가기"; return '<button class="det-btn ispm" type="button" data-ispm="' + kind + '" data-key="' + esc(key) + '" aria-label="' + lab + '" title="' + lab + ' — ' + esc(key) + '">' + ICO_EXT + "</button>"; }
+    function ispmLink(kind, key) { var lab = kind === "asset" ? "자산 ISPM에서 보기" : "취약점 ISPM에서 보기"; return '<button class="ai-link" type="button" data-ispm="' + kind + '" data-key="' + esc(key) + '">' + lab + ICO_EXT + "</button>"; }
+    function detCell(id, ispmKind, ispmKey) { return '<span class="det-grp"><button class="det-btn" type="button" data-det="' + id + '" aria-expanded="false" aria-label="근거 펼치기" title="근거 펼치기">' + ICO.chev.replace('viewBox', 'style="transform:rotate(90deg)" viewBox') + "</button>" + (ispmKind ? ispmCell(ispmKind, ispmKey) : "") + "</span>"; }
+    function detailRow(id, cls, inner) {
+      var open = state.open[id];
+      return '<tr class="rt-detail" data-detail="' + id + '"' + (open ? "" : " hidden") + '><td colspan="6">' + '<article class="ai-msg ' + cls + (state.fb[id] ? " fb-done" : "") + '" data-id="' + id + '">' + av() + '<div class="ai-body">' + inner + "</div></article></td></tr>";
+    }
+    function table(rows) {
+      return '<table class="rt"><colgroup><col class="w-target"><col class="w-impact"><col class="w-result"><col class="w-ev"><col class="w-st"><col class="w-det"></colgroup>' +
+        '<thead><tr><th>대상</th><th>영향 대상</th><th>분석 결과</th><th>주요 근거</th><th class="th-st">상태</th><th class="th-det">상세</th></tr></thead><tbody>' + rows + "</tbody></table>";
+    }
+    function emptyTbl(msg) { return '<div class="ai-empty-wrap">' + empty(msg) + "</div>"; }
+    function shortAssets(a) { return a.length > 2 ? a.slice(0, 2).join(", ") + " +" + (a.length - 2) : a.join(", "); }
+
+    /* C — 취약점 기준 / 정보시스템 기준 */
+    function renderC() {
+      var list = fC();
+      var kev = list.filter(function (x) { return x.kev; }).length;
+      $("cntC").textContent = list.length + "건" + (kev ? " · KEV " + kev : "");
+      $("cntC").className = "cnt" + (kev ? " kev" : "");
+      if (!list.length) { $("thC").innerHTML = emptyTbl("현재 범위에서 우선 확인이 필요한 취약점이 없습니다. 비어 있는 것도 확인 결과입니다."); return; }
+      var order = function (x) { return (x.kev ? 0 : 1) * 10 + (x.exposure === "외부" ? 0 : 1) * 5 - x.conf; };
+      list = list.slice().sort(function (a, b) { return order(a) - order(b); });
+      var row = function (x) {
+        var chips = [];
+        if (x.kev) chips.push(ev("kev", "KEV"));
+        chips.push(ev("", x.exposure + " 노출"));
+        if (x.cvss != null) chips.push(ev("mono", "CVSS " + x.cvss));
+        chips.push(epssChip(x.id));
+        if (x.combined) chips.push(ev("comb", "결합 위험"));
+        if (x.owner) chips.push(ev("", "자산 정보 이슈"));
+        if (x.inv === "up") chips.push(ev("", "CVSS 대비 상향"));
+        if (x.inv === "down") chips.push(ev("", "CVSS 대비 하향"));
+        var cls = (x.isNew ? " new" : "") + (state.fb[x.id] ? " fb-done" : "") + (state.open[x.id] ? " open" : "");
+        var main = '<tr class="rt-row' + cls + '" data-row="' + x.id + '">' +
+          '<td class="c-target"><div class="tg-line"><span class="vt">' + x.type + "</span><b>" + esc(x.title) + '</b></div><div class="tg-sub">' + esc(x.sw) + "</div></td>" +
+          '<td class="c-impact"><div>' + esc(sysName(x.sys)) + '</div><div class="tg-sub mono">' + esc(shortAssets(x.assets)) + " · " + x.infra + "</div></td>" +
+          '<td class="c-result">' + esc(RES[x.id]) + "</td>" +
+          '<td><div class="ev-chips">' + chips.join("") + "</div></td>" +
+          '<td class="c-st">' + stCell(x.id, "확인 필요", x.kev) + "</td>" +
+          '<td class="c-det">' + detCell(x.id, "vuln", x.title) + "</td></tr>";
+        var inner = '<p class="ai-say">' + x.say + "</p>" + evList(x.ev.concat(epssEv(x.id))) +
+          metaLine(['영향 자산 <button class="assets" type="button" data-toggle-assets>' + x.assets.length + "대</button>", '<span class="tg">' + esc(sysName(x.sys)) + "</span>", '<span class="tg">' + x.infra + "</span>"]) +
+          '<div class="ai-assets">' + x.assets.map(function (a) { return "<span>" + esc(a) + "</span>"; }).join("") + "</div>" +
+          think(x.think) + doneLine(x.id) + fbBar(x.id);
+        return main + detailRow(x.id, x.isNew ? "new" : "", inner);
+      };
+      if (state.cView === "sys") {
+        var groups = {}; list.forEach(function (x) { (groups[x.sys] = groups[x.sys] || []).push(x); });
+        $("thC").innerHTML = table(Object.keys(groups).sort(function (a, b) { return groups[b].length - groups[a].length; }).map(function (sid) {
+          var g = groups[sid], gk = g.filter(function (x) { return x.kev; }).length;
+          return '<tr class="rt-group"><td colspan="6">' + esc(sysName(sid)) + '<span class="n">' + g.length + "건" + (gk ? " · KEV " + gk : "") + "</span></td></tr>" + g.map(row).join("");
+        }).join(""));
+      } else {
+        $("thC").innerHTML = table(list.map(row).join(""));
+      }
+    }
+
+    /* D — 추정 배지로 C 와 시각 구분 */
+    function renderD() {
+      var list = fD().slice().sort(function (a, b) { return b.kevDate.localeCompare(a.kevDate); });
+      var dCompute = list.filter(function (x) { return x.infra === "Compute"; }).length, dCloud = list.length - dCompute;
+      $("cntD").textContent = "전체 " + list.length + "건 · Compute " + dCompute + "건 · Cloud " + dCloud + "건";
+      $("cntD").className = "cnt" + (list.length ? " kev" : "");
+      if (!list.length) { $("thD").innerHTML = emptyTbl(state.type === "CCE" ? "점검 필요 자산은 KEV(CVE) 기반이라 CCE 필터에서는 대상이 없습니다." : "KEV 등재 취약점 중 스캔 공백이 있는 자산이 없습니다."); return; }
+      $("thD").innerHTML = table(list.map(function (x) {
+        var cls = (x.isNew ? " new" : "") + (state.fb[x.id] ? " fb-done" : "") + (state.open[x.id] ? " open" : "");
+        var main = '<tr class="rt-row' + cls + '" data-row="' + x.id + '">' +
+          '<td class="c-target"><div class="tg-line"><span class="vt">CVE</span><b>' + esc(x.cve) + '</b><span class="ev est">추정</span></div><div class="tg-sub">' + esc(x.sw) + "</div></td>" +
+          '<td class="c-impact"><div>' + esc(sysName(x.sys)) + '</div><div class="tg-sub mono">' + esc(shortAssets(x.assets)) + " · " + x.infra + "</div></td>" +
+          '<td class="c-result">' + esc(RES[x.id]) + "</td>" +
+          '<td><div class="ev-chips">' + ev("kev", "KEV " + x.kevDate.slice(5).replace("-", ".")) + epssChip(x.id) + ev("", x.scan) + ev("", "인벤토리 매칭") + "</div></td>" +
+          '<td class="c-st">' + stCell(x.id, "점검 필요", true) + "</td>" +
+          '<td class="c-det">' + detCell(x.id, "vuln", x.cve) + "</td></tr>";
+        var inner = '<p class="ai-say">' + x.say + "</p>" +
+          evList([["KEV 등재일", x.kevDate, "KEV 목록"]].concat(epssEv(x.id), [["추정 영향 자산", x.assets.join(", "), "자산 인벤토리"], ["추정 근거", x.basis, "인벤토리 매칭"], ["스캔 상태", x.scan + " — " + x.scanNote, "스캔 이력"]])) +
+          metaLine(['<span class="tg">' + esc(sysName(x.sys)) + "</span>", '<span class="tg">' + x.infra + "</span>", '<span class="tg">스캔 확인 시 C로 이동 · 미해당 시 종료(적중률 누적)</span>']) +
+          think(["KEV 신규 등재 항목과 인벤토리 SW·모델 대조", "스캔 이력에서 해당 자산·CVE 탐지 기록 없음 확인", "원인 분류: " + x.scan, "추정 근거는 인벤토리 정확도에 의존"], "추정 과정 보기") + doneLine(x.id) + fbBar(x.id);
+        return main + detailRow(x.id, x.isNew ? "new" : "", inner);
+      }).join(""));
+    }
+
+    /* E — 세그먼트: 담당자 정보 / 구성 정보 · 정렬 규칙 적용 */
+    function renderE() {
+      var all = fE();
+      var assets = uniq(all.map(function (x) { return x.asset; })).length;
+      $("cntE").textContent = assets + "자산 · " + all.length + "건";
+      var list = all.filter(function (x) { return x.cat === state.eSeg; });
+      var rank = function (x) { if (x.impact && (x.impact.missed > 0 || x.impact.fp > 0)) return 0; if (x.inCF) return 1; return 2; };
+      var subRank = function (x) { return x.sub.indexOf("②") === 0 ? 0 : x.signal === "강" ? 1 : 2; };
+      list.sort(function (a, b) { return rank(a) - rank(b) || subRank(a) - subRank(b) || ((b.impact ? b.impact.missed : 0) - (a.impact ? a.impact.missed : 0)); });
+      document.querySelectorAll("#segE button").forEach(function (b) { var n = all.filter(function (x) { return x.cat === b.getAttribute("data-v"); }).length; b.textContent = (b.getAttribute("data-v") === "owner" ? "담당자 정보" : "구성 정보") + (n ? " " + n : ""); });
+      if (!list.length) { $("thE").innerHTML = emptyTbl("현재 범위·세그먼트에 자산 정보 이슈가 없습니다."); return; }
+      $("thE").innerHTML = table(list.map(function (x) {
+        var isOwner = x.cat === "owner";
+        var chips = [ev("", x.sub.replace(/^[①-⑧]\s*/, ""))];
+        if (x.signal) chips.push(ev(x.signal === "강" ? "kev" : "", "신호 " + x.signal));
+        if (x.impact && x.impact.fp) chips.push(ev("", "오탐 " + x.impact.fp + "건 제외"));
+        if (x.impact && x.impact.missed > 0) chips.push(ev("", "누락 취약점 " + x.impact.missed));
+        if (x.impact && x.impact.kev) chips.push(ev("kev", "KEV 영향"));
+        chips.push(epssChip(x.id, "EPSS 최대 "));
+        chips.push(ev("", x.src.replace(/\s\d\d-\d\d$/, "")));
+        var status = isOwner ? (x.sub.indexOf("③") === 0 ? "담당 확인 필요" : "담당자 변경 필요") : "정보 수정 필요";
+        var cls = (state.fb[x.id] ? " fb-done" : "") + (state.open[x.id] ? " open" : "");
+        var main = '<tr class="rt-row' + cls + '" data-row="' + x.id + '">' +
+          '<td class="c-target"><div class="tg-line"><span class="vt">' + esc(x.sub.charAt(0)) + "</span><b>" + esc(x.asset) + '</b></div><div class="tg-sub">' + esc(isOwner ? "등록: " + x.reg : "등록: " + x.reg + " → 실제: " + x.act) + "</div></td>" +
+          '<td class="c-impact"><div>' + esc(sysName(x.sys)) + '</div><div class="tg-sub mono">' + x.infra + (x.inCF ? " · " + x.inCF + " 해당 자산" : "") + "</div></td>" +
+          '<td class="c-result">' + esc(RES[x.id]) + "</td>" +
+          '<td><div class="ev-chips">' + chips.join("") + "</div></td>" +
+          '<td class="c-st">' + stCell(x.id, status, !!(x.impact && x.impact.kev)) + "</td>" +
+          '<td class="c-det">' + detCell(x.id, "asset", x.asset) + "</td></tr>";
+        var impact = x.impact ? (x.impact.fp ? "오탐 " + x.impact.fp + "건 제외" : "누락 취약점 " + x.impact.missed + (x.impact.kev ? " · KEV 포함" : "")) : "";
+        var inner = '<p class="ai-say">' + x.say + "</p>" +
+          '<div class="ai-diff"><div><div class="dh">' + (isOwner ? "등록 담당자" : "등록값") + '</div><div class="dv was">' + esc(x.reg) + '</div><div class="ds">자산 인벤토리</div></div><div class="arr">' + ICO.arrow + '</div><div><div class="dh">' + (isOwner ? "인사정보 · 실제" : "실제값") + '</div><div class="dv' + (x.impact && x.impact.kev ? " bad" : "") + '">' + esc(x.act) + '</div><div class="ds">' + esc(x.src) + "</div></div></div>" +
+          metaLine(['<span class="tg">' + esc(sysName(x.sys)) + "</span>", '<span class="tg">' + x.infra + "</span>", impact ? '<span class="tg">판단 영향: ' + esc(impact) + "</span>" : '<span class="tg">판단 영향 없음</span>', EPSS[x.id] != null ? '<span class="tg">누락 취약점 최대 EPSS ' + epssPct(EPSS[x.id]) + "</span>" : ""]) +
+          doneLine(x.id) + fbBar(x.id);
+        return main + detailRow(x.id, "", inner);
+      }).join(""));
+    }
+
+    /* F — 트리거 우선순위 · 승인 당시 → 현재 */
+    function renderF() {
+      var list = fF().slice().sort(function (a, b) { return a.trig - b.trig || b.riskNow - a.riskNow; });
+      var kev = list.filter(function (x) { return x.trig === 1; }).length;
+      $("cntF").textContent = list.length + "건" + (kev ? " · 유예 후 KEV " + kev : "");
+      $("cntF").className = "cnt" + (kev ? " kev" : "");
+      if (!list.length) { $("thF").innerHTML = emptyTbl("예외·유예·조치 완료 판단의 전제가 바뀐 자산이 없습니다."); return; }
+      $("thF").innerHTML = table(list.map(function (x) {
+        var cls = (x.isNew ? " new" : "") + (state.fb[x.id] ? " fb-done" : "") + (state.open[x.id] ? " open" : "");
+        var main = '<tr class="rt-row' + cls + '" data-row="' + x.id + '">' +
+          '<td class="c-target"><div class="tg-line"><span class="vt">' + x.type + "</span><b>" + esc(x.title) + '</b></div><div class="tg-sub">' + esc(x.sw) + "</div></td>" +
+          '<td class="c-impact"><div>' + esc(sysName(x.sys)) + '</div><div class="tg-sub mono">' + esc(x.asset) + " · " + x.infra + "</div></td>" +
+          '<td class="c-result">' + esc(RES[x.id]) + "</td>" +
+          '<td><div class="ev-chips">' + ev(x.trig === 1 ? "t1" : "", TRIG[x.trig]) + epssChip(x.id) + ev("", RISK[x.riskWas] + " → " + RISK[x.riskNow]) + ev("mono", "만료 " + x.expires) + "</div></td>" +
+          '<td class="c-st">' + stCell(x.id, "재검토 필요", x.trig === 1) + "</td>" +
+          '<td class="c-det">' + detCell(x.id, "vuln", x.title) + "</td></tr>";
+        var inner = '<p class="ai-say">' + x.say + "</p>" +
+          '<div class="ai-diff"><div><div class="dh">승인 당시 위험도</div><div class="dv"><span class="risk r' + x.riskWas + '">' + RISK[x.riskWas] + '</span></div><div class="ds">' + esc(x.reason) + '</div></div><div class="arr">' + ICO.arrow + '</div><div><div class="dh">현재 위험도</div><div class="dv"><span class="risk r' + x.riskNow + '">' + RISK[x.riskNow] + '</span></div><div class="ds">' + esc(x.change) + "</div></div></div>" +
+          evList([["자산", x.asset, sysName(x.sys) + " · " + x.infra]].concat(epssEv(x.id), [["원 유예 사유", x.reason, "예외·유예 이력"], ["만료일", x.expires, "예외·유예 이력"], ["승인자 · 담당자", x.approver + " · " + x.owner, "예외·유예 이력 · 인사정보"]])) +
+          doneLine(x.id) + fbBar(x.id);
+        return main + detailRow(x.id, x.isNew ? "new" : "", inner);
+      }).join(""));
+    }
+
+    function measureWraps() { document.querySelectorAll(".tbl-wrap").forEach(function (w) { w.style.setProperty("--ww", w.clientWidth + "px"); }); }
+    window.addEventListener("resize", measureWraps);
+    function renderAll() { renderSysCombo(); renderApplied(); renderSummary(); renderC(); renderD(); renderE(); renderF(); measureWraps(); }
+
+    /* ============================================================
+     * 인터랙션
+     * ============================================================ */
+    /* 정보시스템 콤보 */
+    $("sysBtn").addEventListener("click", function (e) { e.stopPropagation(); var open = $("sysMenu").hidden; $("sysMenu").hidden = !open; $("sysBtn").setAttribute("aria-expanded", String(open)); if (open) { $("sysQ").value = ""; renderSysCombo(); $("sysQ").focus(); } });
+    $("sysMenu").addEventListener("click", function (e) { e.stopPropagation(); });
+    $("sysQ").addEventListener("input", renderSysCombo);
+    $("sysList").addEventListener("change", function (e) { var cb = e.target; if (cb.type !== "checkbox") return; var i = state.systems.indexOf(cb.value); if (cb.checked && i < 0) state.systems.push(cb.value); if (!cb.checked && i >= 0) state.systems.splice(i, 1); renderAll(); });
+    document.querySelectorAll(".combo-quick button").forEach(function (b) { b.addEventListener("click", function () { var q = b.getAttribute("data-q"); state.systems = q === "mine" ? SYSTEMS.filter(function (s) { return s.mine; }).map(function (s) { return s.id; }) : q === "all" ? SYSTEMS.map(function (s) { return s.id; }) : []; renderAll(); }); });
+    document.addEventListener("click", function () { $("sysMenu").hidden = true; $("sysBtn").setAttribute("aria-expanded", "false"); closePop(); });
+    /* 세그먼트 */
+    $("segInfra").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; state.infra = b.getAttribute("data-v"); setSeg("segInfra", state.infra); renderAll(); });
+    $("segType").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; state.type = b.getAttribute("data-v"); setSeg("segType", state.type); renderAll(); });
+    $("segCView").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; state.cView = b.getAttribute("data-v"); setSeg("segCView", state.cView); renderC(); });
+    $("segE").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; state.eSeg = b.getAttribute("data-v"); setSeg("segE", state.eSeg); renderE(); });
+    $("asof").addEventListener("change", function () { renderApplied(); toast("기준일 <b>" + esc($("asof").value) + "</b> — 데모에서는 데이터가 바뀌지 않습니다 (연동 시 스냅샷 조회)"); });
+    $("btnReset").addEventListener("click", function () { state.systems = SYSTEMS.filter(function (s) { return s.mine; }).map(function (s) { return s.id; }); state.infra = ""; state.type = ""; setSeg("segInfra", ""); setSeg("segType", ""); $("asof").value = "2026-09-30"; renderAll(); toast("분석 범위를 초기화했습니다 — 담당 시스템 · 전체 · 전체"); });
+    $("btnRerun").addEventListener("click", function () { renderAll(); toast("<b>새로고침</b> — 최신 분석 결과를 다시 불러왔습니다. === 연동 지점 === GET /api/risk/analysis"); });
+    /* B — 매트릭스 · 타일 */
+    $("cmp").addEventListener("click", function (e) { var b = e.target.closest("[data-infra]"); if (!b) return; var inf = b.getAttribute("data-infra"), same = state.infra === inf; state.infra = same ? "" : inf; setSeg("segInfra", state.infra); renderAll(); toast(same ? "인프라 필터 해제" : "분석 범위: 인프라 <b>" + inf + "</b> 로 설정"); });
+    var hiT;
+    document.querySelectorAll(".tile").forEach(function (t) { t.addEventListener("click", function () { var card = $("card" + t.getAttribute("data-card")); document.querySelectorAll(".card.hi").forEach(function (c) { c.classList.remove("hi"); }); card.scrollIntoView({ behavior: "smooth", block: "start" }); card.classList.add("hi"); clearTimeout(hiT); hiT = setTimeout(function () { card.classList.remove("hi"); }, 1800); }); });
+    /* 카드 내부 액션 (이벤트 위임) */
+    function closePop() { document.querySelectorAll(".fb-pop").forEach(function (p) { p.remove(); }); }
+    function setFb(id, label, note) { state.fb[id] = { label: label }; renderAll(); toast("<b>" + esc(label) + "</b> — " + (note || "피드백이 기록됐습니다. 다음 분석부터 반영됩니다.")); }
+    document.querySelector(".cards").addEventListener("click", function (e) {
+      var ta = e.target.closest("[data-toggle-assets]"); if (ta) { ta.closest(".ai-body").querySelector(".ai-assets").classList.toggle("open"); return; }
+      var il = e.target.closest("[data-ispm]");
+      if (il) {
+        e.stopPropagation();
+        var kind = il.getAttribute("data-ispm"), key = il.getAttribute("data-key");
+        /* === 연동 지점 === window.open(ISPM_URL[kind].replace("{id}", encodeURIComponent(key)), "_blank") */
+        toast("<b>" + (kind === "asset" ? "자산 ISPM" : "취약점 ISPM") + "</b> 바로가기 — " + esc(key) + " <span style=\"opacity:.7\">(" + esc(ISPM_URL[kind].replace("{id}", key)) + ")</span>");
+        return;
+      }
+      /* 상세 — 근거 펼치기 (버튼 또는 행 클릭) */
+      var det = e.target.closest("[data-det]"), rowEl = e.target.closest("tr.rt-row");
+      if (det || (rowEl && !e.target.closest("button, a"))) {
+        var did = det ? det.getAttribute("data-det") : rowEl.getAttribute("data-row");
+        state.open[did] = !state.open[did];
+        var dr = document.querySelector('[data-detail="' + did + '"]'), mr = document.querySelector('[data-row="' + did + '"]');
+        if (dr) dr.hidden = !state.open[did];
+        if (mr) { mr.classList.toggle("open", !!state.open[did]); var db = mr.querySelector("[data-det]"); if (db) db.setAttribute("aria-expanded", String(!!state.open[did])); }
+        return;
+      }
+      var b = e.target.closest("[data-act]"); if (!b) return;
+      e.stopPropagation();
+      var act = b.getAttribute("data-act"), id = b.getAttribute("data-id");
+      /* === 연동 지점 === POST /api/risk/findings/{id}/feedback { action, reason } */
+      if (act === "undo") { delete state.fb[id]; renderAll(); toast("피드백을 되돌렸습니다"); return; }
+      if (act === "copy") { var it = findItem(id); var txt = (it.title || it.cve || it.asset) + " — " + (RES[id] || "") + " / " + b.closest(".ai-msg").querySelector(".ai-say").textContent; try { navigator.clipboard && navigator.clipboard.writeText(txt); } catch (x) {} toast("요약을 복사했습니다"); return; }
+      if (act === "agree") { setFb(id, "판단 동의", "동의가 기록됐습니다. 다음 분석의 우선순위 판단에 반영됩니다."); return; }
+      if (act === "disagree") {
+        closePop();
+        var pop = document.createElement("div"); pop.className = "fb-pop";
+        pop.innerHTML = '<div class="ph">어떤 점이 다른가요?</div><button type="button" data-r="해당 없음">해당 없음 (오탐)</button><button type="button" data-r="우선순위 낮음">우선순위가 너무 높음</button><button type="button" data-r="근거 오류">판단 근거가 틀림 (자산 정보 수정 필요)</button>';
+        pop.addEventListener("click", function (ev) { var r = ev.target.closest("[data-r]"); if (!r) return; ev.stopPropagation(); setFb(id, r.getAttribute("data-r")); });
+        b.parentNode.appendChild(pop); return;
+      }
+    });
+    /* Excel 저장 — 카드에 표시된 표를 그대로 .xlsx 로 내보낸다 (필터·정렬·그룹·피드백 상태 반영)
+       SheetJS 는 클릭 시 CDN 에서 지연 로드, 실패 시 UTF-8 CSV 로 대체.
+       === 연동 지점 === 서버 생성이 필요하면 GET /api/risk/analysis/export?card=C&format=xlsx 로 대체 */
+    var CARD_NAME = { C: "우선 확인 대상", D: "점검 필요 자산", E: "자산 정보 이슈", F: "재검토 필요 자산" };
+    function exportRows(k) {
+      var wrap = $("th" + k), rows = [], group = "";
+      var head = ["카드", "구분", "대상", "설명", "정보시스템", "영향 자산 · 인프라", "분석 결과", "주요 근거", "상태", "AI 판단", "피드백"];
+      if (state.cView === "sys" && k === "C") head.splice(1, 0, "정보시스템 그룹");
+      wrap.querySelectorAll("tr").forEach(function (tr) {
+        if (tr.classList.contains("rt-group")) { group = tr.textContent.trim(); return; }
+        if (!tr.classList.contains("rt-row")) return;
+        var td = tr.querySelectorAll("td"), id = tr.getAttribute("data-row"), det = wrap.querySelector('[data-detail="' + id + '"]');
+        var t = function (el) { return el ? el.textContent.replace(/\s+/g, " ").trim() : ""; };
+        var kind = t(td[0].querySelector(".vt")); if (k === "E") { var it = findItem(id); if (it) kind = it.sub; }   /* E: ① 미매핑 처럼 유형 명칭까지 */
+        var r = [k + ". " + CARD_NAME[k], kind, t(td[0].querySelector("b")), t(td[0].querySelector(".tg-sub")), t(td[1].querySelector("div")), t(td[1].querySelector(".tg-sub")),
+          t(td[2]), Array.prototype.map.call(td[3].querySelectorAll(".ev"), t).join(" · "), t(td[4].querySelector(".st-chip")) + (td[4].querySelector(".st-sub") ? " (" + t(td[4].querySelector(".st-sub")) + ")" : ""),
+          det ? t(det.querySelector(".ai-say")) : "", state.fb[id] ? state.fb[id].label : ""];
+        if (state.cView === "sys" && k === "C") r.splice(1, 0, group);
+        rows.push(r);
+      });
+      return { head: head, rows: rows };
+    }
+    function scopeLine() { return "분석 범위: " + (state.systems.length ? state.systems.map(sysName).join(", ") : "전체 정보시스템") + " · 인프라 " + (state.infra || "전체") + " · 유형 " + (state.type || "전체") + " · 기준일 " + $("asof").value + " · 마지막 분석 2026-09-30 06:00"; }
+    function fileBase(k) { return "AI위험분석_" + k + "_" + CARD_NAME[k] + "_" + $("asof").value; }
+    function downloadBlob(blob, name) { var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 800); }
+    function saveCsv(k, data) {
+      var q = function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; };
+      var lines = [q(scopeLine()), data.head.map(q).join(",")].concat(data.rows.map(function (r) { return r.map(q).join(","); }));
+      downloadBlob(new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" }), fileBase(k) + ".csv");
+    }
+    function saveXlsx(k, data) {
+      var aoa = [[scopeLine()], [], data.head].concat(data.rows);
+      var ws = XLSX.utils.aoa_to_sheet(aoa);
+      ws["!cols"] = data.head.map(function (h, i) { var w = Math.max(h.length, 8); data.rows.forEach(function (r) { w = Math.max(w, Math.min(60, String(r[i] || "").length)); }); return { wch: w + 2 }; });
+      ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: data.head.length - 1 } }];
+      var wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, k + "." + CARD_NAME[k]);
+      XLSX.writeFile(wb, fileBase(k) + ".xlsx");
+    }
+    var xlsxLoading = null;
+    function ensureXlsx() {
+      if (window.XLSX) return Promise.resolve(true);
+      if (!xlsxLoading) xlsxLoading = new Promise(function (res) { var sc = document.createElement("script"); sc.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"; sc.onload = function () { res(true); }; sc.onerror = function () { xlsxLoading = null; res(false); }; document.head.appendChild(sc); });
+      return xlsxLoading;
+    }
+    document.querySelectorAll("[data-xlsx]").forEach(function (b) {
+      b.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var k = b.getAttribute("data-xlsx"), data = exportRows(k);
+        if (!data.rows.length) { toast("<b>" + CARD_NAME[k] + "</b> — 내보낼 항목이 없습니다 (0건)"); return; }
+        ensureXlsx().then(function (ok) {
+          if (ok) { saveXlsx(k, data); toast("<b>" + esc(fileBase(k)) + ".xlsx</b> 저장했습니다 (" + data.rows.length + "건)"); }
+          else { saveCsv(k, data); toast("Excel 라이브러리를 불러오지 못해 <b>CSV(UTF-8)</b> 로 저장했습니다 — Excel 에서 열립니다"); }
+        });
+      });
+    });
+    /* 셸 */
+    var navStub = function (n) { toast("<b>" + esc(n) + "</b> — 프로토타입 범위 밖 화면입니다"); };
+    document.querySelectorAll(".sidebar [data-nav], .topbar [data-nav]").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); navStub(a.getAttribute("data-nav")); }); });
+    document.querySelectorAll("[data-group-toggle]").forEach(function (t) { t.addEventListener("click", function () { var g = t.closest(".nav-group"), open = g.getAttribute("data-open") === "true"; g.setAttribute("data-open", String(!open)); t.setAttribute("aria-expanded", String(!open)); }); });
+    $("menuToggle").addEventListener("click", function (e) { e.stopPropagation(); $("sidebar").classList.toggle("open"); });
+    document.addEventListener("click", function (e) { if (!e.target.closest("#sidebar")) $("sidebar").classList.remove("open"); });
+
+    renderAll();
+  </script>
+</body>
+</html>

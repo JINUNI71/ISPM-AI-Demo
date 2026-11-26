@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ISPM · 인프라보안현황 › 취약점별 점검 — AI 패널(슬라이딩 UI) 제안용 샘플 (기획 v0.1 · 2026-10-01)" />
+  <title>ISPM — 취약점별 점검 · AI 패널 (제안 샘플)</title>
+  <style>
+    /* ============================================================
+     * ISPM 취약점별 점검 — AI 패널(슬라이딩 UI) 제안용 샘플 · 기획 v0.1 (2026-10-01)
+     *
+     * · 좌측 = 기존 ISPM 취약점 목록(인프라 탭 › 유형 탭 › 행 = 취약점). 화면·탭·행 단위·열은 바꾸지 않는다는 전제
+     * · 우측 = AI 패널. 밀어내기(push) 레이아웃 — 목록 폭을 줄이고 옆에 붙는다 (overlay 아님)
+     * · 패널 섹션: 우선 확인 / 선택 건 / 내 예외·유예. 액션은 섹션 안 행·블록 단위(하단 고정 버튼 없음). 건 단위 [이 건 재분석]만 제공(전체 재분석 없음)
+     * · AI 가 생성한 문장(근거 한 줄 · 심층 해석 · 경향 해석)은 크림 배경 + 스파크 아이콘으로 구분(--ai-*)
+     * · 단일 파일 프로토타입. 데모 데이터는 설명용 예시값. 연동 지점은 "=== 연동 지점 ===" 주석
+     * ============================================================ */
+    :root {
+      --top: #15213a; --top-ink: #e8edf5;
+      --bg: #f3f5f8; --panel: #ffffff; --panel-2: #f6f8fb;
+      --ink: #1f2a3a; --ink-soft: #586374; --ink-faint: #8a93a6;
+      --line: #e2e7ee; --line-strong: #cbd4e0;
+      --accent: #2f6fed; --accent-soft: #e9f0fd; --accent-ink: #1f4fb8;
+      --danger: #d23a3a; --danger-soft: #fdecec;
+      --ok: #1f9d6b; --ok-soft: #eaf6f0;
+      --warn: #d4a017; --warn-soft: #fdf6e3; --warn-ink: #8a6410;
+      --orange: #e07f1e; --orange-soft: #fdf0e3;
+      --chip: #eef1f5;
+      --shadow: 0 1px 2px rgba(20, 30, 50, .05), 0 6px 20px rgba(20, 30, 50, .07);
+      --focus: 0 0 0 3px rgba(47, 111, 237, .25);
+      --mono: "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+      /* AI 생성 콘텐츠 */
+      --ai-paper: #faf9f5; --ai-paper-2: #f3f1ea; --ai-line: #e8e5db; --ai-line-2: #d9d5c8;
+      --ai-ink: #1f1e1d; --ai-ink-soft: #5e5d59; --ai-ink-faint: #8f8d86;
+      --ai-accent: #d97757; --ai-accent-ink: #b8582f; --ai-accent-soft: #fbeee7; --ai-code: #efece3;
+      --panel-w: 44%;
+      color-scheme: light;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Pretendard", "Apple SD Gothic Neo", "Segoe UI", system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 500; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; overflow: hidden; }
+    [hidden] { display: none !important; }
+    button, input, select { font-family: inherit; }
+    :focus-visible { outline: none; box-shadow: var(--focus); }
+    .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+    /* ============================================================
+     * 1. ISPM 셸 — 상단 바 · 좌측 메뉴 (기존 화면 가정)
+     * ============================================================ */
+    .topbar { height: 50px; background: var(--top); color: var(--top-ink); display: flex; align-items: center; gap: 18px; padding: 0 18px; flex: none; }
+    .topbar .brand { font-weight: 800; font-size: 15px; letter-spacing: .02em; display: flex; align-items: center; gap: 9px; }
+    .topbar .brand i { width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(135deg, #3b7bff, #1d4fc4); display: grid; place-items: center; font-style: normal; font-size: 11px; font-weight: 800; color: #fff; }
+    .topbar .brand small { font-weight: 500; opacity: .7; font-size: 12px; margin-left: 2px; }
+    .topnav { display: flex; gap: 4px; margin-left: 10px; }
+    .topnav a { color: var(--top-ink); text-decoration: none; font-size: 13.5px; font-weight: 600; padding: 7px 11px; border-radius: 7px; opacity: .8; }
+    .topnav a.on { background: rgba(255, 255, 255, .13); opacity: 1; }
+    .topbar .sp { flex: 1; }
+    .topbar .me { font-size: 12.5px; opacity: .85; display: flex; align-items: center; gap: 8px; }
+    .topbar .me b { font-weight: 700; }
+    .topbar .me .av { width: 26px; height: 26px; border-radius: 50%; background: rgba(255, 255, 255, .18); display: grid; place-items: center; font-size: 11px; font-weight: 700; }
+    .sample { font-size: 10.5px; font-weight: 700; letter-spacing: .04em; padding: 2px 7px; border-radius: 4px; background: rgba(255, 255, 255, .14); }
+
+    .frame { flex: 1; min-height: 0; display: flex; }
+    .sidenav { width: 212px; flex: none; background: var(--panel); border-right: 1px solid var(--line); padding: 14px 10px; overflow: auto; }
+    .sidenav .cap { font-size: 11px; font-weight: 700; color: var(--ink-faint); letter-spacing: .05em; padding: 8px 10px 4px; }
+    .sidenav a { display: block; padding: 7px 10px; border-radius: 7px; font-size: 13.5px; color: var(--ink-soft); text-decoration: none; font-weight: 600; }
+    .sidenav a.on { background: var(--accent-soft); color: var(--accent-ink); }
+    .sidenav a.sub { padding-left: 22px; font-weight: 500; font-size: 13px; }
+
+    /* ============================================================
+     * 2. 작업 영역 — 목록(좌) + AI 패널(우, push)
+     * ============================================================ */
+    .work { flex: 1; min-width: 0; display: flex; position: relative; }
+    .page { flex: 1; min-width: 0; overflow: auto; padding: 18px 22px 40px; transition: padding-right .22s; }
+    .crumb { font-size: 12px; color: var(--ink-faint); display: flex; gap: 6px; margin-bottom: 6px; }
+    .crumb b { color: var(--ink-soft); font-weight: 600; }
+    .ptitle { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .ptitle h1 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -.01em; }
+    .ptitle .meta { font-size: 12px; color: var(--ink-faint); }
+
+    .tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
+    .tab { height: 38px; padding: 0 14px; border: none; background: none; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--ink-soft); position: relative; display: inline-flex; align-items: center; gap: 7px; }
+    .tab .n { font-family: var(--mono); font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 5px; background: var(--chip); color: var(--ink-faint); }
+    .tab[aria-selected="true"] { color: var(--accent-ink); }
+    .tab[aria-selected="true"]::after { content: ""; position: absolute; left: 8px; right: 8px; bottom: -1px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .tabs.sub { border-bottom: none; margin-bottom: 12px; gap: 6px; }
+    .tabs.sub .tab { height: 30px; padding: 0 12px; border-radius: 7px; font-size: 13px; background: var(--panel); border: 1px solid var(--line-strong); }
+    .tabs.sub .tab[aria-selected="true"] { background: var(--accent-soft); border-color: transparent; }
+    .tabs.sub .tab[aria-selected="true"]::after { display: none; }
+
+    .toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+    .select, .input { height: 34px; padding: 0 11px; border: 1px solid var(--line-strong); border-radius: 7px; background: var(--panel); font-size: 13px; color: var(--ink); font-weight: 500; }
+    .select { appearance: none; -webkit-appearance: none; padding-right: 28px; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a93a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 9px center; background-size: 12px; }
+    .input { width: 220px; }
+    .toolbar .sp { flex: 1; }
+    .toolbar .cnt { font-size: 12.5px; color: var(--ink-soft); }
+    .toolbar .cnt b { color: var(--ink); }
+
+    .btn { height: 34px; padding: 0 13px; border: 1px solid var(--line-strong); border-radius: 7px; background: var(--panel); color: var(--ink); font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; transition: border-color .12s, background .12s; }
+    .btn:hover { border-color: var(--accent); }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn.primary:hover { filter: brightness(1.08); }
+    .btn.ghost { border-color: transparent; background: none; color: var(--ink-soft); }
+    .btn.ghost:hover { background: var(--panel-2); color: var(--ink); }
+    .btn.sm { height: 28px; padding: 0 9px; font-size: 12px; border-radius: 6px; }
+    .btn.xs { height: 24px; padding: 0 7px; font-size: 11.5px; border-radius: 5px; }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn svg { width: 14px; height: 14px; flex: none; }
+
+    .list { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+    .list table { width: 100%; border-collapse: collapse; }
+    .list th { text-align: left; font-size: 12px; font-weight: 700; color: var(--ink-soft); padding: 9px 10px; background: var(--panel-2); border-bottom: 1px solid var(--line); white-space: nowrap; }
+    .list td { padding: 9px 10px; border-bottom: 1px solid var(--line); font-size: 13px; vertical-align: middle; }
+    .list tbody tr { cursor: pointer; transition: background .12s; }
+    .list tbody tr:hover { background: var(--panel-2); }
+    .list tbody tr.sel { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+    .list tbody tr:last-child td { border-bottom: none; }
+    .list .vid { font-family: var(--mono); font-weight: 700; font-size: 12.5px; color: var(--ink); }
+    .list .vname { color: var(--ink-soft); font-size: 12.5px; margin-top: 1px; }
+    .grade { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+    .grade::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink-faint); }
+    .grade.g4::before { background: var(--danger); } .grade.g3::before { background: var(--orange); } .grade.g2::before { background: var(--warn); } .grade.g1::before { background: var(--ok); }
+    .st { display: inline-flex; font-size: 11.5px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: var(--chip); color: var(--ink-soft); white-space: nowrap; }
+    .st.open { background: var(--danger-soft); color: var(--danger); }
+    .st.prog { background: var(--accent-soft); color: var(--accent-ink); }
+    .st.appr { background: var(--ok-soft); color: var(--ok); }
+    .st.rej { background: var(--danger-soft); color: var(--danger); }
+    .st.rev { background: var(--warn-soft); color: var(--warn-ink); }
+    .st.exp { background: var(--orange-soft); color: var(--orange); }
+    .st.done { background: var(--chip); color: var(--ink-faint); }
+    .dd { font-family: var(--mono); font-weight: 700; font-size: 12.5px; }
+    .dd.urgent { color: var(--danger); }
+    .dd.soon { color: var(--orange); }
+    .bd { display: inline-flex; align-items: center; gap: 3px; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: var(--chip); color: var(--ink-soft); white-space: nowrap; vertical-align: 1px; }
+    .bd.kev { background: var(--danger-soft); color: var(--danger); }
+    .bd.comb { background: var(--ai-accent-soft); color: var(--ai-accent-ink); }
+    .bd.re { background: var(--orange-soft); color: var(--orange); }
+    .bd.info { background: transparent; border: 1px solid var(--line-strong); }
+    .bd.ai { background: var(--ai-accent-soft); color: var(--ai-accent-ink); }
+    .pager { display: flex; align-items: center; gap: 6px; justify-content: flex-end; padding: 10px 2px; font-size: 12.5px; color: var(--ink-faint); }
+    .pager button { height: 26px; min-width: 26px; border: none; background: none; border-radius: 6px; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); cursor: pointer; }
+    .pager button.on { background: var(--accent-soft); color: var(--accent-ink); }
+
+    /* ============================================================
+     * 3. AI 패널 — 우측 고정 버튼 + 밀어내기 패널
+     * ============================================================ */
+    /* 우측 고정 버튼 — 가로쓰기 2단('AI' / '분석') + 배지 세로 적층 */
+    .ai-fab { position: absolute; right: 0; top: 50%; transform: translateY(-50%); z-index: 30; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 58px; padding: 12px 6px 10px; border: none; border-radius: 10px 0 0 10px; background: linear-gradient(180deg, #2f6fed, #1d4fc4); color: #fff; font-size: 13px; font-weight: 800; line-height: 1.1; cursor: pointer; box-shadow: -4px 0 18px rgba(20, 60, 160, .28); letter-spacing: .02em; transition: transform .22s, opacity .18s; }
+    .ai-fab svg { width: 18px; height: 18px; }
+    .ai-fab .lbl { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .ai-fab .bg { display: flex; flex-direction: column; gap: 3px; margin-top: 2px; }
+    .ai-fab .bg span { font-family: var(--mono); font-size: 10.5px; font-weight: 700; padding: 2px 5px; border-radius: 8px; background: rgba(255, 255, 255, .22); white-space: nowrap; text-align: center; }
+    .ai-fab .bg span.need { background: #ff6b6b; color: #fff; }
+    body.panel-open .ai-fab { transform: translate(110%, -50%); opacity: 0; pointer-events: none; }
+
+    .ai-panel { width: 0; flex: none; overflow: hidden; background: var(--panel); border-left: 1px solid var(--line); display: flex; flex-direction: column; transition: width .22s ease; box-shadow: -8px 0 28px rgba(20, 30, 50, .06); }
+    body.panel-open .ai-panel { width: var(--panel-w); }
+    .ai-panel > * { min-width: 420px; }
+    .ph { padding: 12px 16px 0; border-bottom: 1px solid var(--line); flex: none; }
+    .ph-row { display: flex; align-items: center; gap: 8px; }
+    .ph-ctx { font-size: 14px; font-weight: 800; letter-spacing: -.01em; display: flex; align-items: center; gap: 6px; }
+    .ph-ctx .sep { color: var(--ink-faint); font-weight: 500; }
+    .ph-ctx .spark { width: 20px; height: 20px; border-radius: 50%; background: var(--ai-accent-soft); color: var(--ai-accent); display: grid; place-items: center; }
+    .ph-ctx .spark svg { width: 12px; height: 12px; }
+    .ph .sp { flex: 1; }
+    .ph-ic { width: 28px; height: 28px; border: none; background: none; border-radius: 7px; color: var(--ink-soft); cursor: pointer; display: grid; place-items: center; position: relative; }
+    .ph-ic:hover { background: var(--panel-2); color: var(--ink); }
+    .ph-ic svg { width: 16px; height: 16px; }
+    .ph-meta { display: flex; align-items: center; gap: 10px; margin-top: 4px; font-size: 12px; color: var(--ink-faint); flex-wrap: wrap; }
+    .ph-meta .mono { color: var(--ink-soft); }
+    .seg { display: inline-flex; gap: 3px; padding: 2px; border-radius: 8px; background: var(--panel-2); }
+    .seg button { height: 26px; padding: 0 10px; border: none; border-radius: 6px; background: none; cursor: pointer; font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+    .seg button.on { background: var(--panel); color: var(--accent-ink); box-shadow: 0 1px 3px rgba(20, 30, 50, .12); }
+    .seg button .n { font-family: var(--mono); font-size: 10.5px; margin-left: 4px; color: var(--ink-faint); }
+    .seg button.need.on, .seg button.need .n { color: var(--danger); }
+    .ptabs { display: flex; gap: 2px; margin-top: 8px; }
+    .ptab { height: 36px; padding: 0 12px; border: none; background: none; cursor: pointer; font-size: 13.5px; font-weight: 600; color: var(--ink-soft); position: relative; display: inline-flex; align-items: center; gap: 6px; }
+    .ptab[aria-selected="true"] { color: var(--accent-ink); }
+    .ptab[aria-selected="true"]::after { content: ""; position: absolute; left: 6px; right: 6px; bottom: -1px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .ptab .n { font-family: var(--mono); font-size: 10.5px; font-weight: 700; padding: 1px 5px; border-radius: 4px; background: var(--chip); color: var(--ink-faint); }
+    .ptab .n.need { background: var(--danger-soft); color: var(--danger); }
+    .ptab .n.sel { background: var(--accent-soft); color: var(--accent-ink); }
+    .settings-menu { position: absolute; right: 0; top: calc(100% + 4px); z-index: 5; min-width: 200px; padding: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; box-shadow: var(--shadow); text-align: left; }
+    .settings-menu .mh { font-size: 11px; color: var(--ink-faint); font-weight: 700; padding: 4px 8px; }
+    .settings-menu label { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; font-size: 12.5px; cursor: pointer; }
+    .settings-menu label:hover { background: var(--panel-2); }
+    .settings-menu input { accent-color: var(--accent); }
+
+    .pbody { flex: 1; min-height: 0; overflow: auto; padding: 12px 16px 18px; }
+    .pop-wrap { position: relative; }
+    .pop { position: absolute; left: 0; bottom: calc(100% + 6px); z-index: 20; min-width: 220px; padding: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 9px; box-shadow: 0 10px 28px rgba(20, 30, 50, .16); }
+    .pop button { display: block; width: 100%; text-align: left; padding: 7px 9px; border: none; background: none; border-radius: 6px; font-size: 12.5px; font-weight: 600; color: var(--ink); cursor: pointer; }
+    .pop button:hover { background: var(--panel-2); }
+    .pop .ph2 { font-size: 11px; color: var(--ink-faint); font-weight: 700; padding: 4px 9px 6px; }
+    .pop .ps { font-size: 11px; color: var(--ink-faint); font-weight: 500; display: block; margin-top: 1px; }
+
+    /* 섹션 공통 */
+    .sum { background: var(--panel-2); border-radius: 10px; padding: 11px 13px; margin-bottom: 12px; }
+    .sum .big { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--ink-soft); font-weight: 600; flex-wrap: wrap; }
+    .sum .big b { font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--ink); letter-spacing: -.02em; }
+    .sum .big b.hi { color: var(--accent-ink); font-size: 24px; }
+    .sum .big .arr { color: var(--accent-ink); }
+    .sum .line { font-size: 12px; color: var(--ink-faint); margin-top: 3px; font-family: var(--mono); }
+    .sum .line .kev { color: var(--danger); }
+    .sum .mine { margin-top: 7px; padding-top: 7px; border-top: 1px solid var(--line); font-size: 12.5px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .sum .mine button { background: none; border: none; padding: 0; font: inherit; font-weight: 700; color: var(--accent-ink); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+    .sum .mine button:hover { text-decoration: underline; }
+    .sum .mine .need { color: var(--danger); font-weight: 700; }
+    .sec-ctl { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 12px; color: var(--ink-faint); flex-wrap: wrap; }
+    .sec-ctl .sp { flex: 1; }
+    .sec-ctl label { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+    .sec-ctl input { accent-color: var(--accent); }
+    .select.xs { height: 26px; font-size: 12px; padding: 0 24px 0 8px; background-position: right 7px center; }
+
+    /* 우선 확인 카드 */
+    .pc { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer; background: var(--panel); transition: border-color .12s, box-shadow .12s; }
+    .pc:hover { border-color: var(--line-strong); box-shadow: var(--shadow); }
+    .pc.sel { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+    .pc.off { opacity: .55; }
+    .pc .l1 { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .pc .no { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--ink-faint); width: 16px; }
+    .pc .vt { font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 4px; background: var(--chip); color: var(--ink-soft); }
+    .pc .vid { font-family: var(--mono); font-weight: 700; font-size: 13px; }
+    .pc .vname { font-size: 12.5px; color: var(--ink-soft); }
+    .pc .sys { margin-left: auto; font-size: 12px; color: var(--ink-soft); font-weight: 600; white-space: nowrap; }
+    .pc .sys b { color: var(--ink); font-family: var(--mono); }
+    .pc .l2 { display: flex; align-items: center; gap: 8px; margin-top: 5px; font-size: 12.5px; color: var(--ai-ink); padding-left: 22px; }
+    .pc .l2 .ai-say { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; }
+    .pc .l2 .ai-say::before { content: ""; width: 12px; height: 12px; flex: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d97757'%3E%3Cpath d='M12 2.2c.5 0 .9.4 1 .9l.9 5.1 4.4-2.8c.4-.3 1-.2 1.3.2.3.4.2 1-.2 1.3L15.6 10l4.8 3.1c.4.3.5.9.2 1.3-.3.4-.9.5-1.3.2l-4.4-2.8-.9 5.1c-.1.5-.5.9-1 .9s-.9-.4-1-.9l-.9-5.1-4.4 2.8c-.4.3-1 .2-1.3-.2-.3-.4-.2-1 .2-1.3L8.4 10 3.6 6.9c-.4-.3-.5-.9-.2-1.3.3-.4.9-.5 1.3-.2l4.4 2.8.9-5.1c.1-.5.5-.9 1-.9z'/%3E%3C/svg%3E") center/contain no-repeat; }
+    .conf { font-size: 11px; color: var(--ink-faint); white-space: nowrap; }
+    .pc .l3 { display: flex; align-items: center; gap: 8px; margin-top: 5px; font-size: 11.5px; color: var(--ink-soft); padding-left: 22px; flex-wrap: wrap; }
+    .pc .l3 .k { color: var(--ink-faint); font-weight: 700; }
+    .pc .l3 .v { font-family: var(--mono); }
+    .pc .l3 .v .need { color: var(--danger); font-weight: 700; }
+    .pc .l3 .v .soon { color: var(--orange); font-weight: 700; }
+    .pc .l3 .bar { width: 1px; height: 12px; background: var(--line-strong); }
+
+    /* 선택 건 섹션 */
+    .sel-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .sel-head .back { height: 26px; padding: 0 8px; border: none; background: none; color: var(--ink-soft); font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px; }
+    .sel-head .back:hover { background: var(--panel-2); color: var(--ink); }
+    .sel-head .back svg { width: 13px; height: 13px; }
+    .sel-head .vid { font-family: var(--mono); font-weight: 800; font-size: 15px; }
+    .sel-head .vname { font-size: 13px; color: var(--ink-soft); }
+    .sel-head .scope { margin-left: auto; font-size: 11.5px; color: var(--ink-faint); display: inline-flex; align-items: center; gap: 6px; }
+    .sel-head .scope .x { border: none; background: var(--chip); border-radius: 10px; width: 16px; height: 16px; font-size: 10px; cursor: pointer; color: var(--ink-soft); }
+    .blk { border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
+    .blk > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 9px 12px; font-size: 13px; font-weight: 700; background: var(--panel-2); user-select: none; }
+    .blk > summary::-webkit-details-marker { display: none; }
+    .blk > summary .no { width: 18px; height: 18px; border-radius: 5px; background: var(--accent-soft); color: var(--accent-ink); font-size: 11px; font-weight: 800; display: grid; place-items: center; font-family: var(--mono); }
+    .blk > summary .q { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--ink-faint); }
+    .blk > summary .chev { width: 14px; height: 14px; color: var(--ink-faint); transition: transform .15s; }
+    .blk[open] > summary .chev { transform: rotate(180deg); }
+    .blk .bb { padding: 10px 12px 12px; font-size: 12.5px; line-height: 1.55; }
+    .fac { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+    .fac li { display: grid; grid-template-columns: 92px 1fr auto; gap: 8px; align-items: baseline; }
+    .fac .k { font-weight: 700; color: var(--ink); }
+    .fac .src { font-size: 11px; color: var(--ink-faint); white-space: nowrap; }
+    .due { margin-top: 8px; padding: 7px 10px; border-radius: 7px; background: var(--danger-soft); color: var(--danger); font-size: 12.5px; font-weight: 600; display: flex; gap: 8px; align-items: center; }
+    .due.soon { background: var(--orange-soft); color: var(--orange); }
+    .due.ok { background: var(--panel-2); color: var(--ink-soft); }
+    .due .mono { font-weight: 700; }
+    .mini { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12px; }
+    .mini th { text-align: left; font-size: 11px; font-weight: 700; color: var(--ink-faint); padding: 5px 7px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    .mini td { padding: 6px 7px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+    .mini tr:last-child td { border-bottom: none; }
+    .mini tr.sel td { background: var(--accent-soft); }
+    .mini tr.clickable { cursor: pointer; }
+    .mini tr.clickable:hover td { background: var(--panel-2); }
+    .mini .mono { font-weight: 700; }
+    .mini input[type="checkbox"] { accent-color: var(--accent); }
+    .mini .acts { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+    .mini .rej-note { font-size: 11px; color: var(--danger); display: block; }
+
+    /* AI 생성 블록 (심층 해석 · 경향 해석) */
+    .ai-box { margin-top: 8px; padding: 9px 11px; border-radius: 9px; background: var(--ai-paper); border: 1px solid var(--ai-line); color: var(--ai-ink); font-size: 12.5px; line-height: 1.6; display: grid; grid-template-columns: 20px 1fr; gap: 8px; }
+    .ai-box .sp { width: 20px; height: 20px; border-radius: 50%; background: var(--ai-accent-soft); color: var(--ai-accent); display: grid; place-items: center; }
+    .ai-box .sp svg { width: 11px; height: 11px; }
+    .ai-box .lbl { font-size: 10.5px; font-weight: 700; color: var(--ai-ink-faint); letter-spacing: .03em; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+    .ai-box .lbl .rt { font-weight: 500; }
+    .ai-box code { font-family: var(--mono); font-size: 11.5px; background: var(--ai-code); padding: 1px 4px; border-radius: 3px; }
+    .ai-box .cur::after { content: "▍"; color: var(--ai-accent); animation: blink 1s steps(2) infinite; }
+    @keyframes blink { to { opacity: 0; } }
+    .skel { height: 12px; border-radius: 6px; background: linear-gradient(90deg, var(--panel-2), #e9edf3, var(--panel-2)); background-size: 200% 100%; animation: sk 1.1s infinite; margin: 6px 0; }
+    @keyframes sk { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* 타임라인 (예외·유예 이력) */
+    .tl { margin: 4px 0 0; padding: 0; list-style: none; border-left: 2px solid var(--line-strong); margin-left: 6px; }
+    .tl li { position: relative; padding: 0 0 8px 14px; font-size: 12.5px; }
+    .tl li::before { content: ""; position: absolute; left: -6px; top: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--ink-faint); border: 2px solid var(--panel); }
+    .tl li.rej::before { background: var(--danger); }
+    .tl li.appr::before { background: var(--ok); }
+    .tl li.rev::before { background: var(--warn); }
+    .tl .d { font-family: var(--mono); font-weight: 700; color: var(--ink-soft); margin-right: 6px; }
+    .tl .why { margin-top: 4px; padding: 8px 10px; border-radius: 7px; background: var(--danger-soft); color: var(--danger); font-weight: 600; line-height: 1.5; }
+    .tl .why small { display: block; font-weight: 500; color: var(--ink-soft); margin-top: 3px; font-size: 11.5px; }
+    .tl .ra { margin-top: 6px; display: flex; gap: 6px; }
+    .tl-asset { font-family: var(--mono); font-weight: 800; font-size: 12.5px; margin: 6px 0 4px; display: flex; align-items: center; gap: 6px; }
+    details.fold summary { list-style: none; cursor: pointer; font-size: 12px; color: var(--accent-ink); font-weight: 700; margin-top: 6px; }
+    details.fold summary::-webkit-details-marker { display: none; }
+
+    /* 내 예외·유예 카드 */
+    .xc { border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; margin-bottom: 8px; cursor: pointer; background: var(--panel); }
+    .xc:hover { border-color: var(--line-strong); box-shadow: var(--shadow); }
+    .xc.need { border-color: rgba(210, 58, 58, .45); }
+    .xc .l1 { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .xc .asset { font-family: var(--mono); font-weight: 800; font-size: 13px; }
+    .xc .vid { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); }
+    .xc .l2 { margin-top: 4px; font-size: 11.5px; color: var(--ink-faint); display: flex; gap: 10px; flex-wrap: wrap; }
+    .xc .l2 b { color: var(--ink-soft); font-weight: 600; }
+    .xc .why { margin-top: 5px; font-size: 12px; color: var(--danger); font-weight: 600; }
+
+    /* 판단 의견 · 재분석 */
+    .op-box { margin-top: 10px; padding: 10px 12px; border-radius: 9px; border: 1px dashed var(--line-strong); background: var(--panel-2); }
+    .op-box .t { font-size: 12.5px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .op-box .scope { font-size: 11.5px; color: var(--ink-faint); margin-top: 2px; }
+    .op-box .scope b { color: var(--ink-soft); font-family: var(--mono); }
+    .op-box textarea { width: 100%; margin-top: 8px; min-height: 52px; padding: 7px 9px; border: 1px solid var(--line-strong); border-radius: 7px; font-size: 12.5px; resize: vertical; font-family: inherit; }
+    .op-box .row { display: flex; gap: 6px; margin-top: 8px; align-items: center; }
+    .op-box .row .sp { flex: 1; }
+    .re-btn { background: linear-gradient(135deg, var(--ai-accent), #c15f3c); color: #fff; border: none; }
+    .re-btn:hover { filter: brightness(1.06); }
+    .re-run { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink-soft); margin-top: 8px; }
+    .re-run .spin { width: 14px; height: 14px; border: 2px solid var(--line-strong); border-top-color: var(--ai-accent); border-radius: 50%; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .re-res { margin-top: 8px; padding: 9px 11px; border-radius: 8px; font-size: 12.5px; line-height: 1.55; border: 1px solid var(--ai-line); background: var(--ai-paper); color: var(--ai-ink); }
+    .re-res b { font-weight: 800; }
+    .re-res .tag { display: inline-flex; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; margin-right: 6px; }
+    .re-res .tag.chg { background: var(--accent-soft); color: var(--accent-ink); }
+    .re-res .tag.keep { background: var(--chip); color: var(--ink-soft); }
+    .re-res small { display: block; color: var(--ai-ink-faint); margin-top: 3px; font-size: 11.5px; }
+    .note-e { margin-top: 8px; padding: 8px 10px; border-radius: 8px; background: var(--accent-soft); color: var(--accent-ink); font-size: 12.5px; font-weight: 600; }
+
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 12px); z-index: 90; max-width: min(560px, calc(100vw - 32px)); padding: 11px 15px; border-radius: 10px; background: var(--top); color: #eaf2fb; font-size: 13px; line-height: 1.55; font-weight: 600; box-shadow: 0 16px 40px rgba(8, 24, 48, .34); opacity: 0; visibility: hidden; transition: opacity .16s, transform .16s; }
+    .toast.open { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+    .toast b { color: #fff; }
+    .demo { position: fixed; left: 14px; bottom: 14px; z-index: 50; background: var(--panel); border-radius: 10px; box-shadow: var(--shadow); padding: 8px 10px; font-size: 11.5px; color: var(--ink-faint); display: flex; align-items: center; gap: 6px; }
+    .demo b { color: var(--ink-soft); }
+    .demo button { height: 24px; padding: 0 8px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--panel); font-size: 11.5px; font-weight: 600; cursor: pointer; color: var(--ink-soft); }
+    .demo button:hover { border-color: var(--accent); color: var(--accent-ink); }
+    .empty { padding: 26px 12px; text-align: center; color: var(--ink-faint); font-size: 13px; }
+    .empty b { color: var(--ink-soft); display: block; margin-bottom: 4px; }
+
+    @media (max-width: 1280px) { :root { --panel-w: 50%; } .sidenav { display: none; } }
+  </style>
+</head>
+<body>
+  <!--
+    ISPM › 인프라보안현황 › 취약점별 점검 — AI 패널(슬라이딩 UI) 제안 샘플
+    · 좌측 목록은 기존 ISPM 화면을 가정한 재현(열·탭·행 단위 변경 없음)
+    · 우측 AI 패널은 ISPM 프런트 공통 컴포넌트. 화면 맥락(인프라·유형·정보시스템 필터·선택 행)을 어댑터로 넘긴다
+    · AgentOn은 API 로만 결과를 전달 — 배치 선계산(우선순위·집계) + 건 단위 재분석 + 선택 시 LLM 해석
+  -->
+  <header class="topbar">
+    <div class="brand"><i>IS</i>ISPM <small>인프라보안관리시스템</small></div>
+    <nav class="topnav"><a href="#">대시보드</a><a href="#" class="on">인프라보안현황</a><a href="#">예외·유예</a><a href="#">자산</a><a href="#">보고서</a></nav>
+    <span class="sample">제안 샘플 · AI 패널 v0.1</span>
+    <div class="sp"></div>
+    <div class="me"><span class="av">김</span><span><b>김도현</b> · 인프라운영1팀</span></div>
+  </header>
+
+  <div class="frame">
+    <aside class="sidenav">
+      <div class="cap">인프라보안현황</div>
+      <a href="#">인프라 현황</a>
+      <a href="#" class="on">취약점별 점검</a>
+      <a href="#" class="sub">자산별 점검</a>
+      <a href="#" class="sub">점검 이력</a>
+      <div class="cap">예외·유예</div>
+      <a href="#">신청·결재</a>
+      <a href="#">내 신청 현황</a>
+      <div class="cap">자산</div>
+      <a href="#">자산 인벤토리</a>
+      <a href="#">담당자 매핑</a>
+    </aside>
+
+    <div class="work">
+      <!-- ===== 기존 취약점 목록 (변경 없음 가정) ===== -->
+      <main class="page" id="page">
+        <div class="crumb"><span>인프라보안현황</span><span>›</span><b>취약점별 점검</b></div>
+        <div class="ptitle"><h1>취약점별 점검</h1><span class="meta">스캔 갱신 <span class="mono">2026-10-01 02:10</span> · 내 담당 자산 기준</span></div>
+
+        <div class="tabs" role="tablist" aria-label="인프라">
+          <button class="tab" role="tab" data-infra="Compute" aria-selected="true">Compute Infrastructure <span class="n" id="nCompute"></span></button>
+          <button class="tab" role="tab" data-infra="Cloud" aria-selected="false">Cloud <span class="n" id="nCloud"></span></button>
+        </div>
+        <div class="tabs sub" role="tablist" aria-label="취약점 유형">
+          <button class="tab" role="tab" data-type="CCE" aria-selected="false">CCE <span class="n" id="nCCE"></span></button>
+          <button class="tab" role="tab" data-type="CVE" aria-selected="true">CVE <span class="n" id="nCVE"></span></button>
+        </div>
+
+        <div class="toolbar">
+          <select class="select" id="fSys" aria-label="정보시스템"><option value="">정보시스템: 전체</option><option>고객포털</option><option>사내포털</option><option>결제</option></select>
+          <select class="select" aria-label="등급"><option>등급: 전체</option><option>긴급</option><option>높음</option><option>중간</option><option>낮음</option></select>
+          <select class="select" aria-label="처리 상태"><option>상태: 전체</option><option>미조치</option><option>조치 중</option><option>예외·유예</option><option>조치 완료</option></select>
+          <input class="input" type="text" placeholder="취약점 ID · 명칭 검색" aria-label="검색" />
+          <div class="sp"></div>
+          <span class="cnt" id="listCnt"></span>
+          <button class="btn" type="button" data-stub="엑셀 다운로드">엑셀</button>
+        </div>
+
+        <div class="list">
+          <table aria-label="취약점 목록">
+            <thead><tr><th style="width:34%">취약점</th><th>등급</th><th>CVSS</th><th>영향 자산</th><th>정보시스템</th><th>최초 탐지</th><th>조치 기한</th><th>처리 상태</th></tr></thead>
+            <tbody id="listBody"></tbody>
+          </table>
+        </div>
+        <div class="pager"><span id="pagerInfo"></span><button type="button">‹</button><button type="button" class="on">1</button><button type="button">2</button><button type="button">3</button><button type="button">›</button></div>
+      </main>
+
+      <!-- ===== 우측 고정 버튼 ===== -->
+      <button class="ai-fab" type="button" id="aiFab" aria-controls="aiPanel" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c.5 0 .9.4 1 .9l.9 5.1 4.4-2.8c.4-.3 1-.2 1.3.2.3.4.2 1-.2 1.3L15.6 10l4.8 3.1c.4.3.5.9.2 1.3-.3.4-.9.5-1.3.2l-4.4-2.8-.9 5.1c-.1.5-.5.9-1 .9s-.9-.4-1-.9l-.9-5.1-4.4 2.8c-.4.3-1 .2-1.3-.2-.3-.4-.2-1 .2-1.3L8.4 10 3.6 6.9c-.4-.3-.5-.9-.2-1.3.3-.4.9-.5 1.3-.2l4.4 2.8.9-5.1c.1-.5.5-.9 1-.9z"/></svg>
+        <span class="lbl"><span>AI</span><span>분석</span></span>
+        <span class="bg" id="fabBadge"></span>
+      </button>
+
+      <!-- ===== AI 패널 (push) ===== -->
+      <aside class="ai-panel" id="aiPanel" aria-label="AI 분석 패널">
+        <div class="ph">
+          <div class="ph-row">
+            <div class="ph-ctx"><span class="spark"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c.5 0 .9.4 1 .9l.9 5.1 4.4-2.8c.4-.3 1-.2 1.3.2.3.4.2 1-.2 1.3L15.6 10l4.8 3.1c.4.3.5.9.2 1.3-.3.4-.9.5-1.3.2l-4.4-2.8-.9 5.1c-.1.5-.5.9-1 .9s-.9-.4-1-.9l-.9-5.1-4.4 2.8c-.4.3-1 .2-1.3-.2-.3-.4-.2-1 .2-1.3L8.4 10 3.6 6.9c-.4-.3-.5-.9-.2-1.3.3-.4.9-.5 1.3-.2l4.4 2.8.9-5.1c.1-.5.5-.9 1-.9z"/></svg></span><span id="ctxLine"></span></div>
+            <div class="sp"></div>
+            <div style="position:relative">
+              <button class="ph-ic" type="button" id="btnSettings" aria-label="패널 설정" title="자동 열림 설정"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+              <div class="settings-menu" id="settingsMenu" hidden>
+                <div class="mh">자동 열림</div>
+                <label><input type="radio" name="autoOpen" value="always" />항상 열기</label>
+                <label><input type="radio" name="autoOpen" value="need" checked />조치 필요 시만</label>
+                <label><input type="radio" name="autoOpen" value="manual" />수동</label>
+              </div>
+            </div>
+            <button class="ph-ic" type="button" id="btnClose" aria-label="패널 닫기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+          </div>
+          <div class="ph-meta">
+            <span>분석 기준 <span class="mono">2026-10-01 03:00</span> · 배치</span>
+            <span>범위</span>
+            <div class="seg" id="segScope"><button type="button" class="on" data-scope="tab">현재 탭</button><button type="button" data-scope="all">내 담당 전체</button></div>
+          </div>
+          <div class="ptabs" role="tablist">
+            <button class="ptab" role="tab" data-sec="prio" aria-selected="true">우선 확인 <span class="n" id="nPrio"></span></button>
+            <button class="ptab" role="tab" data-sec="sel" aria-selected="false">선택 건 <span class="n sel" id="nSel" hidden></span></button>
+            <button class="ptab" role="tab" data-sec="mine" aria-selected="false">내 예외·유예 <span class="n" id="nMine"></span></button>
+          </div>
+        </div>
+        <div class="pbody" id="pbody"></div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="demo" id="demo"><b>데모</b><button type="button" data-demo="reset">세션 초기화</button><button type="button" data-demo="noneed">조치 필요 0건</button><button type="button" data-demo="restore">예시 복원</button></div>
+
+  <script>
+    /* ============================================================
+     * 데이터 — 설명용 예시값. === 연동 지점 === AgentOn → ISPM API (9절)
+     *   GET /oap/badge · GET /oap/priority?scope= · GET /oap/finding/{id} · GET /oap/exceptions/mine · GET /oap/finding/{id}/others
+     *   POST /oap/reanalyze · POST /oap/opinion · POST /oap/status · POST /oap/plan
+     * ============================================================ */
+    var TODAY = new Date("2026-10-01");
+    var MY_TOTAL = { "Compute|CVE": 184, "Compute|CCE": 61, "Cloud|CVE": 39, "Cloud|CCE": 28 };
+    /* 우선 확인 (취약점 단위 · 배치 선계산) */
+    var P = [
+      { id: "p1", rank: 1, type: "CVE", infra: "Compute", vid: "CVE-2026-21412", name: "OpenSSH 9.x 인증 우회", kev: true, kevDate: "2026-09-12", cvss: 9.8, sys: "고객포털", badges: ["kev"], reason: "KEV 등재 + 외부 노출", conf: "높음", dday: 3, dueRule: "긴급 등급 — 탐지 후 7일",
+        assets: [
+          { a: "web-prd-01", infra: "Compute", exposure: "외부", why: "KEV 등재 + 외부 노출(공인 IP)", dday: 3, exc: { st: "rej", label: "반려 09-20", id: "x1" } },
+          { a: "web-prd-02", infra: "Compute", exposure: "외부", why: "KEV 등재 + 외부 노출(공인 IP) · CCE 결합", dday: 3, exc: null },
+          { a: "web-prd-04", infra: "Compute", exposure: "내부", why: "KEV 등재 · 내부 전용(WAS 연결)", dday: 7, exc: null }
+        ],
+        factors: [["KEV 등재", "2026-09-12 · 조치 기한 10-03", "KEV 목록 · 10-01"], ["외부 노출", "web-prd-01·02 공인 IP 매핑 (443/22 개방)", "자산 인벤토리 · 09-30"], ["연결 경로", "web → was-prd → 회원 DB(개인정보)", "구성 정보 · 09-30"], ["CVSS", "9.8 Critical", "스캔 결과 · 10-01"]],
+        others: { total: 20, done: 12, appr: 4, req: 2, rej: 2, doneDays: 6, donePatch: "OpenSSH 9.8p1 적용",
+          rows: [["web-prd-03", "고객포털", "인프라운영1팀", "appr", "~2026-12-31", "벤더 패치 미제공(어플라이언스)"], ["was-stg-02", "사내포털", "인프라운영2팀", "req", "09-28 제출", "서비스 중단 불가 기간"], ["app-prd-11", "결제", "클라우드운영팀", "rej", "09-15", "외부 노출 자산"], ["edi-prd-01", "부품 EDI", "인프라운영2팀", "rej", "09-22", "KEV 등재 후 유예 불가"]],
+          trend: "외부 노출 자산은 <b>반려</b>, 내부 전용 자산은 <b>벤더 미지원</b> 사유로 승인되는 경향입니다. 내 자산 중 web-prd-01·02 는 외부 노출이라 유예 승인 가능성이 낮고, web-prd-04 는 내부 전용이라 승인 사례와 조건이 비슷합니다." },
+        fix: { kind: "CVE", main: "OpenSSH <b>9.8p1 이상</b>으로 업그레이드 (벤더 권고 OpenSSH-SA-2026-03)", tmp: "임시 완화: <code>PermitRootLogin no</code> · 22/tcp 접근을 운영 대역으로 제한", link: "스캐너 해결책 원문", together: ["p2"] },
+        deep: "이 취약점은 인증 전 단계에서 세션 상태를 조작해 키 검증을 건너뛰는 유형입니다. 내 자산 3대 중 <code>web-prd-01</code>·<code>web-prd-02</code>는 공인 IP가 매핑돼 있고 22/tcp 가 개방돼 있어 외부에서 직접 시도가 가능합니다. 특히 <code>web-prd-02</code>는 같은 자산에 원격 root 접속 허용(CCE-LNX-011)이 남아 있어, 우회에 성공하면 바로 root 권한을 얻습니다. 반면 <code>web-prd-04</code>는 WAS 와만 연결된 내부 전용 자산이라 직접 노출은 없지만, web-prd-01·02 를 거친 2차 이동 경로에 있어 같은 기한 안에 처리하는 편이 안전합니다. 조치 우선순위는 web-prd-02 → web-prd-01 → web-prd-04 순을 권합니다." },
+      { id: "p2", rank: 2, type: "CCE", infra: "Compute", vid: "CCE-LNX-011", name: "원격 root SSH 접속 허용", kev: false, cvss: null, sys: "고객포털", badges: ["comb"], reason: "외부 노출 · CVE-2026-21412 와 결합", conf: "높음", dday: 10, dueRule: "높음 등급 — 탐지 후 14일",
+        assets: [{ a: "web-prd-02", infra: "Compute", exposure: "외부", why: "외부 노출 · 같은 자산 CVE-2026-21412", dday: 10, exc: { st: "rev", label: "검토 중 09-29", id: "x4" } }],
+        factors: [["설정값", "sshd_config PermitRootLogin yes", "CCE 점검 · 10-01"], ["외부 노출", "공인 IP 매핑 · 22/tcp 개방", "자산 인벤토리 · 09-30"], ["결합", "같은 자산에 CVE-2026-21412(KEV)", "AI 대조"]],
+        others: { total: 9, done: 3, appr: 4, req: 1, rej: 1, doneDays: 2, donePatch: "PermitRootLogin no 적용", rows: [["web-prd-03", "고객포털", "인프라운영1팀", "appr", "~2026-12-31", "벤더 유지보수 계정 필요"], ["bastion-02", "결제", "클라우드운영팀", "rej", "09-10", "외부 노출 배스천"]], trend: "벤더 유지보수 계정이 필요한 자산은 <b>승인</b>, 외부 노출 자산은 <b>반려</b>되는 경향입니다. web-prd-02 는 외부 노출이라 예외보다 설정 변경이 빠른 길입니다." },
+        fix: { kind: "CCE", main: "<code>/etc/ssh/sshd_config</code> 의 <code>PermitRootLogin</code> 을 <b>no</b> 로 변경 후 sshd 재시작", tmp: "점검 기준: 주요정보통신기반시설 U-01 · 변경 전 sudo 가능한 운영 계정 확인", link: "점검 기준 항목 원문", together: ["p1"] },
+        deep: "설정 한 줄로 결합 위험을 끊을 수 있는 건입니다. 같은 자산의 OpenSSH 취약점(CVE-2026-21412)이 패치되기 전이라도 root 직접 로그인을 막으면 우회 성공 시 얻는 권한이 일반 계정으로 낮아집니다. 예외 신청이 검토 중이지만 외부 노출 자산이라 반려 사례가 많으니, 신청 결과를 기다리기보다 설정 변경을 먼저 적용하는 편을 권합니다." },
+      { id: "p3", rank: 3, type: "CVE", infra: "Compute", vid: "CVE-2026-30512", name: "Apache Tomcat 10.1 원격 코드 실행", kev: false, cvss: 9.1, sys: "사내포털", badges: [], reason: "내부망 연결 경로(회원 DB) · 유예 만료 임박", conf: "보통", dday: 14, dueRule: "높음 등급 — 탐지 후 14일",
+        assets: [{ a: "was-prd-01", infra: "Compute", exposure: "내부", why: "회원 DB 직결 경로", dday: 14, exc: null }, { a: "was-prd-02", infra: "Compute", exposure: "내부", why: "회원 DB 직결 경로", dday: 14, exc: { st: "appr", label: "유예 승인 ~12-31", id: "x3" } }, { a: "was-prd-03", infra: "Compute", exposure: "내부", why: "회원 DB 직결 경로", dday: 14, exc: { st: "exp", label: "유예 만료 임박 ~10-05", id: "x2" } }, { a: "was-prd-05", infra: "Compute", exposure: "내부", why: "내부 전용", dday: 21, exc: null }, { a: "was-prd-06", infra: "Compute", exposure: "내부", why: "내부 전용", dday: 21, exc: null }],
+        factors: [["CVSS", "9.1 Critical", "스캔 결과 · 10-01"], ["연결 경로", "was-prd-01~03 → 회원 DB", "구성 정보 · 09-30"], ["KEV", "미등재", "KEV 목록 · 10-01"]],
+        others: { total: 14, done: 5, appr: 6, req: 0, rej: 3, doneDays: 9, donePatch: "Tomcat 10.1.34 적용", rows: [["was-prd-11", "결제", "클라우드운영팀", "appr", "~2026-11-30", "릴리스 일정 연계"], ["was-dev-02", "사내포털", "인프라운영2팀", "rej", "09-02", "개발 환경도 운영 데이터 사용"]], trend: "릴리스 일정과 묶어 유예를 신청한 건은 <b>승인</b>, 운영 데이터를 쓰는 자산은 <b>반려</b>되는 경향입니다." },
+        fix: { kind: "CVE", main: "Tomcat <b>10.1.34 이상</b> 업그레이드", tmp: "임시 완화: 관리 콘솔 비활성화 · 요청 크기 제한", link: "스캐너 해결책 원문", together: [] },
+        deep: "내부 전용 WAS 지만 회원 DB 와 직접 연결된 경로에 있어 외부 노출 자산을 거친 2차 공격 시 영향이 큽니다. 이미 유예 중인 was-prd-02·03 의 조건(릴리스 일정 연계)이 유지되는지 확인하고, 만료가 임박한 was-prd-03 은 연장보다 패치 반영을 권합니다." },
+      { id: "p4", rank: 4, type: "CVE", infra: "Compute", vid: "CVE-2026-1892", name: "nginx 1.25 HTTP/2 메모리 손상", kev: true, kevDate: "2026-09-22", cvss: 7.5, sys: "결제", badges: ["kev"], reason: "CVSS 7.5 이지만 KEV 등재 + 외부 노출로 상향", conf: "높음", dday: 5, dueRule: "긴급 등급 — 탐지 후 7일",
+        assets: [{ a: "api-gw-01", infra: "Compute", exposure: "외부", why: "KEV 등재 + 외부 노출", dday: 5, exc: null }, { a: "api-gw-02", infra: "Compute", exposure: "외부", why: "KEV 등재 + 외부 노출", dday: 5, exc: null }],
+        factors: [["KEV 등재", "2026-09-22", "KEV 목록 · 10-01"], ["외부 노출", "인터넷 → API GW 443", "자산 인벤토리 · 09-30"], ["CVSS", "7.5 High → AI 상향", "스캔 결과 · 10-01"]],
+        others: { total: 11, done: 8, appr: 0, req: 1, rej: 0, doneDays: 4, donePatch: "nginx 1.27.3 적용", rows: [["api-gw-11", "커넥티드카", "플랫폼팀", "req", "09-29 제출", "트래픽 피크 기간"]], trend: "대부분 <b>조치 완료</b>(평균 4일)된 건입니다. 유예 사례가 거의 없어 패치가 가장 빠른 길입니다." },
+        fix: { kind: "CVE", main: "nginx <b>1.27.3 이상</b> 업그레이드", tmp: "임시 완화: HTTP/2 비활성화", link: "스캐너 해결책 원문", together: [] },
+        deep: "CVSS 는 7.5 지만 KEV 에 올라 실제 악용이 확인된 취약점이고, API 게이트웨이는 인터넷에서 가장 먼저 닿는 지점입니다. 다른 담당자 자산 11대 중 8대가 평균 4일 안에 패치를 끝냈으므로 같은 절차로 처리 가능할 것으로 보입니다." },
+      { id: "p5", rank: 5, type: "CCE", infra: "Compute", vid: "CCE-LNX-034", name: "패스워드 복잡도·만료 미설정", kev: false, cvss: null, sys: "사내포털", badges: [], reason: "내부 전용 · 자산 중요도(인사 데이터)", conf: "보통", dday: 21, dueRule: "중간 등급 — 탐지 후 30일",
+        assets: [{ a: "app-prd-05", infra: "Compute", exposure: "내부", why: "자산 중요도 상", dday: 21, exc: { st: "appr", label: "예외 승인 ~27-03-31", id: "x6" } }, { a: "app-prd-06", infra: "Compute", exposure: "내부", why: "자산 중요도 상", dday: 21, exc: null }, { a: "app-prd-07", infra: "Compute", exposure: "내부", why: "자산 중요도 상", dday: 21, exc: null }, { a: "app-prd-08", infra: "Compute", exposure: "내부", why: "내부 전용", dday: 30, exc: null }],
+        factors: [["설정값", "PASS_MAX_DAYS 99999 · pam_pwquality 미적용", "CCE 점검 · 10-01"], ["자산 중요도", "인사 데이터 등급 상", "자산 인벤토리 · 09-30"]],
+        others: { total: 7, done: 2, appr: 3, req: 0, rej: 2, doneDays: 3, donePatch: "pam_pwquality 적용", rows: [["hr-app-01", "임직원 HR", "인프라운영2팀", "appr", "~2027-01-31", "SSO 연동 계정 — 로컬 정책 미적용"]], trend: "SSO 연동으로 로컬 패스워드를 쓰지 않는 자산은 <b>승인</b>되는 경향입니다." },
+        fix: { kind: "CCE", main: "<code>/etc/login.defs</code> PASS_MAX_DAYS 90 · <code>pam_pwquality</code> 최소 8자·복잡도 적용", tmp: "점검 기준: U-02 · U-03", link: "점검 기준 항목 원문", together: [] },
+        deep: "내부 전용 자산이라 긴급도는 낮지만 인사 데이터 등급이 높아 목록에 올렸습니다. app-prd-05 는 SSO 연동 사유로 예외가 승인돼 있으므로 06·07 도 같은 조건이면 동일 사유로 신청 가능합니다." },
+      { id: "p6", rank: 6, type: "CVE", infra: "Cloud", vid: "CVE-2026-27890", name: "ingress-nginx 컨트롤러 설정 주입", kev: true, kevDate: "2026-09-25", cvss: 9.8, sys: "결제", badges: ["kev"], reason: "KEV 등재 · 외부 첫 접점(ALB → ingress)", conf: "높음", dday: 3, dueRule: "긴급 등급 — 탐지 후 7일",
+        assets: [{ a: "eks-pay-ingress", infra: "Cloud", exposure: "외부", why: "KEV 등재 + 외부 노출", dday: 3, exc: null }],
+        factors: [["KEV 등재", "2026-09-25", "KEV 목록 · 10-01"], ["외부 노출", "ALB → ingress 443", "Cloud API · 10-01"], ["연결 경로", "ingress → 결제 API → 결제 큐", "구성 정보 · 09-30"]],
+        others: { total: 4, done: 2, appr: 0, req: 1, rej: 1, doneDays: 2, donePatch: "애드온 v1.12.1 적용", rows: [["eks-cc-ingress", "커넥티드카", "플랫폼팀", "req", "09-30 제출", "배포 창 대기"]], trend: "애드온 업그레이드로 <b>2일 내 조치</b>된 사례가 많습니다." },
+        fix: { kind: "CVE", main: "ingress-nginx 애드온 <b>v1.12.1 이상</b>", tmp: "임시 완화: 어노테이션 스니펫 비활성화", link: "스캐너 해결책 원문", together: [] },
+        deep: "결제 API 로 들어오는 트래픽이 가장 먼저 닿는 인그레스라 영향 범위가 클러스터 전체입니다. 애드온 버전 업그레이드만으로 해결되며 다른 클러스터는 2일 안에 끝냈습니다." },
+      { id: "p7", rank: 7, type: "CCE", infra: "Cloud", vid: "CCE-AWS-S3-003", name: "S3 버킷 퍼블릭 읽기 허용", kev: false, cvss: null, sys: "고객포털", badges: [], reason: "외부 노출 · 개인정보 등급 버킷", conf: "높음", dday: 7, dueRule: "긴급 등급 — 탐지 후 7일",
+        assets: [{ a: "s3://hmc-member-export", infra: "Cloud", exposure: "외부", why: "퍼블릭 ACL · PII 태그", dday: 7, exc: null }],
+        factors: [["설정값", "Block Public Access 해제 · ACL public-read", "Cloud API · 10-01"], ["자산 중요도", "태그 data-class=PII", "자산 인벤토리 · 09-30"]],
+        others: { total: 3, done: 2, appr: 0, req: 0, rej: 1, doneDays: 1, donePatch: "Block Public Access 활성화", rows: [["s3://hmc-static-cdn", "고객포털", "클라우드운영팀", "rej", "08-20", "CDN 오리진은 OAC 로 대체 가능"]], trend: "퍼블릭 버킷은 예외 없이 <b>차단</b>으로 처리되는 경향입니다." },
+        fix: { kind: "CCE", main: "버킷 <b>Block Public Access</b> 활성화 · ACL 제거 · 필요 시 사전 서명 URL 로 대체", tmp: "점검 기준: Cloud S-03", link: "점검 기준 항목 원문", together: [] },
+        deep: "개인정보 등급 버킷이 인터넷에서 직접 읽히는 상태입니다. 설정 변경 1건으로 해결되고, 예외가 승인된 사례가 없습니다." },
+      { id: "p8", rank: 8, type: "CCE", infra: "Cloud", vid: "CCE-AWS-SG-007", name: "보안그룹 0.0.0.0/0 → 22 허용", kev: false, cvss: null, sys: "결제", badges: ["comb"], reason: "외부 노출 · 미등록 Redis 와 결합", conf: "높음", dday: 10, dueRule: "높음 등급 — 탐지 후 14일",
+        assets: [{ a: "sg-pay-bastion", infra: "Cloud", exposure: "외부", why: "전 세계 SSH 허용 · EIP", dday: 10, exc: { st: "rev", label: "검토 중 09-30", id: "x5" } }, { a: "sg-pay-batch", infra: "Cloud", exposure: "외부", why: "전 세계 SSH 허용", dday: 10, exc: null }],
+        factors: [["설정값", "inbound 0.0.0.0/0 tcp/22", "Cloud API · 10-01"], ["외부 노출", "EIP 할당", "Cloud API · 10-01"], ["결합", "미등록 Redis 7.0 검출", "에이전트 수집 · 09-29"]],
+        others: { total: 6, done: 3, appr: 2, req: 0, rej: 1, doneDays: 2, donePatch: "운영 대역으로 제한", rows: [["sg-cc-bastion", "커넥티드카", "플랫폼팀", "appr", "~2026-10-31", "협력사 원격 작업 — 기간 한정"]], trend: "협력사 작업 등 <b>기간 한정</b> 사유는 승인, 상시 허용은 반려되는 경향입니다." },
+        fix: { kind: "CCE", main: "인바운드 22 소스를 <b>운영 대역/VPN 대역</b>으로 제한", tmp: "점검 기준: Cloud N-02 · SSM Session Manager 전환 검토", link: "점검 기준 항목 원문", together: [] },
+        deep: "배스천과 배치 서버가 전 세계에서 SSH 를 받습니다. 검토 중인 예외는 기간 한정 사유가 아니면 반려 가능성이 높습니다." },
+      { id: "p9", rank: 9, type: "CVE", infra: "Compute", vid: "CVE-2026-0456", name: "PostgreSQL 15 권한 상승", kev: false, cvss: 8.8, sys: "사내포털", badges: ["re"], reason: "조치 완료 후 재탐지 · 내부 경로", conf: "보통", dday: 14, dueRule: "높음 등급 — 탐지 후 14일",
+        assets: [{ a: "db-ip-01", infra: "Compute", exposure: "내부", why: "조치 완료(09-10) 후 09-28 재탐지", dday: 14, exc: null }],
+        factors: [["재탐지", "조치 완료 09-10 → 09-28 재탐지 (동일 버전)", "스캔 이력 · 10-01"], ["CVSS", "8.8 High", "스캔 결과 · 10-01"], ["연결 경로", "사내포털 API → db-ip-01", "구성 정보 · 09-30"]],
+        others: { total: 5, done: 4, appr: 1, req: 0, rej: 0, doneDays: 5, donePatch: "PostgreSQL 15.8 적용", rows: [["db-hr-01", "임직원 HR", "인프라운영2팀", "appr", "~2026-11-15", "DB 점검 창 대기"]], trend: "대부분 <b>조치 완료</b>된 건입니다. 재탐지는 이미지 롤백·재배포가 원인인 경우가 많습니다." },
+        fix: { kind: "CVE", main: "PostgreSQL <b>15.8 이상</b> · 재배포 이미지에 패치 반영 여부 확인", tmp: "임시 완화: 비관리자 계정의 확장 생성 권한 제거", link: "스캐너 해결책 원문", together: [] },
+        deep: "9월 10일 조치 완료로 닫혔는데 28일 스캔에서 같은 버전이 다시 검출됐습니다. 배포 이미지에 패치가 반영되지 않았을 가능성이 큽니다. 이미지부터 확인하면 재발을 막을 수 있습니다." }
+    ];
+    /* 내 예외·유예 (자산 × 취약점) */
+    var X = [
+      { id: "x1", asset: "web-prd-01", pid: "p1", kind: "유예", st: "rej", stLabel: "반려", sys: "고객포털", submitted: "2026-09-03", reviewer: "보안팀 한○○", expires: "—", why: "KEV 등재로 추가 유예 불가. 10월 정기 점검 시 패치 적용 요망",
+        history: [["2026-06-01", "유예 신청", "", ""], ["2026-06-05", "승인", "appr", "90일 · 사유: 정기 점검 일정"], ["2026-09-03", "연장 신청", "", ""], ["2026-09-20", "반려", "rej", ""]] },
+      { id: "x2", asset: "was-prd-03", pid: "p3", kind: "유예", st: "exp", stLabel: "만료 임박", sys: "사내포털", submitted: "2026-07-01", reviewer: "보안팀 오○○", expires: "2026-10-05", why: "", history: [["2026-07-01", "유예 신청", "", ""], ["2026-07-04", "승인", "appr", "90일 · 사유: 릴리스 일정 연계"]] },
+      { id: "x3", asset: "was-prd-02", pid: "p3", kind: "유예", st: "appr", stLabel: "승인", sys: "사내포털", submitted: "2026-09-10", reviewer: "보안팀 오○○", expires: "2026-12-31", why: "", history: [["2026-09-10", "유예 신청", "", ""], ["2026-09-14", "승인", "appr", "~12-31 · 사유: 릴리스 일정 연계"]] },
+      { id: "x4", asset: "web-prd-02", pid: "p2", kind: "예외", st: "rev", stLabel: "검토 중", sys: "고객포털", submitted: "2026-09-29", reviewer: "보안팀 한○○", expires: "—", why: "", history: [["2026-09-29", "예외 신청", "rev", "사유: 벤더 유지보수 계정 필요"]] },
+      { id: "x5", asset: "sg-pay-bastion", pid: "p8", kind: "예외", st: "rev", stLabel: "검토 중", sys: "결제", submitted: "2026-09-30", reviewer: "보안팀 오○○", expires: "—", why: "", history: [["2026-09-30", "예외 신청", "rev", "사유: 협력사 원격 작업"]] },
+      { id: "x6", asset: "app-prd-05", pid: "p5", kind: "예외", st: "appr", stLabel: "승인", sys: "사내포털", submitted: "2026-03-20", reviewer: "보안팀 한○○", expires: "2027-03-31", why: "", history: [["2026-03-20", "예외 신청", "", ""], ["2026-03-25", "승인", "appr", "~27-03-31 · 사유: SSO 연동"]] },
+      { id: "x7", asset: "web-prd-04", pid: null, vid: "CVE-2026-19821", vtype: "CVE", kev: true, kind: "유예", st: "appr", stLabel: "승인", recheck: "유예 후 KEV 등재 (09-25)", sys: "고객포털", submitted: "2026-09-01", reviewer: "보안팀 한○○", expires: "2026-10-15", why: "", history: [["2026-09-01", "유예 신청", "", ""], ["2026-09-04", "승인", "appr", "~10-15 · 사유: 추석 연휴 무중단 기간"], ["2026-09-25", "KEV 등재 → 재검토 필요", "rej", ""]] },
+      { id: "x8", asset: "db-ip-01", pid: null, vid: "CVE-2025-40123", vtype: "CVE", kev: false, kind: "유예", st: "done", stLabel: "종료(만료)", sys: "사내포털", submitted: "2026-05-20", reviewer: "보안팀 오○○", expires: "2026-08-31", why: "", history: [["2026-05-20", "유예 신청", "", ""], ["2026-05-25", "승인", "appr", "~08-31"], ["2026-08-31", "만료", "", ""]] }
+    ];
+    /* 기존 목록 (취약점 단위) — 우선 확인 외 일반 행 포함 */
+    var L = {
+      "Compute|CVE": [
+        ["p1", "CVE-2026-21412", "OpenSSH 9.x 인증 우회", 4, 9.8, 3, "고객포털", "2026-09-26", "2026-10-04", "open"],
+        ["", "CVE-2026-5561", "Samba 4.19 인증 우회", 3, 7.8, 1, "사내포털", "2026-09-20", "2026-10-18", "open"],
+        ["p4", "CVE-2026-1892", "nginx 1.25 HTTP/2 메모리 손상", 3, 7.5, 2, "결제", "2026-09-29", "2026-10-06", "prog"],
+        ["p3", "CVE-2026-30512", "Apache Tomcat 10.1 원격 코드 실행", 4, 9.1, 5, "사내포털", "2026-09-17", "2026-10-15", "appr"],
+        ["", "CVE-2026-11023", "Jenkins 2.4xx 스크립트 콘솔 우회", 3, 8.1, 1, "사내포털", "2026-09-11", "2026-10-25", "open"],
+        ["p9", "CVE-2026-0456", "PostgreSQL 15 권한 상승", 3, 8.8, 1, "사내포털", "2026-09-28", "2026-10-15", "open"],
+        ["", "CVE-2025-60412", "OpenSSL 3.x 인증서 검증 우회", 2, 6.5, 4, "결제", "2026-08-30", "2026-10-30", "prog"],
+        ["", "CVE-2026-19821", "Apache httpd 2.4 요청 스머글링", 3, 7.5, 1, "고객포털", "2026-08-28", "2026-10-15", "appr"],
+        ["", "CVE-2025-48734", "Log4j 2.x 구성 취약점", 2, 5.9, 2, "사내포털", "2026-08-15", "2026-11-14", "open"],
+        ["", "CVE-2026-2109", "Apache Spark 3.5 원격 코드 실행", 3, 8.6, 1, "결제", "2026-09-05", "2026-10-19", "open"]
+      ],
+      "Compute|CCE": [
+        ["p2", "CCE-LNX-011", "원격 root SSH 접속 허용", 3, null, 1, "고객포털", "2026-09-20", "2026-10-11", "rev"],
+        ["p5", "CCE-LNX-034", "패스워드 복잡도·만료 미설정", 2, null, 4, "사내포털", "2026-09-10", "2026-10-22", "appr"],
+        ["", "CCE-LNX-052", "sudo NOPASSWD ALL 부여", 2, null, 1, "사내포털", "2026-09-10", "2026-10-22", "open"],
+        ["", "CCE-LNX-020", "불필요 서비스 활성화(telnet)", 1, null, 2, "결제", "2026-08-20", "2026-11-19", "open"]
+      ],
+      "Cloud|CVE": [
+        ["p6", "CVE-2026-27890", "ingress-nginx 컨트롤러 설정 주입", 4, 9.8, 1, "결제", "2026-09-27", "2026-10-04", "open"],
+        ["", "CVE-2026-37712", "Grafana 10.x 인증 우회", 3, 7.2, 1, "사내포털", "2026-09-15", "2026-10-29", "open"]
+      ],
+      "Cloud|CCE": [
+        ["p7", "CCE-AWS-S3-003", "S3 버킷 퍼블릭 읽기 허용", 4, null, 1, "고객포털", "2026-09-30", "2026-10-07", "open"],
+        ["p8", "CCE-AWS-SG-007", "보안그룹 0.0.0.0/0 → 22 허용", 3, null, 2, "결제", "2026-09-21", "2026-10-11", "rev"],
+        ["", "CCE-AWS-IAM-012", "IAM 사용자 AdministratorAccess 직접 부여", 2, null, 1, "결제", "2026-09-05", "2026-11-04", "open"]
+      ]
+    };
+
+    /* ============================================================
+     * 상태 · 유틸
+     * ============================================================ */
+    var $ = function (id) { return document.getElementById(id); };
+    var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    var fmt = function (n) { return Number(n).toLocaleString("ko-KR"); };
+    var byId = function (arr, id) { return arr.filter(function (x) { return x.id === id; })[0]; };
+    var ST_LABEL = { open: "미조치", prog: "조치 중", appr: "예외·유예 승인", rev: "예외·유예 검토 중", rej: "반려", exp: "만료 임박", done: "조치 완료", req: "신청 중" };
+    var GRADE = { 4: "긴급", 3: "높음", 2: "중간", 1: "낮음" };
+    var SPARK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c.5 0 .9.4 1 .9l.9 5.1 4.4-2.8c.4-.3 1-.2 1.3.2.3.4.2 1-.2 1.3L15.6 10l4.8 3.1c.4.3.5.9.2 1.3-.3.4-.9.5-1.3.2l-4.4-2.8-.9 5.1c-.1.5-.5.9-1 .9s-.9-.4-1-.9l-.9-5.1-4.4 2.8c-.4.3-1 .2-1.3-.2-.3-.4-.2-1 .2-1.3L8.4 10 3.6 6.9c-.4-.3-.5-.9-.2-1.3.3-.4.9-.5 1.3-.2l4.4 2.8.9-5.1c.1-.5.5-.9 1-.9z"/></svg>';
+    var CHEV = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+    var state = { infra: "Compute", type: "CVE", sys: "", scope: "tab", sec: "prio", sel: null, selAsset: null, back: [], mineSeg: "need", sort: "ai", hideAppr: false, reRes: {}, opinion: null, assetEdit: null, confirmed: {}, demoNoNeed: false };
+    var toastT;
+    function toast(msg) { var t = $("toast"); t.innerHTML = msg; t.classList.add("open"); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove("open"); }, 3200); }
+    function dd(n) { return n <= 3 ? '<span class="dd urgent">D-' + n + "</span>" : n <= 7 ? '<span class="dd soon">D-' + n + "</span>" : '<span class="dd">D-' + n + "</span>"; }
+    function stChip(st, label) { return '<span class="st ' + st + '">' + esc(label || ST_LABEL[st]) + "</span>"; }
+    function badge(b) { return b === "kev" ? '<span class="bd kev">KEV</span>' : b === "comb" ? '<span class="bd comb">결합 위험</span>' : b === "re" ? '<span class="bd re">재탐지</span>' : b === "info" ? '<span class="bd info">자산 정보 이슈</span>' : ""; }
+    function key() { return state.infra + "|" + state.type; }
+    function inTab(p) { return p.infra === state.infra && p.type === state.type; }
+    function inSys(p) { return !state.sys || p.sys === state.sys; }
+    function scoped(list) { return list.filter(function (p) { return (state.scope === "all" || inTab(p)) && inSys(p); }); }
+    function needItems() { return state.demoNoNeed ? [] : X.filter(function (x) { return x.st === "rej" || x.st === "exp"; }); }
+    function vidOf(x) { return x.pid ? byId(P, x.pid).vid : x.vid; }
+    function vtypeOf(x) { return x.pid ? byId(P, x.pid).type : x.vtype; }
+    function kevOf(x) { return x.pid ? byId(P, x.pid).kev : x.kev; }
+    function myAgg(p) { var m = {}; p.assets.forEach(function (a) { if (!a.exc) return; var s = a.exc.st; m[s] = (m[s] || 0) + 1; }); return m; }
+    function aggText(m, order) { var parts = []; order.forEach(function (o) { if (m[o[0]]) parts.push('<span class="' + (o[2] || "") + '">' + o[1] + " " + m[o[0]] + "</span>"); }); return parts.length ? parts.join(" · ") : "-"; }
+
+    /* ============================================================
+     * 기존 목록 렌더
+     * ============================================================ */
+    function renderList() {
+      var rows = L[key()].filter(function (r) { return !state.sys || r[6] === state.sys; });
+      $("nCompute").textContent = MY_TOTAL["Compute|CVE"] + MY_TOTAL["Compute|CCE"]; $("nCloud").textContent = MY_TOTAL["Cloud|CVE"] + MY_TOTAL["Cloud|CCE"];
+      $("nCCE").textContent = MY_TOTAL[state.infra + "|CCE"]; $("nCVE").textContent = MY_TOTAL[state.infra + "|CVE"];
+      $("listCnt").innerHTML = "총 <b>" + fmt(MY_TOTAL[key()]) + "</b>건 중 " + rows.length + "건 표시";
+      $("pagerInfo").textContent = "1 / " + Math.ceil(MY_TOTAL[key()] / 10) + " 페이지";
+      $("listBody").innerHTML = rows.map(function (r) {
+        var pid = r[0], selected = state.sel && pid === state.sel;
+        return '<tr data-vid="' + esc(r[1]) + '" data-pid="' + pid + '" class="' + (selected ? "sel" : "") + '">' +
+          '<td><div class="vid">' + esc(r[1]) + "</div><div class=\"vname\">" + esc(r[2]) + "</div></td>" +
+          '<td><span class="grade g' + r[3] + '">' + GRADE[r[3]] + "</span></td>" +
+          '<td class="mono">' + (r[4] == null ? '<span style="color:var(--ink-faint)">—</span>' : r[4]) + "</td>" +
+          '<td class="mono">' + r[5] + "대</td><td>" + esc(r[6]) + '</td><td class="mono">' + r[7] + '</td><td class="mono">' + r[8] + "</td><td>" + stChip(r[9]) + "</td></tr>";
+      }).join("");
+    }
+
+    /* ============================================================
+     * 패널 — 헤더·배지
+     * ============================================================ */
+    function renderHeader() {
+      var need = needItems().length, prioAll = P.filter(inSys).length;
+      $("fabBadge").innerHTML = (prioAll ? '<span title="우선 확인 ' + prioAll + '">우선 ' + prioAll + "</span>" : "") + (need ? '<span class="need" title="조치 필요 ' + need + '">조치 ' + need + "</span>" : "");
+      $("ctxLine").innerHTML = (state.scope === "all" ? "내 담당 전체" : state.infra + '<span class="sep">·</span>' + state.type) + '<span class="sep">·</span>내 담당' + (state.sys ? '<span class="sep">·</span>' + esc(state.sys) : "");
+      document.querySelectorAll("#segScope button").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-scope") === state.scope); });
+      $("nPrio").textContent = scoped(P).length;
+      var nm = $("nMine"); nm.textContent = X.length; nm.className = "n" + (need ? " need" : "");
+      var ns = $("nSel"); ns.hidden = !state.sel; if (state.sel) ns.textContent = byId(P, state.sel).vid.split("-").slice(-1)[0];
+      document.querySelectorAll(".ptab").forEach(function (t) { t.setAttribute("aria-selected", String(t.getAttribute("data-sec") === state.sec)); });
+    }
+
+    /* ============================================================
+     * 섹션 1 — 우선 확인
+     * ============================================================ */
+    function renderPrio() {
+      var list = scoped(P), total = state.scope === "all" ? Object.keys(MY_TOTAL).reduce(function (s, k) { return s + MY_TOTAL[k]; }, 0) : MY_TOTAL[key()];
+      var cve = list.filter(function (p) { return p.type === "CVE"; }).length, kev = list.filter(function (p) { return p.kev; }).length, soon = list.filter(function (p) { return p.dday <= 3; }).length;
+      var mine = {}; X.forEach(function (x) { mine[x.st] = (mine[x.st] || 0) + 1; });
+      var need = needItems().length;
+      var html = '<div class="sum"><div class="big">내 담당 탐지 <b>' + fmt(total) + '</b> <span class="arr">→</span> 우선 확인 <b class="hi">' + list.length + "</b>건</div>" +
+        '<div class="line">CVE ' + cve + " · CCE " + (list.length - cve) + (kev ? ' · <span class="kev">KEV ' + kev + "</span>" : "") + (soon ? " · 기한 임박 " + soon : "") + "</div>" +
+        '<div class="mine">내 예외·유예: <button type="button" data-goto="mine">' + (state.demoNoNeed ? "" : '<span class="need">반려 ' + (mine.rej || 0) + "</span> · ") + "검토 중 " + (mine.rev || 0) + (state.demoNoNeed ? "" : ' · <span class="need">만료 임박 ' + (mine.exp || 0) + "</span>") + " ▸</button>" + (need ? '<span class="need" style="margin-left:auto">조치 필요 ' + need + "</span>" : "") + "</div></div>";
+      html += '<div class="sec-ctl">정렬 <select class="select xs" id="prioSort"><option value="ai"' + (state.sort === "ai" ? " selected" : "") + '>AI 우선순위</option><option value="due"' + (state.sort === "due" ? " selected" : "") + '>조치 기한순</option><option value="exc"' + (state.sort === "exc" ? " selected" : "") + '>예외·유예 상태별</option></select><div class="sp"></div><label><input type="checkbox" id="hideAppr"' + (state.hideAppr ? " checked" : "") + '> 승인 건 숨기기</label></div>';
+      if (!list.length) { html += '<div class="empty"><b>우선 확인 0 · 이상 없음</b>현재 범위에서 먼저 볼 건이 없습니다. 비어 있는 것도 확인 결과입니다.</div>'; $("pbody").innerHTML = html; return; }
+      var excRank = function (p) { var m = myAgg(p); return m.rej ? 0 : m.exp ? 1 : m.rev ? 2 : m.appr ? 3 : 4; };
+      list = list.slice().sort(function (a, b) { return state.sort === "due" ? a.dday - b.dday : state.sort === "exc" ? excRank(a) - excRank(b) || a.rank - b.rank : a.rank - b.rank; });
+      html += list.map(function (p, i) {
+        var m = myAgg(p), allAppr = p.assets.length && p.assets.every(function (a) { return a.exc && a.exc.st === "appr"; });
+        if (state.hideAppr && allAppr) return "";
+        var re = state.reRes[p.id];
+        return '<div class="pc' + (state.sel === p.id ? " sel" : "") + (re && re.changed ? " off" : "") + '" data-pick="' + p.id + '">' +
+          '<div class="l1"><span class="no">' + (i + 1) + '</span><span class="vt">' + p.type + '</span><span class="vid">' + esc(p.vid) + '</span><span class="vname">' + esc(p.name) + "</span>" + p.badges.map(badge).join("") + (re ? '<span class="bd ai">의견 반영</span>' : "") + '<span class="sys">' + esc(p.sys) + " · <b>" + p.assets.length + "대</b></span></div>" +
+          '<div class="l2"><span class="ai-say">' + esc(p.reason) + '</span><span class="conf">확신 ' + p.conf + "</span>" + dd(p.dday) + "</div>" +
+          '<div class="l3"><span class="k">내</span><span class="v">' + aggText(m, [["rej", "반려", "need"], ["exp", "만료 임박", "soon"], ["rev", "검토 중"], ["appr", "승인"]]) + '</span><span class="bar"></span><span class="k">다른 담당자</span><span class="v">' + aggText({ req: p.others.req, appr: p.others.appr, rej: p.others.rej }, [["req", "신청 중"], ["appr", "승인"], ["rej", "반려"]]) + "</span></div></div>";
+      }).join("");
+      $("pbody").innerHTML = html;
+    }
+
+    /* ============================================================
+     * 섹션 2 — 선택 건 (①~⑤)
+     * ============================================================ */
+    function renderSel() {
+      var p = state.sel && byId(P, state.sel);
+      if (!p) { $("pbody").innerHTML = '<div class="empty"><b>선택된 건이 없습니다</b>왼쪽 목록의 행이나 우선 확인 카드를 선택하세요.</div>'; return; }
+      var aSel = state.selAsset, assets = aSel ? p.assets.filter(function (a) { return a.a === aSel; }) : p.assets;
+      var minD = Math.min.apply(null, assets.map(function (a) { return a.dday; }));
+      var html = '<div class="sel-head">' + (state.back.length ? '<button class="back" type="button" data-back><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>뒤로</button>' : "") +
+        '<span class="vt bd">' + p.type + '</span><span class="vid">' + esc(p.vid) + '</span><span class="vname">' + esc(p.name) + "</span>" + p.badges.map(badge).join("") +
+        '<span class="scope">' + (aSel ? "자산 기준: <b class=\"mono\">" + esc(aSel) + '</b><button class="x" type="button" data-clear-asset aria-label="자산 기준 해제">×</button>' : "취약점 기준 · 내 자산 " + p.assets.length + "대") + '</span><span class="pop-wrap"><button class="btn xs" type="button" data-op-menu aria-haspopup="true">판단 의견 ▾</button></span></div>';
+      /* 재분석 결과 배너 */
+      var re = state.reRes[p.id];
+      if (re) html += '<div class="re-res" style="margin:0 0 10px"><span class="tag ' + (re.changed ? "chg" : "keep") + '">의견 반영</span><b>' + (re.changed ? "우선순위 조정됨" : "우선순위 유지됨") + "</b> — " + re.text + "<small>" + re.scope + " · 다음 배치까지 이 결과가 배치 결과보다 우선합니다</small></div>";
+      /* ① 왜 급한가 */
+      html += '<details class="blk" open><summary><span class="no">1</span>왜 급한가<span class="q">Q1</span>' + CHEV + '</summary><div class="bb">' +
+        '<ul class="fac">' + p.factors.map(function (f) { return '<li><span class="k">' + esc(f[0]) + "</span><span>" + esc(f[1]) + '</span><span class="src">' + esc(f[2]) + "</span></li>"; }).join("") + "</ul>" +
+        '<div class="due' + (minD <= 3 ? "" : minD <= 7 ? " soon" : " ok") + '">조치 기한 <span class="mono">D-' + minD + "</span><span>" + esc(p.dueRule) + "</span></div>";
+      if (!aSel && p.assets.length > 1) {
+        html += '<table class="mini"><thead><tr><th>내 자산</th><th>노출</th><th>판단 요인 차이</th><th>기한</th></tr></thead><tbody>' + p.assets.map(function (a) { return "<tr><td class=\"mono\">" + esc(a.a) + "</td><td>" + a.exposure + "</td><td>" + esc(a.why) + "</td><td>" + dd(a.dday) + "</td></tr>"; }).join("") + "</tbody></table>";
+      }
+      html += '<div style="margin-top:8px"><button class="btn xs" type="button" data-deep="' + p.id + '">근거 자세히 <span class="bd ai" style="margin-left:2px">AI</span></button></div><div id="deepBox"></div></div></details>';
+      /* ② 내 자산 */
+      html += '<details class="blk" open><summary><span class="no">2</span>내 자산<span class="q">자산 × 취약점 실제 상태</span>' + CHEV + '</summary><div class="bb">' +
+        '<table class="mini"><thead><tr><th><input type="checkbox" id="chkAll" aria-label="전체 선택"></th><th>자산</th><th>인프라</th><th>판단 근거</th><th>기한</th><th>예외·유예</th><th>액션</th></tr></thead><tbody>' +
+        p.assets.map(function (a) {
+          var ed = state.assetEdit && state.assetEdit.asset === a.a && state.assetEdit.pid === p.id;
+          var exc = a.exc ? stChip(a.exc.st, a.exc.label) : '<span style="color:var(--ink-faint)">없음</span>';
+          var acts = a.exc && a.exc.st === "rej" ? '<button class="btn xs" type="button" data-stub="보완하여 재신청 — ' + esc(a.a) + '">보완하여 재신청</button><button class="btn xs" type="button" data-stub="조치 계획 — ' + esc(a.a) + '">조치 계획</button>' :
+            '<button class="btn xs" type="button" data-stub="예외/유예 신청 — ' + esc(a.a) + ' × ' + esc(p.vid) + '">예외/유예 신청</button><button class="btn xs" type="button" data-stub="조치 계획 — ' + esc(a.a) + '">조치 계획</button>';
+          acts += '<button class="btn xs ghost" type="button" data-asset-edit="' + esc(a.a) + '" title="자산 정보 수정">정보 수정</button><button class="btn xs ghost" type="button" data-asset-op="' + esc(a.a) + '" title="이 자산 × 이 취약점 판단 의견">의견</button>';
+          return '<tr class="clickable' + (aSel === a.a ? " sel" : "") + '" data-asset="' + esc(a.a) + '"><td><input type="checkbox" class="chkA" data-a="' + esc(a.a) + '" aria-label="' + esc(a.a) + ' 선택"></td><td class="mono">' + esc(a.a) + "</td><td>" + a.infra + "</td><td>" + esc(a.why) + "</td><td>" + dd(a.dday) + "</td><td>" + exc + '</td><td><div class="acts">' + acts + "</div></td></tr>" +
+            (ed ? '<tr><td colspan="7">' + assetEditBox(p, a) + "</td></tr>" : "");
+        }).join("") + "</tbody></table>" +
+        '<div style="margin-top:8px;display:flex;gap:6px;align-items:center"><button class="btn xs primary" type="button" id="bulkApply" disabled>선택 자산 일괄 신청</button><span style="font-size:11.5px;color:var(--ink-faint)">자산을 클릭하면 ③ 이력이 그 자산 기준으로 바뀝니다</span></div>' +
+        (state.opinion && state.opinion.pid === p.id && state.opinion.asset ? opinionBox(p, state.opinion) : "") + "</div></details>";
+      /* ③ 내 예외·유예 이력 */
+      var hist = X.filter(function (x) { return x.pid === p.id && (!aSel || x.asset === aSel); });
+      html += '<details class="blk" open><summary><span class="no">3</span>내 예외·유예 이력<span class="q">Q2 · Q3</span>' + CHEV + '</summary><div class="bb">';
+      if (!hist.length) html += '<div style="color:var(--ink-faint)">' + (aSel ? esc(aSel) + " × " + esc(p.vid) : "이 취약점") + " 에 대한 내 예외·유예 신청이 없습니다.</div>";
+      hist.forEach(function (x) {
+        html += '<div class="tl-asset">' + esc(x.asset) + stChip(x.st, x.stLabel) + "</div><ul class=\"tl\">" + x.history.map(function (h) {
+          var li = '<li class="' + h[2] + '"><span class="d">' + h[0] + "</span>" + esc(h[1]) + (h[3] ? ' <span style="color:var(--ink-faint)">(' + esc(h[3]) + ")</span>" : "");
+          if (h[2] === "rej" && x.why) li += '<div class="why">반려 사유: "' + esc(x.why) + '"<small>검토자: ' + esc(x.reviewer) + '</small></div><div class="ra"><button class="btn xs primary" type="button" data-stub="보완하여 재신청 — ' + esc(x.asset) + '">보완하여 재신청</button><button class="btn xs" type="button" data-stub="조치 계획 등록 — ' + esc(x.asset) + '">조치 계획 등록</button></div>';
+          if (h[2] === "rej" && !x.why) li += '<div class="why" style="background:var(--orange-soft);color:var(--orange)">' + esc(x.recheck || "") + " — 재검토 필요</div>";
+          return li + "</li>";
+        }).join("") + "</ul>";
+        var otherX = X.filter(function (o) { return o.asset === x.asset && o.id !== x.id; });
+        if (otherX.length) html += '<details class="fold"><summary>같은 자산의 다른 취약점 예외·유예 ' + otherX.length + "건 ▸</summary><ul class=\"tl\" style=\"margin-top:6px\">" + otherX.map(function (o) { return '<li class="' + o.st + '"><span class="d">' + o.submitted + '</span><span class="mono">' + esc(vidOf(o)) + "</span> " + o.kind + " · " + stChip(o.st, o.stLabel) + (o.expires !== "—" ? ' <span style="color:var(--ink-faint)">~' + o.expires + "</span>" : "") + "</li>"; }).join("") + "</ul></details>";
+      });
+      html += "</div></details>";
+      /* ④ 다른 자산 처리 현황 */
+      var o = p.others;
+      html += '<details class="blk" open><summary><span class="no">4</span>다른 자산 처리 현황<span class="q">Q4 · 같은 취약점, 내 자산 제외</span>' + CHEV + '</summary><div class="bb">' +
+        '<div style="font-weight:700">같은 취약점 ' + o.total + "대 — 조치 완료 " + o.done + " · 승인 " + o.appr + " · 신청 중 " + o.req + " · 반려 " + o.rej + "</div>" +
+        '<table class="mini"><thead><tr><th>자산</th><th>정보시스템</th><th>담당 조직</th><th>상태</th><th>기간·일자</th><th>사유 요약</th></tr></thead><tbody>' +
+        o.rows.map(function (r) { return '<tr><td class="mono">' + esc(r[0]) + "</td><td>" + esc(r[1]) + "</td><td>" + esc(r[2]) + "</td><td>" + stChip(r[3]) + '</td><td class="mono">' + esc(r[4]) + "</td><td>" + esc(r[5]) + "</td></tr>"; }).join("") +
+        '<tr><td class="mono" style="color:var(--ink-faint)">(' + o.done + "대)</td><td></td><td></td><td>" + stChip("done") + '</td><td>평균 ' + o.doneDays + "일</td><td>" + esc(o.donePatch) + "</td></tr></tbody></table>" +
+        '<div class="ai-box" id="trendBox"><span class="sp">' + SPARK + '</span><div><div class="lbl">AI 경향 해석 <span class="rt">· 실시간</span></div><div class="skel" style="width:90%"></div><div class="skel" style="width:60%"></div></div></div>' +
+        '<div style="font-size:11px;color:var(--ink-faint);margin-top:6px">담당자명·상세 사유 공개 범위는 고객사 정책 (기본안: 담당 조직 + 사유 요약)</div></div></details>';
+      /* ⑤ 어떻게 조치하나 */
+      var f = p.fix;
+      html += '<details class="blk" open><summary><span class="no">5</span>어떻게 조치하나<span class="q">' + (f.kind === "CVE" ? "패치" : "설정 변경") + "</span>" + CHEV + '</summary><div class="bb">' +
+        "<div>" + f.main + "</div><div style=\"color:var(--ink-soft);margin-top:3px\">" + f.tmp + '</div><div style="margin-top:6px"><button class="btn xs" type="button" data-stub="' + esc(f.link) + '">' + esc(f.link) + " ↗</button></div>";
+      if (f.together.length) html += '<div style="margin-top:8px;font-size:12px"><b>함께 조치 가능</b> — 같은 자산의 다른 우선 확인 건: ' + f.together.map(function (tid) { var t = byId(P, tid); return '<button class="btn xs" type="button" data-nav="' + tid + '"><span class="vt bd">' + t.type + "</span>" + esc(t.vid) + " " + esc(t.name) + "</button>"; }).join(" ") + "</div>";
+      html += "</div></details>";
+      /* 판단 의견 (취약점 단위) */
+      if (state.opinion && state.opinion.pid === p.id && !state.opinion.asset) html += opinionBox(p, state.opinion);
+      $("pbody").innerHTML = html;
+      /* ④ 경향 해석 — 실시간 호출 모사 */
+      setTimeout(function () { var tb = $("trendBox"); if (!tb || state.sec !== "sel" || state.sel !== p.id) return; tb.querySelector("div").innerHTML = '<div class="lbl">AI 경향 해석 <span class="rt">· 실시간 · 0.8s</span></div>' + p.others.trend; }, 700);
+    }
+    /* 자산 정보 수정 — 트리거: 그 자산 × 그 자산의 모든 취약점 재분석 */
+    function assetEditBox(p, a) {
+      var e = state.assetEdit;
+      return '<div class="op-box"><div class="t">자산 정보 수정 — <span class="mono">' + esc(a.a) + '</span></div><div class="scope">바꾼 값은 자산 인벤토리에 반영 요청되고, 그 자리에 [이 건 재분석]이 나타납니다 · 재분석 대상: <b>' + esc(a.a) + " × 이 자산의 모든 취약점 " + (5 + a.a.length % 4) + "건</b></div>" +
+        '<div class="row"><label style="font-size:12.5px">외부 노출 <select class="select xs" data-edit="exposure"><option' + (e.exposure === "외부" ? " selected" : "") + '>외부</option><option' + (e.exposure === "내부" ? " selected" : "") + '>내부</option></select></label><label style="font-size:12.5px">SW 버전 <input class="input" style="height:26px;width:120px;font-size:12px" data-edit="ver" value="' + esc(e.ver) + '"></label><div class="sp"></div><button class="btn xs ghost" type="button" data-edit-cancel>취소</button>' +
+        (e.dirty ? '<button class="btn xs re-btn" type="button" data-re="asset" data-a="' + esc(a.a) + '">이 건 재분석</button>' : "") + "</div>" + (e.running ? '<div class="re-run"><span class="spin"></span>재분석 중 — 규칙·그래프 재산정 → 근거 문장 생성 (내 담당 범위 · 수 초)</div>' : "") + (e.result ? '<div class="re-res">' + e.result + "</div>" : "") + "</div>";
+    }
+    /* 판단 의견 박스 — 트리거: 취약점 행(취약점 × 내 자산 전부) / 자산 행(자산 × 취약점 1건) */
+    function opinionBox(p, op) {
+      var scope = op.asset ? '<b>' + esc(op.asset) + " × " + esc(p.vid) + "</b> 1건" : "<b>" + esc(p.vid) + "</b> × 내 담당 자산 " + p.assets.length + "대";
+      var toE = op.kind === "담당 자산 아님" || op.kind === "자산 정보 틀림";
+      var h = '<div class="op-box" id="opBox"><div class="t">판단 의견: ' + esc(op.kind) + '<span class="bd info">' + (op.asset ? "자산 행" : "취약점 행") + '</span><div style="margin-left:auto"><button class="btn xs ghost" type="button" data-op-cancel>닫기</button></div></div>' +
+        '<div class="scope">' + (toE ? "보안팀 화면 <b>E(자산 정보 이슈)</b>로 전달됩니다 · 재분석 없음" : "재분석 대상: " + scope + " · 내 담당 범위를 넘지 않습니다") + "</div>" +
+        '<textarea placeholder="사유를 입력하세요 (예: 해당 모듈 미사용 · 격리 대역 · 이미 패치됨)" data-op-reason>' + esc(op.reason || "") + "</textarea>" +
+        '<div class="row"><div class="sp"></div>' + (toE ? '<button class="btn xs primary" type="button" data-op-send>보안팀에 전달</button>' : '<button class="btn xs" type="button" data-op-save>의견만 저장</button><button class="btn xs re-btn" type="button" data-re="opinion">이 건 재분석</button>') + "</div>";
+      if (op.running) h += '<div class="re-run"><span class="spin"></span>재분석 중 — 규칙·그래프 재산정 → 근거 문장 생성 (' + scope.replace(/<[^>]+>/g, "") + ")</div>";
+      if (op.sentE) h += '<div class="note-e">보안팀 자산 정보 이슈(E)로 전달됐습니다 — 담당 변경·자산 정보 수정은 보안팀·자산 관리 결정 후 반영됩니다.</div>';
+      return h + "</div>";
+    }
+
+    /* ============================================================
+     * 섹션 3 — 내 예외·유예
+     * ============================================================ */
+    function renderMine() {
+      var segs = [["need", "조치 필요", function (x) { return x.st === "rej" || x.st === "exp"; }], ["rev", "검토 중", function (x) { return x.st === "rev"; }], ["appr", "승인(유효)", function (x) { return x.st === "appr"; }], ["exp", "만료 임박", function (x) { return x.st === "exp"; }], ["done", "종료", function (x) { return x.st === "done"; }]];
+      var cur = segs.filter(function (s) { return s[0] === state.mineSeg; })[0];
+      var list = X.filter(function (x) { return (state.demoNoNeed && cur[0] === "need") ? false : cur[2](x); });
+      var html = '<div class="seg" style="margin-bottom:10px;flex-wrap:wrap">' + segs.map(function (s) { var n = X.filter(function (x) { return (state.demoNoNeed && s[0] === "need") ? false : s[2](x); }).length; return '<button type="button" class="' + (s[0] === "need" ? "need " : "") + (state.mineSeg === s[0] ? "on" : "") + '" data-mseg="' + s[0] + '">' + s[1] + '<span class="n">' + n + "</span></button>"; }).join("") + "</div>";
+      if (!list.length) html += '<div class="empty"><b>' + cur[1] + " 0건</b>해당 상태의 신청이 없습니다.</div>";
+      html += list.map(function (x) {
+        var vid = vidOf(x), vt = vtypeOf(x), kev = kevOf(x);
+        return '<div class="xc' + (x.st === "rej" || x.st === "exp" ? " need" : "") + '" data-xpick="' + x.id + '"><div class="l1"><span class="asset">' + esc(x.asset) + '</span><span class="vt bd">' + vt + '</span><span class="vid">' + esc(vid) + "</span>" + (kev ? badge("kev") : "") + (x.recheck ? '<span class="bd re">재검토 필요</span>' : "") + '<span style="margin-left:auto">' + stChip(x.st, x.stLabel) + "</span></div>" +
+          '<div class="l2"><span>' + esc(x.sys) + "</span><span><b>구분</b> " + x.kind + "</span><span><b>제출</b> " + x.submitted + "</span><span><b>검토자</b> " + esc(x.reviewer) + "</span><span><b>만료</b> " + x.expires + "</span></div>" +
+          (x.why ? '<div class="why">반려 사유: ' + esc(x.why) + "</div>" : x.recheck ? '<div class="why" style="color:var(--orange)">' + esc(x.recheck) + " — 승인 당시 전제가 바뀌었습니다 (보안팀 F 카드와 같은 판단)</div>" : x.st === "exp" ? '<div class="why" style="color:var(--orange)">만료 ' + x.expires + " — 연장보다 패치 반영 권고</div>" : "") + "</div>";
+      }).join("");
+      $("pbody").innerHTML = html;
+    }
+
+    function renderPanel() { renderHeader(); if (state.sec === "prio") renderPrio(); else if (state.sec === "sel") renderSel(); else renderMine(); $("pbody").scrollTop = 0; }
+    function renderAll() { renderList(); renderPanel(); }
+
+    /* ============================================================
+     * 패널 열기/닫기 · 자동 열림 (4-3)
+     * ============================================================ */
+    function openPanel(sec) { document.body.classList.add("panel-open"); $("aiFab").setAttribute("aria-expanded", "true"); if (sec) state.sec = sec; renderPanel(); }
+    function closePanel() { document.body.classList.remove("panel-open"); $("aiFab").setAttribute("aria-expanded", "false"); try { sessionStorage.setItem("ispm-ai-closed", "1"); } catch (e) {} }
+    function autoOpen() {
+      var pref = (document.querySelector('input[name="autoOpen"]:checked') || {}).value || "need", closed = false, first = true;
+      try { closed = sessionStorage.getItem("ispm-ai-closed") === "1"; first = !sessionStorage.getItem("ispm-ai-seen"); sessionStorage.setItem("ispm-ai-seen", "1"); } catch (e) {}
+      if (pref === "manual" || closed) return;
+      var need = needItems().length;
+      if (need) { state.mineSeg = "need"; openPanel("mine"); return; }            /* 조치 필요 건 있음 → 내 예외·유예 '조치 필요' */
+      if (first || pref === "always") { openPanel("prio"); }                      /* 세션 첫 진입 → 우선 확인 */
+    }
+
+    /* ============================================================
+     * 선택 연동 — 목록 행 ↔ 패널 카드
+     * ============================================================ */
+    function select(pid, opts) {
+      opts = opts || {};
+      if (opts.push && state.sel && state.sel !== pid) state.back.push({ sel: state.sel, asset: state.selAsset });
+      if (!opts.push) state.back = [];
+      state.sel = pid; state.selAsset = opts.asset || null; state.opinion = null; state.assetEdit = null;
+      var p = byId(P, pid);
+      if (!document.body.classList.contains("panel-open")) openPanel("sel"); else { state.sec = "sel"; renderPanel(); }
+      renderList();
+      var row = document.querySelector('#listBody tr[data-pid="' + pid + '"]');
+      if (row) row.scrollIntoView({ block: "nearest", behavior: "smooth" }); else if (!inTab(p)) toast("<b>" + esc(p.vid) + "</b> — 현재 탭(" + state.infra + " · " + state.type + ") 밖의 건이라 목록 하이라이트 없이 패널만 표시합니다");
+    }
+
+    /* ============================================================
+     * 재분석 (7절) — 범위는 누른 자리로 정해진다
+     * ============================================================ */
+    function runReanalysis(p, kind, asset, done) {
+      /* === 연동 지점 === POST /oap/reanalyze { trigger, vuln, assets[] } → { changed, newRank, reason } */
+      setTimeout(function () {
+        var changed, text;
+        if (kind === "opinion") {
+          var op = state.opinion;
+          if (p.kev && (op.kind === "우선순위 낮음")) { changed = false; text = "KEV 등재·외부 노출은 담당자 의견과 무관하게 유지되는 요인입니다. 의견은 기록되어 다음 배치와 보안팀 C 카드에 전달됩니다."; }
+          else if (op.kind === "해당 없음") { changed = true; text = "입력하신 사유(" + esc((op.reason || "사유 미입력").slice(0, 30)) + ")를 반영해 " + (asset ? asset + " 1건을" : "내 자산 " + p.assets.length + "대를") + " 우선 확인에서 제외했습니다. 다른 담당자 목록에는 영향이 없습니다."; }
+          else { changed = true; text = "우선순위를 " + p.rank + "순위 → " + (p.rank + 3) + "순위로 조정했습니다. 외부 노출·연결 경로 요인은 유지되므로 조치 기한은 바뀌지 않습니다."; }
+        } else {
+          changed = state.assetEdit.exposure === "내부"; text = changed ? asset + " 의 노출 구분이 외부 → 내부로 바뀌어 이 자산의 취약점 " + (5 + asset.length % 4) + "건 중 2건의 우선순위가 내려갔습니다. 인벤토리 수정 요청이 함께 접수됐습니다." : "수정한 값(" + esc(state.assetEdit.ver) + ")으로 다시 대조했지만 영향 버전 범위 안이라 판단이 유지됩니다.";
+        }
+        done(changed, text);
+      }, 1800);
+    }
+
+    /* ============================================================
+     * 이벤트
+     * ============================================================ */
+    /* 메인 탭 — 패널 열린 채로 범위만 따라간다 */
+    document.querySelectorAll(".tab[data-infra]").forEach(function (t) { t.addEventListener("click", function () { state.infra = t.getAttribute("data-infra"); document.querySelectorAll(".tab[data-infra]").forEach(function (x) { x.setAttribute("aria-selected", String(x === t)); }); renderAll(); }); });
+    document.querySelectorAll(".tab[data-type]").forEach(function (t) { t.addEventListener("click", function () { state.type = t.getAttribute("data-type"); document.querySelectorAll(".tab[data-type]").forEach(function (x) { x.setAttribute("aria-selected", String(x === t)); }); renderAll(); }); });
+    $("fSys").addEventListener("change", function () { state.sys = $("fSys").value; renderAll(); });
+    /* 목록 행 선택 → 선택 건 */
+    $("listBody").addEventListener("click", function (e) { var tr = e.target.closest("tr[data-pid]"); if (!tr) return; var pid = tr.getAttribute("data-pid"); if (!pid) { toast("<b>" + esc(tr.getAttribute("data-vid")) + "</b> — 우선 확인 대상이 아닌 건입니다. (데모: 일반 행은 AI 판단 상세를 두지 않았습니다)"); return; } select(pid); });
+    /* FAB · 닫기 · 설정 */
+    $("aiFab").addEventListener("click", function () { openPanel(); });
+    $("btnClose").addEventListener("click", closePanel);
+    $("btnSettings").addEventListener("click", function (e) { e.stopPropagation(); $("settingsMenu").hidden = !$("settingsMenu").hidden; });
+    document.addEventListener("click", function (e) { if (!e.target.closest("#settingsMenu, #btnSettings")) $("settingsMenu").hidden = true; if (!e.target.closest(".pop, [data-op-menu]")) document.querySelectorAll(".pop").forEach(function (p) { p.remove(); }); });
+    document.querySelectorAll('input[name="autoOpen"]').forEach(function (r) { r.addEventListener("change", function () { toast("자동 열림: <b>" + r.parentNode.textContent.trim() + "</b> (사용자 설정 저장)"); }); });
+    /* 범위 토글 · 섹션 탭 */
+    $("segScope").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; state.scope = b.getAttribute("data-scope"); renderPanel(); });
+    document.querySelectorAll(".ptab").forEach(function (t) { t.addEventListener("click", function () { state.sec = t.getAttribute("data-sec"); renderPanel(); }); });
+    /* 패널 본문 위임 */
+    $("pbody").addEventListener("click", function (e) {
+      var t;
+      if ((t = e.target.closest("[data-op-menu]"))) {
+        e.stopPropagation(); document.querySelectorAll(".pop").forEach(function (p) { p.remove(); });
+        var pop = document.createElement("div"); pop.className = "pop"; pop.style.bottom = "auto"; pop.style.top = "calc(100% + 6px)"; pop.style.left = "auto"; pop.style.right = "0";
+        pop.innerHTML = '<div class="ph2">판단 의견 — ' + (state.selAsset ? "자산 행: " + esc(state.selAsset) + " × 1건" : "취약점 행: 내 자산 " + byId(P, state.sel).assets.length + "대") + "</div>" + [["해당 없음", "→ [이 건 재분석]"], ["우선순위 낮음", "→ [이 건 재분석]"], ["담당 자산 아님", "→ 보안팀 E 카드 전달"], ["자산 정보 틀림", "→ 보안팀 E 카드 전달"]].map(function (o) { return '<button type="button" data-opk="' + o[0] + '">' + o[0] + '<span class="ps">' + o[1] + "</span></button>"; }).join("");
+        pop.addEventListener("click", function (ev) { var b = ev.target.closest("[data-opk]"); if (!b) return; ev.stopPropagation(); state.opinion = { pid: state.sel, asset: state.selAsset, kind: b.getAttribute("data-opk"), reason: "" }; pop.remove(); renderPanel(); var ob = $("opBox"); if (ob) ob.scrollIntoView({ block: "nearest", behavior: "smooth" }); });
+        t.parentNode.appendChild(pop); return;
+      }
+      if ((t = e.target.closest("[data-goto]"))) { state.sec = "mine"; state.mineSeg = "need"; renderPanel(); return; }
+      if ((t = e.target.closest("[data-pick]"))) { select(t.getAttribute("data-pick")); return; }
+      if ((t = e.target.closest("[data-xpick]"))) { var x = byId(X, t.getAttribute("data-xpick")); if (!x.pid) { toast("<b>" + esc(vidOf(x)) + "</b> — 우선 확인 밖의 건입니다. 선택 건 상세는 우선 확인 대상에만 제공됩니다 (데모 범위)"); return; } select(x.pid, { asset: x.asset }); return; }
+      if ((t = e.target.closest("[data-back]"))) { var b = state.back.pop(); if (b) { state.sel = b.sel; state.selAsset = b.asset; state.opinion = null; state.assetEdit = null; renderPanel(); renderList(); } return; }
+      if ((t = e.target.closest("[data-nav]"))) { select(t.getAttribute("data-nav"), { push: true }); return; }
+      if ((t = e.target.closest("[data-clear-asset]"))) { state.selAsset = null; renderPanel(); return; }
+      if ((t = e.target.closest("[data-mseg]"))) { state.mineSeg = t.getAttribute("data-mseg"); renderPanel(); return; }
+      if ((t = e.target.closest("[data-deep]"))) { deepExplain(byId(P, t.getAttribute("data-deep"))); return; }
+      if ((t = e.target.closest("[data-asset-edit]"))) { var p0 = byId(P, state.sel), a0 = p0.assets.filter(function (a) { return a.a === t.getAttribute("data-asset-edit"); })[0]; state.assetEdit = { pid: p0.id, asset: a0.a, exposure: a0.exposure, ver: p0.type === "CVE" ? p0.name.split(" ")[0] + " " + (p0.name.split(" ")[1] || "") : "—", dirty: false }; renderPanel(); return; }
+      if ((t = e.target.closest("[data-edit-cancel]"))) { state.assetEdit = null; renderPanel(); return; }
+      if ((t = e.target.closest("[data-asset-op]"))) { state.opinion = { pid: state.sel, asset: t.getAttribute("data-asset-op"), kind: "해당 없음", reason: "" }; renderPanel(); return; }
+      if ((t = e.target.closest("[data-op-cancel]"))) { state.opinion = null; renderPanel(); return; }
+      if ((t = e.target.closest("[data-op-save]"))) { toast("<b>의견 저장</b> — " + esc(state.opinion.kind) + " · 다음 배치 입력으로 반영됩니다"); state.opinion = null; renderPanel(); return; }
+      if ((t = e.target.closest("[data-op-send]"))) { state.opinion.sentE = true; renderPanel(); toast("보안팀 <b>자산 정보 이슈(E)</b>로 전달했습니다 — 재분석 없음"); return; }
+      if ((t = e.target.closest("[data-re]"))) {
+        var kind = t.getAttribute("data-re"), p1 = byId(P, state.sel);
+        if (kind === "opinion") {
+          var ta = $("opBox").querySelector("[data-op-reason]"); state.opinion.reason = ta ? ta.value : ""; state.opinion.running = true; renderPanel();
+          runReanalysis(p1, "opinion", state.opinion.asset, function (changed, text) {
+            state.reRes[p1.id] = { changed: changed, text: text, scope: "재분석 대상: " + p1.vid + (state.opinion && state.opinion.asset ? " · " + state.opinion.asset + " 1건" : " · 내 자산 " + p1.assets.length + "대") + " · 의견: " + state.opinion.kind };
+            state.opinion = null; renderPanel(); toast("<b>의견 반영</b> — 우선순위 " + (changed ? "조정됨" : "유지됨"));
+          });
+        } else {
+          state.assetEdit.running = true; renderPanel();
+          runReanalysis(p1, "asset", state.assetEdit.asset, function (changed, text) { state.assetEdit.running = false; state.assetEdit.result = '<span class="tag ' + (changed ? "chg" : "keep") + '">의견 반영</span><b>' + (changed ? "우선순위 조정됨" : "우선순위 유지됨") + "</b> — " + text + '<small>재분석 대상: ' + state.assetEdit.asset + " × 이 자산의 모든 취약점 · 다음 배치까지 이 결과가 우선합니다</small>"; renderPanel(); });
+        }
+        return;
+      }
+      if ((t = e.target.closest("[data-stub]"))) { e.stopPropagation(); var lab = t.getAttribute("data-stub"); toast("<b>" + esc(lab) + "</b> — " + (/신청/.test(lab) ? "신청 화면으로 이동 (자산·취약점·근거·내 이력·다른 자산 현황 자동 반영 · 상위 문서 3절)" : /조치 계획/.test(lab) ? "조치 예정일·방법 입력 → 기존 ISPM 조치 프로세스" : "데모 범위 밖")); return; }
+      if ((t = e.target.closest("tr[data-asset]")) && !e.target.closest("button, input")) { var a = t.getAttribute("data-asset"); state.selAsset = state.selAsset === a ? null : a; renderPanel(); return; }
+    });
+    $("pbody").addEventListener("change", function (e) {
+      if (e.target.id === "prioSort") { state.sort = e.target.value; renderPanel(); }
+      if (e.target.id === "hideAppr") { state.hideAppr = e.target.checked; renderPanel(); }
+      if (e.target.id === "chkAll") { document.querySelectorAll(".chkA").forEach(function (c) { c.checked = e.target.checked; }); }
+      if (e.target.classList.contains("chkA") || e.target.id === "chkAll") { var n = document.querySelectorAll(".chkA:checked").length; var b = $("bulkApply"); if (b) { b.disabled = !n; b.textContent = n ? "선택 자산 " + n + "대 일괄 신청" : "선택 자산 일괄 신청"; } }
+      if (e.target.hasAttribute("data-edit")) { var k = e.target.getAttribute("data-edit"); state.assetEdit[k] = e.target.value; state.assetEdit.dirty = true; state.assetEdit.result = null; renderPanel(); }
+    });
+    $("pbody").addEventListener("input", function (e) { if (e.target.hasAttribute("data-edit")) { state.assetEdit[e.target.getAttribute("data-edit")] = e.target.value; if (!state.assetEdit.dirty) { state.assetEdit.dirty = true; renderPanel(); var i = document.querySelector('[data-edit="ver"]'); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } } } });
+    $("pbody").addEventListener("click", function (e) { if (e.target.id === "bulkApply") { var n = document.querySelectorAll(".chkA:checked").length; toast("<b>선택 자산 " + n + "대 일괄 신청</b> — 신청 화면으로 이동 (자산 선택 완료 상태)"); } });
+    /* 근거 자세히 — LLM 심층 해석 (실시간 호출 모사 · 타이핑) */
+    function deepExplain(p) {
+      var box = $("deepBox"); if (!box) return;
+      box.innerHTML = '<div class="ai-box"><span class="sp">' + SPARK + '</span><div><div class="lbl">AI 심층 해석 <span class="rt">· 실시간 · 온프레미스 LLM</span></div><div class="skel" style="width:95%"></div><div class="skel" style="width:70%"></div></div></div>';
+      setTimeout(function () {
+        var b = $("deepBox"); if (!b) return; var el = b.querySelector(".ai-box > div"); el.innerHTML = '<div class="lbl">AI 심층 해석 <span class="rt">· 실시간 · 1.6s</span></div><div class="txt cur"></div>';
+        var tx = el.querySelector(".txt"), full = p.deep, i = 0, tm = setInterval(function () { i += 6; tx.innerHTML = full.slice(0, i); if (i >= full.length) { clearInterval(tm); tx.classList.remove("cur"); tx.innerHTML = full; } }, 18);
+      }, 900);
+    }
+    /* 셸 스텁 · 데모 */
+    document.querySelectorAll(".topnav a, .sidenav a, .pager button").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); toast("<b>" + esc(a.textContent.trim()) + "</b> — 기존 ISPM 화면 (데모 범위 밖)"); }); });
+    document.querySelectorAll(".toolbar [data-stub]").forEach(function (b) { b.addEventListener("click", function () { toast("<b>" + esc(b.getAttribute("data-stub")) + "</b> — 기존 기능 (변경 없음)"); }); });
+    $("demo").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-demo]"); if (!b) return; var k = b.getAttribute("data-demo");
+      if (k === "reset") { try { sessionStorage.removeItem("ispm-ai-closed"); sessionStorage.removeItem("ispm-ai-seen"); } catch (x) {} location.reload(); }
+      if (k === "noneed") { state.demoNoNeed = true; renderAll(); toast("데모: 조치 필요 0건 — 배지에서 사라지고 자동 열림은 '우선 확인'으로"); }
+      if (k === "restore") { state.demoNoNeed = false; renderAll(); toast("데모: 예시 복원"); }
+    });
+
+    renderAll();
+    autoOpen();
+  </script>
+</body>
+</html>

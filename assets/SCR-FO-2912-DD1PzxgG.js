@@ -1,0 +1,1 @@
+import{_ as s,c as t,o,a,F as r}from"./index-DsCXieyu.js";const n={};function l(c,e){return o(),t(r,null,[e[0]||(e[0]=a("div",{class:"page-top-area"},[a("div",{class:"page-top"})],-1)),e[1]||(e[1]=a("div",{class:"page-detail"},null,-1))],64)}const d=s(n,[["render",l]]);export{d as default};

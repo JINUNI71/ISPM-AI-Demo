@@ -1,0 +1,1 @@
+import{d as n,c as e,o as r,a as m,F as c,y as l,H as u}from"./index-DsCXieyu.js";const d={class:"breadcrumb"},b=n({__name:"BreadCrumb",props:{breadcrumb:{}},setup(s){return(i,a)=>(r(),e("ul",d,[a[0]||(a[0]=m("li",{class:"home"},"Home",-1)),(r(!0),e(c,null,l(s.breadcrumb,(t,o)=>(r(),e("li",{key:o},u(t),1))),128))]))}});export{b as _};

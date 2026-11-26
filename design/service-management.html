@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AgentOn Console · System · Service Management (v1.0.0)" />
+  <title>AgentOn Console — Service Management</title>
+  <link rel="icon" type="image/png" href="data:image/png;base64,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" />
+  <style>
+    /* ============================================================
+     * AgentOn Console — Data Fabric › Connections (MNU-120 · 기획 v1.0.0)
+     *   Sources · Connections · Datasets 3탭 — 탭 순서가 곧 객체 위계(Source → Connection → Dataset → Task)
+     *
+     * 단일 파일 프로토타입. 디자인 토큰·셸 레이아웃·목록 컴포넌트는 GenWorks-RP 의
+     * 공유 자산(docs/design/assets/wm.css · app.css)을 그대로 옮겨 왔다.
+     *   · 사이드바 236px 단색 --sky-deep, 브랜드는 사이드바 상단, 활성 메뉴 = 진청 밴드 풀블리드
+     *   · topbar 는 메인 칼럼 안(좌: breadcrumb · 우: 사용자·기어)
+     *   · 콘텐츠 배경 흰색, 카드는 border 없이 soft shadow 로만 구분
+     *   · 배지 원칙: 예외 상태(인증 실패·스키마 변경·연결 실패)만 색 강조, 나머지는 뉴트럴
+     * 색은 아래 토큰만 사용한다. 라이트 테마 단일 (다크 모드 미지원 — RP 와 동일).
+     * ============================================================ */
+    :root {
+      --sky: #6db3e8; --sky-light: #a9d4f5; --sky-dark: #3d8fd4; --sky-deep: #2f74b5;
+      --bg: #eaf3fb; --panel: #ffffff; --panel-2: #f4f8fd;
+      --ink: #1f2a3a; --ink-soft: #586374; --ink-faint: #8a93a6;
+      --line: #e2e8f1; --line-strong: #cfd9e6;
+      --accent: var(--sky-dark); --accent-hover: var(--sky-deep); --accent-soft: #e7f2fc;
+      --danger: #d23a3a; --danger-soft: #fdecec;
+      --ok: #1f9d6b; --ok-soft: #eaf6f0;
+      --warn: #d4a017; --warn-soft: #fdf6e3; --warn-ink: #8a6410;
+      --navy-1: #20407e; --navy-2: #0c2340;
+      --band-1: #354b69; --band-2: #172437;
+      --icon: #0c2340;
+      --radius: 10px;
+      --shadow-sm: 0 1px 2px rgba(45, 110, 175, .06), 0 6px 20px rgba(45, 110, 175, .07);
+      --shadow-lg: 0 20px 64px rgba(8, 24, 48, .26);
+      --focus: 0 0 0 3px rgba(61, 143, 212, .28);
+      --chip-bg: #eef2f7; --input-bg: #ffffff;
+      --topbar-1: rgba(234, 243, 251, .94); --topbar-2: rgba(255, 255, 255, .9);
+      --mono: "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+      color-scheme: light;
+    }
+
+    * { box-sizing: border-box; }
+    html { height: 100%; }
+    body {
+      margin: 0; min-height: 100vh;
+      display: grid; grid-template-columns: 236px minmax(0, 1fr);
+      background: var(--bg); color: var(--ink);
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-size: 15px; font-weight: 500; -webkit-font-smoothing: antialiased;
+    }
+    [hidden] { display: none !important; }
+    .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    button, input, select, textarea { font-family: inherit; }
+    :focus-visible { outline: none; box-shadow: var(--focus); }
+
+    /* ============================================================
+     * 1. 셸 — 사이드바
+     * ============================================================ */
+    .sidebar {
+      position: sticky; top: 0; align-self: start; height: 100vh;
+      display: flex; flex-direction: column; color: #fff;
+      background: var(--sky-deep); overflow-y: auto;
+    }
+    .side-brand { display: flex; align-items: center; gap: 9px; padding: 20px 18px 18px; color: #fff; text-decoration: none; }
+    .side-brand img { width: 32px; height: 32px; object-fit: contain; flex: none; filter: drop-shadow(0 2px 4px rgba(8, 24, 48, .4)); }
+    .side-brand .nm { font-size: 19px; font-weight: 800; letter-spacing: .2px; line-height: 1.15; }
+    .side-brand .nm span { opacity: .9; font-weight: 700; }
+    .side-brand .nm small { display: block; font-size: 12px; font-weight: 600; font-style: italic; letter-spacing: .02em; opacity: .78; margin-top: 2px; }
+
+    .side-nav { padding: 8px 12px; flex: 1; }
+    .nav-cap { padding: 13px 10px 5px; font-size: 11px; font-weight: 700; letter-spacing: .05em; color: rgba(255, 255, 255, .55); }
+    .nav-cap small { display: block; font-size: 10.5px; font-weight: 500; letter-spacing: 0; margin-top: 2px; color: rgba(255, 255, 255, .45); }
+    .nav-item, .nav-child, .nav-parent {
+      display: flex; align-items: center; gap: 10px; width: 100%;
+      padding: 8px 10px; border-radius: 8px; margin-bottom: 2px;
+      background: none; border: none; cursor: pointer; text-align: left;
+      text-decoration: none; color: #fff; font-size: 14.5px; font-weight: 600; letter-spacing: .1px;
+      min-height: 40px; transition: background .12s;
+    }
+    .nav-child { padding-left: 38px; font-size: 14px; font-weight: 500; color: rgba(255, 255, 255, .72); min-height: 35px; }
+    .nav-item:hover, .nav-child:hover, .nav-parent:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+    .nav-item > svg, .nav-parent > svg:first-child { width: 17px; height: 17px; flex: none; color: var(--navy-2); }
+    .np-label { flex: 1; min-width: 0; }
+    .np-chev { width: 14px; height: 14px; opacity: .65; transition: transform .18s; flex: none; margin-left: auto; }
+    .nav-group[data-open="true"] .np-chev { transform: rotate(180deg); }
+    .nav-children { display: none; margin-bottom: 4px; }
+    .nav-group[data-open="true"] .nav-children { display: block; }
+    .nav-child.active {
+      background: linear-gradient(135deg, var(--band-1) 0%, var(--band-2) 100%);
+      color: #fff; font-weight: 700;
+      width: calc(100% + 24px); margin-left: -12px; border-radius: 0; padding-left: 50px;
+      box-shadow: 0 6px 14px -6px rgba(8, 24, 48, .6), inset 0 1px 0 rgba(255, 255, 255, .16), inset 0 -1px 0 rgba(0, 0, 0, .28);
+    }
+    .nav-sep { height: 1px; margin: 12px 10px; background: rgba(255, 255, 255, .18); }
+    /* Demo 메뉴 영역 — 은은한 보라 배경(#F5F3FF), 내부 텍스트는 잉크색 */
+    .nav-group.nav-demo { background: #F5F3FF; border-radius: 10px; padding: 6px; margin-top: 2px; }
+    .nav-demo .nav-parent { color: var(--ink); }
+    .nav-demo .nav-child { color: rgba(31, 42, 58, .74); }
+    .nav-demo .nav-parent:hover, .nav-demo .nav-child:hover { background: rgba(31, 42, 58, .08); color: var(--ink); }
+    .nav-demo .np-chev { opacity: .55; }
+    .nav-demo .nav-children { margin-bottom: 0; }
+    .nav-demo .nav-child.active, .nav-demo .nav-child.active:hover { width: calc(100% + 12px); margin-left: -6px; border-radius: 8px; padding-left: 44px; color: #fff; background: linear-gradient(135deg, var(--band-1) 0%, var(--band-2) 100%); }
+    .side-foot {
+      padding: 14px 20px 18px; font-size: 12px; color: rgba(255, 255, 255, .7);
+      border-top: 1px solid rgba(255, 255, 255, .18);
+      display: flex; justify-content: space-between; gap: 10px; font-variant-numeric: tabular-nums;
+    }
+
+    /* ============================================================
+     * 2. 셸 — 메인 칼럼 · topbar
+     * ============================================================ */
+    .main { min-width: 0; display: flex; flex-direction: column; background: var(--panel); }
+    .topbar {
+      position: sticky; top: 0; z-index: 20;
+      display: flex; align-items: center; gap: 12px;
+      background: linear-gradient(180deg, var(--topbar-1) 0%, var(--topbar-2) 100%);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line); padding: 11px 24px; min-height: 60px;
+    }
+    .hdiv { width: 1px; height: 22px; background: var(--line-strong); opacity: .85; flex: none; }
+    .crumb { font-size: 11.5px; color: var(--ink-faint); display: flex; align-items: center; gap: 7px; line-height: 1.2; min-width: 0; }
+    .crumb b { color: var(--ink-soft); font-weight: 600; font-size: 13px; }
+    .crumb .sep { opacity: .5; }
+    .topbar .spacer { flex: 1; }
+    .ic-btn {
+      position: relative; background: none; border: none; padding: 5px; cursor: pointer;
+      display: grid; place-items: center; border-radius: 9px; color: var(--icon); flex: none;
+    }
+    .ic-btn:hover { background: var(--panel-2); }
+    .ic-btn svg { width: 22px; height: 22px; }
+    .menu-toggle { display: none; }
+    .user {
+      display: flex; align-items: center; gap: 9px; padding: 4px 8px 4px 6px;
+      background: none; border: 1px solid transparent; border-radius: 9px; cursor: pointer;
+    }
+    .user:hover { background: var(--panel-2); border-color: var(--line); }
+    .user .avatar { width: 30px; height: 30px; display: grid; place-items: center; flex: none; }
+    .user .avatar svg { width: 24px; height: 24px; }
+    .user .u-meta { text-align: left; }
+    .user .u-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+    .user .u-role { font-size: 12px; color: var(--ink-faint); }
+    .content { padding: 22px 24px 60px; width: 100%; }
+
+    .phead { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 18px; flex-wrap: wrap; }
+    .phead h1 { margin: 0; font-size: 23px; font-weight: 700; letter-spacing: -.02em; }
+    .phead .psub { margin: 5px 0 0; font-size: 13.5px; color: var(--ink-soft); }
+
+    /* ============================================================
+     * 3. 버튼 · 폼 컨트롤
+     * ============================================================ */
+    .btn {
+      font-size: 14px; font-weight: 600; border-radius: 8px;
+      border: 1px solid var(--line-strong); background: var(--input-bg); color: var(--ink);
+      height: 36px; padding: 0 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+      transition: border-color .12s, filter .12s, transform .04s; white-space: nowrap;
+    }
+    .btn:hover { border-color: var(--accent); }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary { color: #fff; border: none; background: linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 100%); }
+    .btn.primary:hover { filter: brightness(1.12); }
+    .btn.second { color: var(--sky-deep); background: var(--accent-soft); border-color: transparent; }
+    .btn.sm { height: 30px; padding: 0 11px; font-size: 13px; border-radius: 7px; }
+    .btn.ghost { background: none; border-color: transparent; color: var(--ink-soft); }
+    .btn.ghost:hover { border-color: var(--line-strong); color: var(--ink); }
+    .btn.danger { color: #fff; border: none; background: var(--danger); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn:disabled:active { transform: none; }
+    .btn svg { width: 15px; height: 15px; flex: none; }
+    .link { font-size: 13.5px; color: var(--accent); text-decoration: none; background: none; border: none; padding: 0; cursor: pointer; font-weight: 600; }
+    .link:hover { text-decoration: underline; }
+    .link.sm { font-size: 12.5px; }
+
+    .input, .select, .textarea {
+      width: 100%; height: 36px; padding: 0 12px; font-size: 13.5px; color: var(--ink); background: var(--input-bg);
+      border: 1px solid var(--line-strong); border-radius: 8px; outline: none; font-weight: 500;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .input:focus, .select:focus, .textarea:focus { border-color: var(--accent); box-shadow: var(--focus); }
+    .input:disabled, .select:disabled { background: var(--panel-2); cursor: not-allowed; color: var(--ink-faint); }
+    .input[aria-invalid="true"] { border-color: var(--danger); }
+    .input.mono { font-family: var(--mono); font-size: 13px; }
+    .select {
+      appearance: none; -webkit-appearance: none; cursor: pointer; padding-right: 32px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a93a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 11px center; background-size: 13px;
+    }
+    .select.auto { width: auto; flex: none; max-width: 100%; }
+    .textarea { height: auto; min-height: 72px; padding: 9px 12px; resize: vertical; line-height: 1.55; }
+    .field { margin-bottom: 14px; }
+    .field > label, .field .flabel { display: block; margin-bottom: 6px; font-size: 12.5px; font-weight: 700; color: var(--ink-soft); }
+    .field .req { color: var(--danger); margin-left: 3px; }
+    .field-hint { margin: 6px 0 0; font-size: 12px; color: var(--ink-faint); line-height: 1.5; }
+    .field-hint.err { color: var(--danger); }
+    .frow { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .frow.c3 { grid-template-columns: 2fr 1fr 1fr; }
+    .check { display: inline-flex; align-items: flex-start; gap: 8px; font-size: 13.5px; color: var(--ink); line-height: 1.5; cursor: pointer; }
+    .check input { width: 16px; height: 16px; margin: 2px 0 0; accent-color: var(--sky-deep); flex: none; cursor: pointer; }
+    .check.dis { color: var(--ink-faint); cursor: not-allowed; }
+    .check-row { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+    .ver-badge { display: inline-flex; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: var(--chip-bg); color: var(--ink-faint); margin-left: 6px; vertical-align: 1px; }
+
+    /* 세그먼트 (인증 방식 · 보관 위치 · 프로토콜) */
+    .seg { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 3px; border-radius: 9px; background: var(--panel-2); }
+    .seg button {
+      height: 30px; padding: 0 12px; border: none; border-radius: 7px; background: none; cursor: pointer;
+      font-size: 13px; font-weight: 600; color: var(--ink-soft);
+    }
+    .seg button:hover { color: var(--ink); }
+    .seg button.on { background: var(--panel); color: var(--sky-deep); box-shadow: 0 1px 3px rgba(8, 24, 48, .12); }
+    .seg.block { display: flex; }
+    .seg.block button { flex: 1; }
+
+    /* 안내 박스 */
+    .notice { padding: 11px 13px; border-radius: 10px; background: var(--panel-2); font-size: 12.5px; line-height: 1.65; color: var(--ink-soft); }
+    .notice strong { color: var(--ink); font-weight: 700; }
+    .notice.warn { background: var(--warn-soft); color: var(--warn-ink); }
+    .notice.warn strong { color: inherit; }
+    .notice.bad { background: var(--danger-soft); color: var(--danger); }
+    .notice.ok { background: var(--ok-soft); color: var(--ok); }
+    .notice.info { background: var(--accent-soft); color: var(--sky-deep); }
+    .notice + .notice, .notice + .field, .field + .notice { margin-top: 12px; }
+    .notice ul { margin: 6px 0 0; padding-left: 18px; }
+
+    /* 툴팁 (비활성 버튼은 이벤트를 못 받으므로 래퍼에 단다) */
+    .tip-wrap { position: relative; display: inline-flex; }
+    .tip-wrap::after {
+      content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%);
+      width: max-content; max-width: 260px; padding: 8px 11px; border-radius: 8px;
+      background: var(--navy-2); color: #fff; font-size: 12px; font-weight: 500; line-height: 1.5; text-align: left;
+      white-space: normal; opacity: 0; visibility: hidden; transition: opacity .12s; pointer-events: none; z-index: 90;
+      box-shadow: 0 8px 22px rgba(12, 35, 64, .22);
+    }
+    .tip-wrap:hover::after, .tip-wrap:focus-within::after { opacity: 1; visibility: visible; }
+    .tip-wrap.right::after { left: auto; right: 0; transform: none; }
+
+    /* ============================================================
+     * 4. 목록 화면 — 요약 타일 · 필터 바 · 표 · 페이징
+     * ============================================================ */
+    .stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+    .stat-card {
+      background: var(--panel); border: 1px solid transparent; border-radius: 12px; padding: 14px 15px;
+      cursor: pointer; text-align: left; color: inherit; box-shadow: var(--shadow-sm);
+      transition: box-shadow .12s ease, background .12s ease; position: relative;
+      display: flex; flex-direction: column; align-items: flex-start;
+    }
+    .stat-card:hover { box-shadow: 0 6px 18px rgba(8, 24, 48, .13); }
+    .stat-card[aria-pressed="true"] { background: var(--panel-2); border-color: var(--sky-light); }
+    .stat-card .clabel { font-size: 13px; color: var(--ink-soft); font-weight: 600; display: flex; align-items: center; gap: 7px; }
+    .stat-card .cnum { font-size: 28px; font-weight: 700; letter-spacing: -.02em; margin-top: 3px; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    .stat-card .cnum.ok { color: var(--ok); }
+    .stat-card .cnum.warn { color: var(--warn); }
+    .stat-card .cnum.bad { color: var(--danger); }
+    .stat-card .cnum.zero { color: var(--ink-faint); font-weight: 500; }
+    .stat-card .csub { font-size: 12px; color: var(--ink-faint); margin-top: 5px; font-weight: 600; }
+
+    .toolbar { display: flex; gap: 9px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+    .tb-actions { display: flex; gap: 9px; align-items: center; margin-left: auto; }
+    .search {
+      flex: 1; min-width: 189px; height: 36px; display: flex; align-items: center; gap: 7px;
+      background: var(--input-bg); border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 0 12px;
+    }
+    /* 검색창 안 필터 토글 — RP Workloads 와 동일 (아이콘만 · 열리면 액센트) */
+    .search .filter-toggle { height: 26px; padding: 0 2px 0 4px; margin-left: 2px; gap: 3px; border: none; background: none; color: var(--ink-faint); flex: none; }
+    .search .filter-toggle:hover, .search .filter-toggle[aria-expanded="true"] { color: var(--accent); }
+    .filter-row { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; padding: 12px 13px; background: var(--panel-2); border-radius: var(--radius); }
+    .search input { border: none; background: none; outline: none; font-size: 13px; color: var(--ink); width: 100%; flex: 1; min-width: 0; height: 32px; padding: 0; }
+    .search input::placeholder { color: var(--ink-faint); }
+    .search > svg { flex: none; color: var(--ink-faint); }
+    .search:focus-within { border-color: var(--accent); box-shadow: var(--focus); }
+    .ms { position: relative; }
+    .ms-btn { min-width: 120px; justify-content: space-between; font-weight: 600; }
+    .ms-btn .n { font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 5px; background: var(--accent-soft); color: var(--sky-deep); }
+    .ms-btn svg { width: 13px; height: 13px; color: var(--ink-faint); }
+    .ms-menu {
+      position: absolute; left: 0; top: calc(100% + 6px); z-index: 40; min-width: 200px;
+      padding: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 34px rgba(45, 110, 175, .18);
+    }
+    .ms-menu label { display: flex; align-items: center; gap: 8px; padding: 7px 9px; border-radius: 7px; font-size: 13px; cursor: pointer; }
+    .ms-menu label:hover { background: var(--panel-2); }
+    .ms-menu input { accent-color: var(--sky-deep); }
+    .applied { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding: 8px 12px; background: var(--accent-soft); border: 1px solid #cfe0f5; border-radius: 9px; font-size: 13.5px; flex-wrap: wrap; }
+    .af-label { color: var(--sky-deep); font-weight: 700; font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; }
+    .af-chips { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .af-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--panel); border: 1px solid var(--line-strong); border-radius: 20px; padding: 2px 5px 2px 10px; font-weight: 600; color: var(--ink); font-size: 12.5px; }
+    .af-x { display: inline-flex; align-items: center; justify-content: center; width: 17px; height: 17px; border: none; border-radius: 50%; background: var(--panel-2); color: var(--ink-soft); cursor: pointer; font-size: 11px; line-height: 1; }
+    .af-x:hover { background: var(--danger-soft); color: var(--danger); }
+    .af-count { color: var(--ink-soft); margin-left: auto; font-variant-numeric: tabular-nums; }
+    .af-count b { color: var(--ink); }
+
+    .list-panel { background: var(--panel); border-radius: 12px; overflow: visible; box-shadow: var(--shadow-sm); }
+    .list-panel .scroll { overflow-x: auto; border-radius: 12px; }
+    .list-panel table { width: 100%; border-collapse: collapse; min-width: 920px; }
+    .list-panel thead th {
+      text-align: left; font-size: 12px; font-weight: 650; color: var(--ink-soft);
+      text-transform: uppercase; letter-spacing: .04em; padding: 12px 12px;
+      border-bottom: 1px solid var(--line); background: var(--panel-2); white-space: nowrap;
+    }
+    .list-panel tbody td { padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; font-size: 14px; color: var(--ink); }
+    .list-panel tbody tr:last-child td { border-bottom: none; }
+    .list-panel tbody tr:hover { background: var(--panel-2); }
+    .list-panel tbody tr.row-active { background: var(--accent-soft); }
+    .list-panel tbody tr.row-off td { color: var(--ink-faint); }
+    .list-panel .lk { color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; background: none; border: none; font-size: inherit; padding: 0; text-align: left; }
+    .list-panel .lk:hover { color: var(--sky-deep); }
+    .list-panel .sub { font-size: 11.5px; color: var(--ink-faint); font-weight: 600; margin-top: 2px; font-family: var(--mono); max-width: 210px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .list-panel .dash { color: var(--ink-faint); }
+    .list-empty { padding: 36px 20px; text-align: center; }
+    .list-empty .et { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .list-empty .ed { font-size: 13px; color: var(--ink-faint); line-height: 1.6; margin-bottom: 14px; }
+    .empty-cat { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; max-width: 760px; margin: 18px auto 0; text-align: left; }
+
+    /* 이름 셀 — 타입 아이콘 + 이름 */
+    .nm-cell { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .t-ico { width: 30px; height: 30px; border-radius: 8px; flex: none; display: grid; place-items: center; background: var(--panel-2); color: var(--icon); box-shadow: 0 1px 2px rgba(8, 24, 48, .08); }
+    .t-ico svg { width: 16px; height: 16px; }
+    .t-ico.g { background: var(--accent-soft); }
+
+    /* 타입 배지 — 뉴트럴 그레이 (타입은 예외 상태가 아니다) */
+    .tb { display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 700; padding: 3px 8px; border-radius: 5px; background: var(--chip-bg); color: var(--ink-soft); white-space: nowrap; }
+    .tb.g { background: var(--accent-soft); color: var(--sky-deep); }
+    /* 상태 — 색 + 텍스트 병기. 정상은 녹색 점만, 예외는 배경까지 */
+    .st { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; white-space: nowrap; color: var(--ink-soft); }
+    .st .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; background: var(--ink-faint); }
+    .st.ok .dot { background: var(--ok); }
+    .st.ok { color: var(--ok); }
+    .st.auth .dot, .st.conn .dot { background: var(--danger); }
+    .st.auth, .st.conn { color: var(--danger); }
+    .st.schema .dot { background: var(--warn); }
+    .st.schema { color: var(--warn-ink); }
+    .st.off .dot { background: transparent; box-shadow: inset 0 0 0 1.5px var(--ink-faint); }
+    .st.off { color: var(--ink-faint); }
+    .st-act { display: block; margin-top: 3px; font-size: 12px; font-weight: 600; color: var(--sky-deep); background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+    .st-act:hover { color: var(--accent-hover); }
+    /* 경로 칩 — key/value 2톤 */
+    .path { display: inline-flex; gap: 4px; }
+    .pc { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 5px; background: var(--chip-bg); color: var(--ink-soft); font-family: var(--mono); }
+    .pc.live { background: var(--accent-soft); color: var(--sky-deep); }
+    /* 마지막 테스트 */
+    .lt { font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .lt .r { font-weight: 700; }
+    .lt .r.ok { color: var(--ok); }
+    .lt .r.bad { color: var(--danger); }
+    /* 예산 미니 바 */
+    .bud { min-width: 132px; }
+    .bud-bar { height: 6px; border-radius: 4px; background: var(--chip-bg); overflow: hidden; }
+    .bud-fill { height: 100%; border-radius: 4px; background: var(--sky-dark); transition: width .3s; }
+    .bud.hi .bud-fill { background: var(--danger); }
+    .bud-meta { display: flex; justify-content: space-between; gap: 8px; margin-top: 4px; font-size: 11px; white-space: nowrap; color: var(--ink-faint); font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    .bud-meta b { color: var(--ink); font-weight: 700; }
+    .bud.hi .bud-meta b { color: var(--danger); }
+    /* 참조 */
+    .ref { display: flex; flex-wrap: wrap; gap: 1px 10px; max-width: 166px; font-size: 12px; line-height: 1.5; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+    .ref .it { white-space: nowrap; }
+    .list-panel th.c-ref, .list-panel td.c-ref { width: 172px; }
+    .list-panel td.row-menu { width: 56px; padding-left: 4px; }
+    .ref b { color: var(--ink); font-family: var(--mono); font-weight: 700; }
+    .ref .z { color: var(--ink-faint); }
+    .ref .sep { color: var(--line-strong); margin: 0 4px; }
+    /* 행 메뉴 */
+    .row-menu { position: relative; text-align: right; }
+    .rm-btn { width: 30px; height: 30px; border: none; border-radius: 7px; background: none; color: var(--ink-soft); cursor: pointer; font-size: 18px; line-height: 1; letter-spacing: 1px; }
+    .rm-btn:hover, .rm-btn[aria-expanded="true"] { background: var(--panel-2); color: var(--ink); }
+    .rm-menu {
+      position: absolute; right: 0; top: calc(100% + 4px); z-index: 45; min-width: 170px; text-align: left;
+      padding: 5px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 34px rgba(45, 110, 175, .18);
+    }
+    .rm-menu button { width: 100%; display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: none; border-radius: 7px; background: none; text-align: left; font-size: 13px; font-weight: 600; color: var(--ink); cursor: pointer; }
+    .rm-menu button:hover:not(:disabled) { background: var(--panel-2); }
+    .rm-menu button:disabled { color: var(--ink-faint); cursor: not-allowed; }
+    .rm-menu button.bad { color: var(--danger); }
+    .rm-menu button.bad:disabled { color: var(--ink-faint); }
+    .rm-menu .tip-wrap { display: block; }
+    .rm-menu .tip-wrap::after { left: auto; right: 0; transform: none; bottom: auto; top: calc(100% + 4px); }
+    .rm-sep { height: 1px; margin: 4px 6px; background: var(--line); }
+
+    .pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+    .pager-info { font-size: 13.5px; color: var(--ink-soft); }
+    .pager-info b { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+    .pager-nav { display: flex; align-items: center; gap: 5px; }
+    .pager-size { width: auto; height: 30px; font-size: 13px; color: var(--ink-soft); border: none; border-radius: 7px; cursor: pointer; margin-right: 4px; appearance: none; -webkit-appearance: none; padding: 0 22px 0 6px;
+      background: none url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a93a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") right 3px center / 12px no-repeat; }
+    .pg-btn { min-width: 30px; height: 30px; padding: 0 8px; border: none; background: none; color: var(--ink-soft); border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .pg-btn:hover:not(:disabled):not(.active) { background: var(--panel-2); color: var(--ink); }
+    .pg-btn.active { background: var(--accent-soft); color: var(--sky-deep); }
+    .pg-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+    /* ============================================================
+     * 5. 슬라이드오버 (상세 · 새 소스 · 새 연결 마법사) — 우측 480px
+     * ============================================================ */
+    .so-backdrop { position: fixed; inset: 0; background: rgba(12, 26, 46, .40); opacity: 0; visibility: hidden; transition: opacity .16s; z-index: 60; }
+    .so-backdrop.open { opacity: 1; visibility: visible; }
+    .so {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 480px; max-width: 100vw; z-index: 62;
+      display: flex; flex-direction: column; background: var(--panel);
+      box-shadow: -12px 0 44px rgba(8, 24, 48, .22);
+      transform: translateX(100%); transition: transform .2s ease; visibility: hidden;
+    }
+    .so.open { transform: none; visibility: visible; }
+    .so.wide { width: 560px; }
+    .so-head { display: flex; align-items: flex-start; gap: 12px; padding: 18px 20px 14px; border-bottom: 1px solid var(--line); }
+    .so-head .so-t { font-size: 16.5px; font-weight: 700; line-height: 1.3; }
+    .so-head .so-s { font-size: 12.5px; color: var(--ink-faint); font-weight: 600; margin-top: 5px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .so-x { margin-left: auto; width: 30px; height: 30px; flex: none; border: none; border-radius: 8px; background: var(--panel-2); color: var(--ink-soft); font-size: 19px; line-height: 1; cursor: pointer; }
+    .so-x:hover { background: var(--line); color: var(--ink); }
+    .so-actions { display: flex; gap: 8px; padding: 12px 20px; border-bottom: 1px solid var(--line); flex-wrap: wrap; align-items: center; }
+    .so-body { flex: 1; overflow-y: auto; padding: 18px 20px 24px; }
+    .so-foot { display: flex; align-items: center; gap: 9px; padding: 12px 20px 16px; border-top: 1px solid var(--line); }
+    .so-foot .sp { flex: 1; }
+
+    /* 상세 섹션 (세로 스크롤 · 탭 아님) */
+    .dsec { background: var(--panel-2); border-radius: 11px; padding: 13px 15px; margin-bottom: 12px; }
+    .dsec-t { font-size: 12px; font-weight: 700; color: var(--ink-soft); letter-spacing: .02em; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .dsec-t .sp { flex: 1; }
+    .dsec-t .link { font-size: 12px; }
+    .kv { display: grid; grid-template-columns: 112px 1fr; gap: 8px 12px; font-size: 13px; margin: 0; }
+    .kv dt { color: var(--ink-faint); font-weight: 500; white-space: nowrap; }
+    .kv dd { margin: 0; color: var(--ink); min-width: 0; word-break: break-word; display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; }
+    .kv dd.mono { font-family: var(--mono); font-size: 12.5px; }
+    .kv dd .muted { color: var(--ink-faint); }
+    .tag { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 5px; background: var(--panel); color: var(--ink-soft); box-shadow: 0 0 0 1px var(--line); }
+    .tag b { color: var(--ink-faint); font-weight: 600; margin-right: 3px; }
+    .mini-tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .mini-tbl th { text-align: left; font-size: 11px; font-weight: 700; color: var(--ink-faint); padding: 4px 8px 6px 0; border-bottom: 1px solid var(--line); text-transform: uppercase; letter-spacing: .03em; }
+    .mini-tbl td { padding: 6px 8px 6px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .mini-tbl tr:last-child td { border-bottom: none; }
+    .mini-tbl .mono { font-size: 12px; }
+    .gauge { height: 8px; border-radius: 5px; background: var(--chip-bg); overflow: hidden; display: flex; }
+    .gauge .f { height: 100%; background: var(--sky-dark); }
+    .gauge .f.live { background: var(--sky-light); }
+    .gauge.hi .f { background: var(--danger); }
+    .gauge.hi .f.live { background: #f0a4a4; }
+    .glegend { display: flex; gap: 12px; margin-top: 7px; font-size: 11.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+    .glegend .sw { display: inline-block; width: 9px; height: 9px; border-radius: 3px; background: var(--sky-dark); margin-right: 5px; vertical-align: -1px; }
+    .glegend .sw.live { background: var(--sky-light); }
+    .glegend b { color: var(--ink); }
+    .use-list { display: flex; flex-direction: column; }
+    .use-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; font-size: 13px; }
+    .use-row + .use-row { border-top: 1px solid var(--line); }
+    .use-row .k { flex: none; width: 74px; font-size: 11px; font-weight: 700; color: var(--ink-faint); text-transform: uppercase; letter-spacing: .03em; }
+    .use-row .n { flex: 1; min-width: 0; font-weight: 600; }
+    .use-row .link { font-size: 12px; }
+    .tl { list-style: none; margin: 0; padding: 0; }
+    .tl li { display: grid; grid-template-columns: 116px 1fr auto; gap: 8px; padding: 6px 0; font-size: 12.5px; align-items: center; border-bottom: 1px solid var(--line); }
+    .tl li:last-child { border-bottom: none; }
+    .tl .at { font-family: var(--mono); color: var(--ink-faint); font-variant-numeric: tabular-nums; font-size: 12px; }
+    .tl .res { font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+    .tl .res .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
+    .tl .res.bad .dot { background: var(--danger); }
+    .tl .res.warn .dot { background: var(--warn); }
+    .tl .dur { font-family: var(--mono); color: var(--ink-faint); font-size: 12px; }
+    .hist li { grid-template-columns: 116px 84px 1fr; }
+    .hist .who { font-weight: 600; color: var(--ink-soft); }
+    .cred-state { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .cred-state .ok-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--ok); background: var(--ok-soft); padding: 2px 8px; border-radius: 5px; }
+
+    /* 마법사 스텝 */
+    .steps { display: flex; align-items: center; gap: 6px; padding: 12px 20px 0; }
+    .step { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-faint); font-weight: 600; white-space: nowrap; }
+    .step-num { width: 20px; height: 20px; border-radius: 50%; flex: none; display: grid; place-items: center; font-size: 11px; font-weight: 700; background: var(--chip-bg); color: var(--ink-faint); }
+    .step.done .step-num { background: var(--accent-soft); color: var(--sky-deep); }
+    .step.done { color: var(--ink-soft); }
+    .step.now .step-num { background: linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 100%); color: #fff; }
+    .step.now { color: var(--ink); }
+    .step-bar { flex: 1; height: 2px; background: var(--line); border-radius: 2px; min-width: 8px; }
+    .cat-sec { font-size: 12px; font-weight: 700; color: var(--ink-soft); letter-spacing: .02em; margin: 4px 0 10px; }
+    .cat-sec small { font-weight: 500; color: var(--ink-faint); margin-left: 6px; }
+    .cat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-bottom: 18px; }
+    .cat-card {
+      display: flex; gap: 10px; align-items: flex-start; padding: 11px 12px; border-radius: 10px; text-align: left;
+      background: var(--panel-2); border: 1px solid transparent; cursor: pointer; color: inherit; transition: background .12s, border-color .12s;
+    }
+    .cat-card:hover { background: var(--accent-soft); border-color: var(--sky-light); }
+    .cat-card .t-ico { background: var(--panel); }
+    .cat-card .cn { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+    .cat-card .cd { font-size: 11.5px; line-height: 1.5; color: var(--ink-faint); margin-top: 2px; }
+    .cat-foot { font-size: 12px; color: var(--ink-faint); line-height: 1.6; padding: 10px 12px; border-radius: 9px; background: var(--panel-2); }
+    .type-pick { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); margin-bottom: 16px; font-size: 13px; }
+    .type-pick .cn { font-weight: 700; }
+    .type-pick .link { margin-left: auto; font-size: 12px; }
+    .fsec { font-size: 12px; font-weight: 700; color: var(--ink-soft); letter-spacing: .02em; margin: 18px 0 10px; padding-top: 14px; border-top: 1px solid var(--line); }
+    .fsec:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .rows { display: flex; flex-direction: column; gap: 6px; }
+    .row-ln { display: grid; gap: 6px; align-items: center; }
+    .row-ln.ep { grid-template-columns: 1.1fr 70px 1.3fr 1fr 28px; }
+    .row-ln.hd { grid-template-columns: 1fr 1.4fr 28px; }
+    .row-ln.gq { grid-template-columns: 1fr 1fr 28px; }
+    .row-ln .input, .row-ln .select { height: 32px; font-size: 12.5px; padding: 0 9px; }
+    .row-ln .select { padding-right: 26px; background-position: right 7px center; }
+    .row-x { width: 28px; height: 28px; border: none; border-radius: 6px; background: none; color: var(--ink-faint); cursor: pointer; font-size: 16px; line-height: 1; }
+    .row-x:hover { background: var(--danger-soft); color: var(--danger); }
+    .row-add { align-self: flex-start; }
+    .test-res { display: flex; align-items: center; gap: 9px; padding: 10px 13px; border-radius: 9px; font-size: 13px; font-weight: 600; margin-top: 12px; }
+    .test-res.run { background: var(--panel-2); color: var(--ink-soft); }
+    .test-res.ok { background: var(--ok-soft); color: var(--ok); }
+    .test-res.bad { background: var(--danger-soft); color: var(--danger); }
+    .spin { width: 14px; height: 14px; border: 2px solid var(--line-strong); border-top-color: var(--sky-deep); border-radius: 50%; animation: spin .7s linear infinite; flex: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .slider-wrap { display: flex; align-items: center; gap: 12px; }
+    .slider-wrap input[type="range"] { flex: 1; accent-color: var(--sky-deep); }
+    .slider-wrap input[type="range"]:disabled { opacity: .45; }
+    .slider-val { font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: var(--ink); white-space: nowrap; min-width: 128px; text-align: right; }
+    .sample-prog { height: 6px; border-radius: 4px; background: var(--chip-bg); overflow: hidden; margin-top: 10px; }
+    .sample-prog .f { height: 100%; width: 0; background: var(--sky-dark); transition: width .4s; }
+    .cta-box { margin-top: 12px; padding: 13px 14px; border-radius: 10px; background: linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 100%); color: #eaf2fb; font-size: 12.5px; line-height: 1.6; }
+    .cta-box b { color: #fff; }
+    .cta-box .btn { margin-top: 10px; background: #fff; color: var(--navy-2); border: none; }
+    .pw-wrap { position: relative; }
+    .pw-wrap .input { padding-right: 38px; }
+    .toggle-pw { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; padding: 0; display: grid; place-items: center; color: var(--ink-faint); background: none; border: none; border-radius: 7px; cursor: pointer; }
+    .toggle-pw:hover { background: var(--accent-soft); color: var(--icon); }
+    .toggle-pw svg { width: 16px; height: 16px; }
+
+    /* 인라인 모달 (비활성화 · 삭제 확인) */
+    .modal {
+      position: fixed; left: 50%; top: 50%; transform: translate(-50%, -47%) scale(.985); z-index: 72;
+      width: min(480px, calc(100vw - 40px)); display: flex; flex-direction: column; background: var(--panel); border-radius: 14px;
+      box-shadow: var(--shadow-lg); opacity: 0; visibility: hidden; transition: opacity .16s ease, transform .16s ease;
+    }
+    .modal.open { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+    .modal-backdrop { z-index: 70; }
+    .m-head { display: flex; align-items: flex-start; gap: 12px; padding: 18px 20px 12px; }
+    .m-t { font-size: 16px; font-weight: 700; }
+    .m-s { font-size: 12.5px; color: var(--ink-faint); font-weight: 600; margin-top: 4px; }
+    .m-body { padding: 0 20px 6px; font-size: 13.5px; line-height: 1.65; color: var(--ink-soft); }
+    .m-body b { color: var(--ink); }
+    .m-foot { display: flex; align-items: center; gap: 9px; padding: 12px 20px 18px; }
+    .m-foot .sp { flex: 1; }
+
+    /* 토스트 */
+    .toast {
+      position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 14px); z-index: 90;
+      max-width: min(560px, calc(100vw - 32px)); padding: 12px 16px; border-radius: 11px;
+      background: linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 100%); color: #eaf2fb;
+      font-size: 13px; line-height: 1.6; font-weight: 600;
+      box-shadow: 0 16px 40px rgba(8, 24, 48, .34); opacity: 0; visibility: hidden; transition: opacity .16s, transform .16s;
+    }
+    .toast.open { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+    .toast b { color: #fff; font-weight: 700; }
+    .toast.bad { background: var(--danger); }
+
+    /* 데모 바 (프로토타입 전용) */
+    .demo-bar { position: fixed; left: 254px; bottom: 18px; z-index: 50; background: var(--panel); border-radius: 12px; box-shadow: 0 10px 30px rgba(24, 33, 49, .16); padding: 10px 12px; max-width: 320px; }
+    .demo-title { font-size: 11px; font-weight: 700; color: var(--ink-faint); letter-spacing: .04em; margin-bottom: 8px; }
+    .demo-opts { display: flex; flex-wrap: wrap; gap: 6px; }
+    .demo-opt { font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 7px; cursor: pointer; color: var(--ink-soft); background: var(--chip-bg); border: none; }
+    .demo-opt.on { background: var(--accent-soft); color: var(--sky-deep); }
+
+    /* ============================================================
+     * 6. 반응형 — 1280 기준 · 1024 이하 슬라이드오버 전체폭 · 900 이하 사이드바 오프캔버스
+     * ============================================================ */
+    @media (max-width: 1100px) { .stat-cards { grid-template-columns: 1fr 1fr; } .empty-cat { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 1024px) { .so, .so.wide { width: 100vw; } }
+    @media (max-width: 900px) {
+      body { grid-template-columns: 1fr; }
+      .sidebar { position: fixed; left: 0; top: 0; width: 236px; height: 100vh; transform: translateX(-100%); transition: transform .2s; z-index: 40; }
+      .sidebar.open { transform: none; }
+      .menu-toggle { display: grid; }
+      .content { padding: 18px 16px 40px; }
+      .topbar { padding: 10px 16px; gap: 8px; }
+      .crumb, .user .u-meta { display: none; }
+      .demo-bar { left: 16px; }
+    }
+    @media (max-width: 640px) { .stat-cards { grid-template-columns: 1fr; } .frow, .frow.c3, .cat-grid { grid-template-columns: 1fr; } .kv { grid-template-columns: 1fr; gap: 2px 0; } .kv dt { margin-top: 6px; } }
+
+    /* ============================================================
+     * 7. v1.0.0 추가 — 탭 · 환경 배지 · ID · Task/매핑 상태 · 스키마 diff
+     * ============================================================ */
+    .tabs { display: flex; gap: 2px; margin: -4px 0 18px; border-bottom: 1px solid var(--line); }
+    .tab {
+      position: relative; height: 40px; padding: 0 14px; border: none; background: none; cursor: pointer;
+      font-size: 14px; font-weight: 600; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 7px;
+    }
+    .tab:hover { color: var(--ink); }
+    .tab .n { font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 5px; background: var(--chip-bg); color: var(--ink-faint); font-family: var(--mono); }
+    .tab[aria-selected="true"] { color: var(--sky-deep); font-weight: 700; }
+    .tab[aria-selected="true"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2.5px; border-radius: 2px; background: var(--sky-deep); }
+    .tab[aria-selected="true"] .n { background: var(--accent-soft); color: var(--sky-deep); }
+    .tab:focus-visible { box-shadow: var(--focus); border-radius: 6px; }
+    .tabpane[hidden] { display: none; }
+
+    /* 환경 배지 — PRD 진한 남색 채움 · STG 황토 외곽선 · DEV 회색 외곽선. 텍스트로도 구분 */
+    .env { display: inline-flex; align-items: center; font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: .04em; padding: 1px 6px; border-radius: 4px; line-height: 1.5; white-space: nowrap; vertical-align: 1px; }
+    .env.PRD { background: var(--navy-2); color: #fff; }
+    .env.STG { background: transparent; color: #9a6b12; box-shadow: inset 0 0 0 1.5px #c9962a; }
+    .env.DEV { background: transparent; color: var(--ink-faint); box-shadow: inset 0 0 0 1.5px var(--line-strong); }
+
+    /* ID — 모노스페이스 · 클릭 시 복사 */
+    .oid { display: inline-flex; align-items: center; font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: var(--ink-soft); background: var(--chip-bg); padding: 1px 6px; border-radius: 4px; border: none; cursor: copy; letter-spacing: .02em; white-space: nowrap; }
+    .oid:hover { background: var(--accent-soft); color: var(--sky-deep); }
+    .id-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; }
+    .id-cell .lk { font-size: 14px; }
+    .src-cell { white-space: nowrap; }
+    .src-cell .lk { font-weight: 600; }
+    .list-panel td.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    #tbl { min-width: 1240px; }
+    #dTbl { min-width: 1180px; }
+    #sTbl { min-width: 980px; }
+    .cell-sub { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12px; color: var(--ink-faint); }
+
+    /* Task 상태 · 매핑 상태 · 스키마 상태 배지 — 예외만 색 */
+    .ts { display: inline-flex; align-items: center; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 5px; background: var(--chip-bg); color: var(--ink-soft); white-space: nowrap; }
+    .ts.Active { background: var(--ok-soft); color: var(--ok); }
+    .ts.Ready { background: var(--accent-soft); color: var(--sky-deep); }
+    .ts.Draft { background: var(--warn-soft); color: var(--warn-ink); }
+    .ts.Paused { background: var(--chip-bg); color: var(--ink-faint); }
+    .mp { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
+    .mp.none { color: var(--danger); }
+    .mp.recheck { color: var(--warn-ink); }
+    .mp .link { font-size: 12px; }
+    .sv { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--ink); }
+    .sv.det { background: var(--warn-soft); color: var(--warn-ink); padding: 1px 6px; border-radius: 4px; }
+    .sv-sub { font-size: 11.5px; color: var(--ink-faint); margin-top: 2px; }
+    .sv-sub b { color: var(--warn-ink); font-weight: 700; }
+    .role { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+    .role .ch { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 5px; background: var(--chip-bg); color: var(--ink-soft); white-space: nowrap; }
+    .role .sor { font-family: var(--mono); font-size: 10.5px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: var(--accent-soft); color: var(--sky-deep); }
+    .dots { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--ink-soft); }
+    .dots .d { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
+    .dots .d.w { background: var(--warn); }
+    .dots .d.b { background: var(--danger); }
+    .cnt-lk { font-size: 13.5px; font-weight: 700; color: var(--ink); background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; font-family: var(--mono); }
+    .cnt-lk:hover { color: var(--sky-deep); }
+    .cnt-sub { font-size: 11.5px; color: var(--ink-faint); margin-top: 2px; white-space: nowrap; }
+    .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+    /* 스키마 표 · diff */
+    .schema-tools { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+    .schema-tools .sp { flex: 1; }
+    .fs { display: inline-flex; align-items: center; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
+    .fs.mapped { background: var(--ok-soft); color: var(--ok); }
+    .fs.er { background: var(--accent-soft); color: var(--sky-deep); }
+    .fs.unused { background: var(--chip-bg); color: var(--ink-faint); box-shadow: inset 0 0 0 1px var(--line-strong); }
+    .fs.new { background: var(--ok-soft); color: var(--ok); }
+    .mini-tbl td .link { font-size: 12px; }
+    .mini-tbl tr.unused td { color: var(--ink-faint); }
+    .ver-list { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+    .ver-row { display: grid; grid-template-columns: 22px 54px 92px 1fr; gap: 8px; align-items: center; padding: 6px 8px; border-radius: 8px; font-size: 12.5px; background: var(--panel); }
+    .ver-row .sv { font-size: 12px; }
+    .ver-row .at { font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); }
+    .ver-row.cur { box-shadow: inset 0 0 0 1.5px var(--sky-light); }
+    .ver-row input { accent-color: var(--sky-deep); }
+    .diff { margin-top: 10px; border-radius: 9px; background: var(--panel); padding: 10px 12px; }
+    .diff-t { font-size: 12px; font-weight: 700; color: var(--ink-soft); margin-bottom: 8px; }
+    .diff-row { display: grid; grid-template-columns: 62px 1fr; gap: 8px; padding: 5px 0; font-size: 12.5px; border-bottom: 1px solid var(--line); align-items: baseline; }
+    .diff-row:last-child { border-bottom: none; }
+    .diff-row .k { font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; text-align: center; }
+    .diff-row.add .k { background: var(--ok-soft); color: var(--ok); }
+    .diff-row.del .k { background: var(--danger-soft); color: var(--danger); }
+    .diff-row.ren .k, .diff-row.type .k { background: var(--warn-soft); color: var(--warn-ink); }
+    .diff-row code, .kv code, .notice code { font-family: var(--mono); font-size: 12px; background: var(--chip-bg); padding: 0 4px; border-radius: 3px; }
+    .diff-row.del code { text-decoration: line-through; }
+
+    /* 마법사 — Step 1 소스 선택 · Step 2 추천 · Step 3 Dataset 행 · Step 5 Task 표 */
+    .src-opt { display: flex; align-items: center; gap: 8px; }
+    .reco { font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: var(--accent-soft); color: var(--sky-deep); margin-left: auto; align-self: flex-start; white-space: nowrap; }
+    .cat-card.reco-on { background: var(--accent-soft); border-color: var(--sky-light); }
+    .cat-card.locked { opacity: .7; cursor: pointer; }
+    .cat-card.locked .cn { color: var(--ink-soft); }
+    .lock { font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: var(--chip-bg); color: var(--ink-faint); margin-left: auto; align-self: flex-start; white-space: nowrap; display: inline-flex; align-items: center; gap: 3px; }
+    .lock svg { width: 10px; height: 10px; }
+    .ds-rows { display: flex; flex-direction: column; gap: 6px; }
+    .ds-row { display: grid; grid-template-columns: 22px 1fr 118px; gap: 8px; align-items: center; padding: 7px 10px; border-radius: 8px; background: var(--panel-2); font-size: 13px; }
+    .ds-row input[type="checkbox"] { accent-color: var(--sky-deep); width: 15px; height: 15px; }
+    .ds-row.dis { opacity: .55; }
+    .ds-row .select { height: 30px; font-size: 12px; padding: 0 24px 0 8px; background-position: right 7px center; }
+    .ds-row .nm { font-weight: 600; }
+    .ds-row .nm small { font-weight: 500; color: var(--ink-faint); margin-left: 6px; }
+    .row-ln.ep2 { grid-template-columns: 1fr 64px 1.3fr 104px 28px; }
+    .row-ln.ep3 { grid-template-columns: 1fr 1fr 1fr; margin: -2px 0 6px 0; padding: 0 0 8px 0; border-bottom: 1px dashed var(--line); }
+    .row-ln .flabel { font-size: 11px; font-weight: 700; color: var(--ink-faint); margin-bottom: 3px; display: block; }
+    .task-tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .task-tbl th { text-align: left; font-size: 11px; font-weight: 700; color: var(--ink-faint); padding: 4px 6px 6px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    .task-tbl td { padding: 6px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+    .task-tbl tr:last-child td { border-bottom: none; }
+    .task-tbl .select { height: 30px; font-size: 12px; padding: 0 24px 0 8px; background-position: right 7px center; width: 100%; }
+    .task-tbl input[type="checkbox"] { accent-color: var(--sky-deep); }
+    .task-tbl .nm { font-weight: 600; white-space: nowrap; }
+    .req-hint { font-size: 11.5px; color: var(--ink-faint); }
+    .radio-row { display: flex; gap: 6px; }
+    .radio-row label { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; height: 34px; border-radius: 8px; background: var(--panel-2); font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid transparent; }
+    .radio-row label:hover { background: var(--accent-soft); }
+    .radio-row input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .radio-row label.on { border-color: var(--sky-dark); background: var(--accent-soft); color: var(--sky-deep); }
+    .radio-row label:focus-within { box-shadow: var(--focus); }
+    .so-cta { margin-top: 12px; padding: 12px 14px; border-radius: 10px; background: var(--accent-soft); font-size: 13px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .so-cta .sp { flex: 1; }
+    .list-panel td.c-ref { width: auto; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+    /* ============================================================
+     * 8. License (MNU-920) 전용 — 요약 타일 · 현황 · 정책 표
+     *   디자인 토큰·목록 컴포넌트는 Connections(MNU-120)와 동일 계보.
+     *   배지 원칙: 유형·환경은 뉴트럴/아웃라인, 예외 상태만 색 강조.
+     * ============================================================ */
+    .lic-sec { margin-top: 30px; }
+    .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 13px; flex-wrap: wrap; }
+    .sec-head h2 { margin: 0; font-size: 16.5px; font-weight: 700; letter-spacing: -.01em; }
+    .sec-head .meta { font-size: 12.5px; color: var(--ink-faint); font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
+    .vat { font-size: 11.5px; font-weight: 700; color: var(--sky-deep); background: var(--accent-soft); padding: 2px 9px; border-radius: 5px; letter-spacing: .01em; }
+
+    /* 정책 표 — 번호 · 가격 · 적용 기준 */
+    .lic-tbl th.c-no, .lic-tbl td.c-no { width: 44px; text-align: center; }
+    .lic-tbl th.c-type, .lic-tbl td.c-type { width: 168px; }
+    .lic-tbl th.c-price, .lic-tbl td.c-price { width: 148px; }
+    .no-cell { font-family: var(--mono); font-weight: 700; color: var(--ink-faint); font-size: 13.5px; }
+    .price { font-family: var(--mono); font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; font-size: 14px; }
+    .price .won { font-family: inherit; font-size: 12px; color: var(--ink-soft); font-weight: 600; margin-left: 1px; }
+    .price.quote { color: var(--ink-faint); font-weight: 600; font-family: inherit; font-size: 13px; }
+    /* 유형 배지 — 영구 라이선스(기본) · 계약/조건형(아웃라인, 줄바꿈 허용) */
+    .lt-badge { display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 700; padding: 3px 8px; border-radius: 5px; background: var(--chip-bg); color: var(--ink-soft); line-height: 1.45; }
+    .lt-badge.cond { background: transparent; color: var(--ink-soft); box-shadow: inset 0 0 0 1.5px var(--line-strong); white-space: normal; }
+    .crit { color: var(--ink-soft); line-height: 1.62; max-width: 520px; font-size: 13.5px; }
+    .crit .ex { display: block; margin-top: 5px; font-size: 12px; color: var(--ink-faint); font-weight: 600; }
+    /* 환경 배지 — 운영(남색 채움) · 개발(회색 아웃라인) */
+    .ebadge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 700; letter-spacing: .02em; padding: 1px 7px; border-radius: 4px; line-height: 1.7; white-space: nowrap; }
+    .ebadge.ops { background: var(--navy-2); color: #fff; }
+    .ebadge.dev { background: transparent; color: var(--ink-faint); box-shadow: inset 0 0 0 1.5px var(--line-strong); }
+    .lic-note { margin-top: 18px; }
+    .stat-card .cnum.txt { font-size: 21px; font-family: inherit; letter-spacing: -.01em; }
+    .form-card { background: var(--panel); border-radius: 12px; box-shadow: var(--shadow-sm); padding: 20px 22px; max-width: 760px; }
+    .form-actions { display: flex; align-items: center; gap: 9px; margin-top: 16px; }
+    .form-actions .sp { flex: 1; }
+    .ebadge.stg { background: transparent; color: #9a6b12; box-shadow: inset 0 0 0 1.5px #c9962a; }
+    .lic-date { font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .lic-date.perp { color: var(--ink-faint); }
+    .lic-reg { font-size: 12.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .file-drop { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-align: center; padding: 20px 16px; border: 1.5px dashed var(--line-strong); border-radius: 10px; background: var(--panel-2); cursor: pointer; transition: border-color .12s, background .12s; }
+    .file-drop:hover, .file-drop.drag { border-color: var(--accent); background: var(--accent-soft); }
+    .file-drop svg { width: 26px; height: 26px; color: var(--ink-faint); }
+    .file-drop .fd-text { font-size: 13.5px; font-weight: 600; color: var(--ink-soft); }
+    .file-drop .fd-hint { font-size: 11.5px; color: var(--ink-faint); font-family: var(--mono); }
+    .file-chip { display: flex; align-items: center; gap: 9px; padding: 9px 12px; border-radius: 9px; background: var(--accent-soft); }
+    .file-chip svg { width: 18px; height: 18px; color: var(--sky-deep); flex: none; }
+    .file-chip .fc-name { font-size: 13px; font-weight: 600; color: var(--ink); font-family: var(--mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+    .file-chip .fc-size { font-size: 11.5px; color: var(--ink-faint); font-family: var(--mono); white-space: nowrap; margin-left: auto; flex: none; }
+    .file-chip .fc-x { width: 24px; height: 24px; border: none; border-radius: 6px; background: none; color: var(--ink-soft); font-size: 17px; line-height: 1; cursor: pointer; flex: none; }
+    .file-chip .fc-x:hover { background: #fff; color: var(--ink); }
+    .list-panel tbody tr.grp td { background: var(--panel-2); padding: 9px 12px; }
+    .list-panel tbody tr.grp:hover td { background: var(--panel-2); }
+    .grp-t { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+    .grp-s { font-size: 12px; color: var(--ink-faint); margin-left: 9px; }
+    .list-panel td.cat-cell { background: var(--panel-2); vertical-align: top; width: 210px; }
+    .cat-cell .ct { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .cat-cell .cs { display: block; font-size: 11.5px; color: var(--ink-faint); font-weight: 600; margin-top: 4px; line-height: 1.45; }
+    .list-panel td.lv-cell { background: var(--panel-2); vertical-align: middle; text-align: center; width: 86px; }
+    .api-detail { margin-top: 18px; }
+    .ad-card { background: var(--panel); border-radius: 12px; box-shadow: var(--shadow-sm); padding: 16px 18px; }
+    .ad-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+    .ad-title { font-size: 16px; font-weight: 700; }
+    .ad-id { font-size: 12.5px; color: var(--ink-faint); margin-top: 3px; }
+    .ad-actions { display: flex; gap: 8px; }
+    .ad-kv { grid-template-columns: 150px 1fr; }
+    .list-panel .lk.mono { font-family: var(--mono); }
+    .list-panel tr.exp-row > td { padding: 0; background: var(--panel-2); box-shadow: inset 0 3px 0 -1px var(--sky-light); }
+    .exp-wrap { padding: 16px 18px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; align-items: stretch; }
+    .exp-head { grid-column: 1 / -1; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 0; flex-wrap: wrap; }
+    .exp-title { font-size: 15px; font-weight: 700; }
+    .exp-id { font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
+    .exp-kv { grid-template-columns: 140px 1fr; }
+    .list-panel tr.exp-row:hover > td { background: var(--panel-2); }
+    .list-panel tr.cust-row:hover > td { background: var(--panel); }
+    .cust-empty { color: var(--ink-faint); font-size: 13px; padding: 16px 12px; text-align: center; }
+    .list-panel td.sec-cell { background: var(--navy-2); color: #fff; font-weight: 700; font-size: 12.5px; letter-spacing: .03em; padding: 8px 14px; }
+    .list-panel tr:hover > td.sec-cell { background: var(--navy-2); }
+
+    /* API 상세 — 섹션 · 키 발급 · 상태 관리 */
+    .exp-sec { background: var(--panel); border-radius: 11px; box-shadow: var(--shadow-sm); padding: 14px 16px 15px; display: flex; flex-direction: column; }
+    .exp-sec-t { font-size: 11px; font-weight: 700; color: var(--ink-soft); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+    .exp-sec-h { display: flex; align-items: center; gap: 9px 12px; flex-wrap: wrap; margin-bottom: 13px; padding-bottom: 11px; border-bottom: 1px solid var(--line); }
+    .exp-sec-t { position: relative; padding-left: 10px; }
+    .exp-sec-t::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 12px; border-radius: 2px; background: var(--sky-deep); }
+    .exp-sec-h .sp { flex: 1; min-width: 12px; }
+    .exp-sec-h .acts { display: flex; flex-wrap: wrap; gap: 8px; }
+    /* 상세 정보 — 화면 폭에 맞춰 2~3열 자동 배치 */
+    .exp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 9px 30px; }
+    .kv-item { display: grid; grid-template-columns: 96px 1fr; gap: 4px 12px; align-items: baseline; font-size: 13px; min-width: 0; padding: 3px 0; }
+    .kv-item.wide { grid-column: 1 / -1; }
+    .kv-item .kv-k { color: var(--ink-faint); font-weight: 500; white-space: nowrap; }
+    .kv-item .kv-v { color: var(--ink); min-width: 0; word-break: break-word; }
+    .kv-item .kv-v.mono { font-family: var(--mono); font-size: 12.5px; }
+    .key-none { margin: 0; font-size: 13px; color: var(--ink-faint); }
+    .lc-current { display: inline-flex; align-items: center; gap: 9px; flex-wrap: wrap; font-size: 13px; color: var(--ink-soft); }
+    .key-reveal { display: flex; align-items: center; gap: 8px; }
+    .key-reveal code { flex: 1; min-width: 0; font-family: var(--mono); font-size: 13px; background: var(--panel-2); padding: 9px 12px; border-radius: 8px; word-break: break-all; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+    @media (max-width: 760px) { .exp-sec-h .sp { display: none; } .exp-sec-h .acts, .exp-sec-h .lc-opts { width: 100%; } }
+    @media (max-width: 1040px) { .exp-wrap { grid-template-columns: 1fr; } }
+    .lc-current .sep { color: var(--line-strong); }
+    .lc-opts { display: flex; flex-wrap: wrap; gap: 7px; }
+    .lc-opt { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); background: var(--panel); box-shadow: inset 0 0 0 1px var(--line-strong); border: none; border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+    .lc-opt:hover { box-shadow: inset 0 0 0 1px var(--sky-light); background: var(--accent-soft); color: var(--sky-deep); }
+    .lc-opt .d { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+    .lc-opt.cur { box-shadow: inset 0 0 0 1.5px var(--sky-deep); color: var(--sky-deep); background: var(--accent-soft); font-weight: 700; cursor: default; }
+    .lc-opt.cur:hover { background: var(--accent-soft); }
+    .lc-opt .d.active { background: var(--ok); }
+    .lc-opt .d.suspended { background: var(--warn); }
+    .lc-opt .d.deprecated { background: transparent; box-shadow: inset 0 0 0 1.5px var(--warn); }
+    .lc-opt .d.retired { background: var(--ink-faint); }
+    .exp-hint { margin: 11px 0 0; font-size: 12px; color: var(--ink-faint); line-height: 1.6; }
+    .exp-foot { margin-top: auto; padding-top: 12px; display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--ink-faint); }
+    .exp-foot .lbl { font-weight: 600; }
+    .exp-foot .sep { color: var(--line-strong); }
+    .exp-foot .dt { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+    /* lifecycle · key 상태 배지 */
+    .st.lc-active .dot { background: var(--ok); } .st.lc-active { color: var(--ok); }
+    .st.lc-suspended .dot { background: var(--warn); } .st.lc-suspended { color: var(--warn-ink); }
+    .st.lc-deprecated .dot { background: transparent; box-shadow: inset 0 0 0 1.5px var(--warn); } .st.lc-deprecated { color: var(--warn-ink); }
+    .st.lc-retired .dot { background: var(--ink-faint); } .st.lc-retired { color: var(--ink-faint); }
+    .st.key-issued .dot { background: var(--ok); } .st.key-issued { color: var(--ok); }
+    .st.key-revoked .dot { background: var(--danger); } .st.key-revoked { color: var(--danger); }
+    /* 키 발급/재발급 모달 · 발급내역 팝업 */
+    .km-exp { margin: 10px 0 0; font-size: 12.5px; color: var(--ink-soft); }
+    .km-exp b { color: var(--ink); font-family: var(--mono); }
+    .hist-kv { grid-template-columns: 96px 1fr; margin-bottom: 16px; }
+    .mini-tbl .kind { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 5px; background: var(--chip-bg); color: var(--ink-soft); white-space: nowrap; }
+    .mini-tbl .kind.rev { background: var(--danger-soft); color: var(--danger); }
+    .hist-empty { color: var(--ink-faint); font-size: 12.5px; text-align: center; padding: 18px 0; }
+    /* LLM Providers 탭 */
+    .st.llm-error .dot { background: var(--danger); }
+    .st.llm-error { color: var(--danger); }
+    .llm-warn { color: var(--danger); font-weight: 700; margin-left: 6px; cursor: default; }
+    .llm-apichip { display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 5px; background: var(--accent-soft); color: var(--sky-deep); text-decoration: none; white-space: nowrap; }
+    .llm-apichip:hover { background: #d8e9fb; }
+    .llm-ep { max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .llm-sub { font-size: 11px; font-weight: 700; color: var(--ink-soft); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 9px; }
+    .llm-note { display: flex; align-items: center; gap: 8px; margin-top: 11px; padding: 9px 12px; border-radius: 9px; font-size: 12.5px; font-weight: 600; }
+    .llm-note.ok { background: var(--ok-soft); color: var(--ok); }
+    .llm-note.bad { background: var(--danger-soft); color: var(--danger); }
+    .llm-note.testing { background: var(--panel-2); color: var(--ink-soft); }
+    .llm-def { color: var(--ok); font-weight: 700; font-size: 12.5px; white-space: nowrap; }
+    .llm-models { width: 100%; margin-top: 2px; }
+    .llm-models th, .llm-models td { white-space: nowrap; }
+    .llm-models .dash { color: var(--ink-faint); }
+    .llm-mact { display: flex; gap: 6px; }
+    .llm-apilist { margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.7; }
+    .llm-foot-note { grid-column: 1 / -1; margin-top: 2px; padding: 11px 14px; border-radius: 10px; background: var(--accent-soft); color: var(--sky-deep); font-size: 12.5px; line-height: 1.6; }
+    .llm-foot-note a { color: var(--sky-deep); font-weight: 700; }
+    .llm-gbadge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 5px; background: var(--navy-2); color: #fff; white-space: nowrap; }
+    .llm-gtoggle { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 600; color: var(--ink-soft); background: var(--panel); box-shadow: inset 0 0 0 1px var(--line-strong); border: none; border-radius: 999px; padding: 6px 15px 6px 7px; cursor: pointer; }
+    .llm-gtoggle .knob { width: 30px; height: 18px; border-radius: 999px; background: var(--line-strong); position: relative; flex: none; transition: background .15s; }
+    .llm-gtoggle .knob::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: left .15s; }
+    .llm-gtoggle.on { color: var(--sky-deep); box-shadow: inset 0 0 0 1.5px var(--sky-deep); background: var(--accent-soft); }
+    .llm-gtoggle.on .knob { background: var(--sky-deep); }
+    .llm-gtoggle.on .knob::after { left: 14px; }
+    .llm-gtoggle:disabled { opacity: .55; cursor: not-allowed; }
+    .llm-gnote { margin-top: 9px; }
+  </style>
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <a class="side-brand" href="#" data-nav="Home">
+      <span class="nm">AgentOn<span> Console</span><small>Enterprise AI Agent Platform</small></span>
+    </a>
+
+    <nav class="side-nav" aria-label="AgentOn Console 메뉴">
+      <a class="nav-item" href="#" data-nav="Dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Dashboard
+      </a>
+
+      <div class="nav-group" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.66 3.58 3 8 3s8-1.34 8-3V6"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg>
+          <span class="np-label">Data Fabric</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Data Monitor">Data Monitor</a>
+          <a class="nav-child" href="#" data-nav="Data Sync">Data Sync</a>
+          <a class="nav-child" href="mnu-120-connections.html">Connections</a>
+          <a class="nav-child" href="#" data-nav="Mappings">Mappings</a>
+          <a class="nav-child" href="#" data-nav="Workflows">Workflows</a>
+          <a class="nav-child" href="#" data-nav="Schedules">Schedules</a>
+        </div>
+      </div>
+
+      <div class="nav-group" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.2 7.3 10.8 16M15.8 7.3 13.2 16M8.5 6h7"/></svg>
+          <span class="np-label">Ontology</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Graph Explorer">Graph Explorer</a>
+          <a class="nav-child" href="#" data-nav="Graph Query">Graph Query</a>
+          <a class="nav-child" href="#" data-nav="Modeler">Modeler</a>
+        </div>
+      </div>
+
+      <div class="nav-group" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="2.5"/><path d="M12 3v4M9 12h.01M15 12h.01M9 16h6"/></svg>
+          <span class="np-label">Agent</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Monitoring">Monitoring</a>
+          <a class="nav-child" href="human-review.html">Human Review</a>
+          <a class="nav-child" href="domain-knowledge.html">Domain Knowledge</a>
+          <a class="nav-child" href="ai-services.html">Configuration</a>
+        </div>
+      </div>
+
+      <div class="nav-group" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 7.9 8 9 4.6-1.1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span class="np-label">Security</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Risk Monitor">Risk Monitor</a>
+          <a class="nav-child" href="mnu-810-topology.html">Topology</a>
+          <a class="nav-child" href="#" data-nav="AI Assistant">AI Assistant</a>
+          <a class="nav-child" href="#" data-nav="Priorities">Priorities</a>
+          <a class="nav-child" href="#" data-nav="Asset Integrity">Asset Integrity</a>
+        </div>
+      </div>
+
+      <div class="nav-group" data-open="true">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+          <span class="np-label">System</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Users & Permissions">Users &amp; Permissions</a>
+          <a class="nav-child" href="mnu-920-license.html">License</a>
+          <a class="nav-child active" href="#" aria-current="page">Service Management</a>
+          <a class="nav-child" href="access-management.html">Access Management</a>
+          <a class="nav-child" href="#" data-nav="Audit Logs">Audit Logs</a>
+        </div>
+      </div>
+
+      <div class="nav-sep" role="separator"></div>
+
+      <div class="nav-group nav-demo" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+          <span class="np-label">Demo</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="demo-ontology-compare.html">온톨로지 효과 비교</a>
+          <a class="nav-child" href="#" data-nav="보안 증적 제출·검토">보안 증적 제출·검토</a>
+          <a class="nav-child" href="#" data-nav="보안 예외·유예 처리 지원">보안 예외·유예 처리 지원</a>
+          <a class="nav-child" href="#" data-nav="취약점 조치 우선순위 분석">취약점 조치 우선순위 분석</a>
+          <a class="nav-child" href="#" data-nav="보안 관리 사각지대 탐지">보안 관리 사각지대 탐지</a>
+          <a class="nav-child" href="#" data-nav="보안 업무 어시스턴트">보안 업무 어시스턴트</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="side-foot"><span>AgentOn Security</span><span>v1.0.0</span></div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="ic-btn menu-toggle" type="button" id="menuToggle" aria-label="메뉴">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="crumb"><span>System</span><span class="sep">›</span><b>Service Management</b></div>
+      <div class="spacer"></div>
+      <button class="user" type="button" data-nav="내 계정">
+        <span class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--icon)"><circle cx="12" cy="8" r="4.2"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg></span>
+        <span class="u-meta"><span class="u-name" style="display:block">agenton-admin</span><span class="u-role" style="display:block">제조사 관리자</span></span>
+      </button>
+      <button class="ic-btn" type="button" id="logoutBtn" aria-label="로그아웃" title="로그아웃">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+      </button>
+    </div>
+
+    <div class="content">
+      <div class="phead">
+        <div>
+          <h1>Service Management</h1>
+          <p class="psub">AI Service API와 MCP 서버·도구·LLM 연결을 등록·관리합니다</p>
+        </div>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Service Management 탭">
+        <button class="tab" role="tab" type="button" id="tab-api" aria-selected="true" aria-controls="pane-api" data-tab="api">AI Service APIs <span class="n">12</span></button>
+        <button class="tab" role="tab" type="button" id="tab-srv" aria-selected="false" aria-controls="pane-srv" data-tab="srv">MCP Servers <span class="n">5</span></button>
+        <button class="tab" role="tab" type="button" id="tab-tool" aria-selected="false" aria-controls="pane-tool" data-tab="tool">MCP Tools <span class="n">13</span></button>
+        <button class="tab" role="tab" type="button" id="tab-llm" aria-selected="false" aria-controls="pane-llm" data-tab="llm">LLM Providers <span class="n">2</span></button>
+      </div>
+
+      <section class="tabpane" id="pane-api" role="tabpanel" aria-labelledby="tab-api">
+        <div class="list-panel"><div class="scroll"><table>
+          <thead><tr><th scope="col">도메인</th><th scope="col">카테고리</th><th scope="col">API 명</th><th scope="col">AI 서비스명</th><th scope="col">버전</th><th scope="col">상태</th><th scope="col">설명</th><th scope="col">사용중인 대상시스템</th></tr></thead>
+          <tbody>
+                <tr><td class="lv-cell" rowspan="15"><span class="tb">Security</span></td><td colspan="7" class="sec-cell">Standard</td></tr>
+                <tr><td class="cat-cell" rowspan="5"><span class="ct">Security Risk Analysis</span><span class="cs">취약점 위험 분석 및 우선순위 추천</span></td><td><button class="lk mono" type="button" data-api="security-risk-summarize" style="font-weight:700;font-size:13px">security-risk-summarize</button></td><td>보안 위험 요약</td><td class="mono" style="font-size:13px;color:var(--ink-soft)">v1.0.0</td><td><span class="st lc-active" data-st-for="security-risk-summarize"><span class="dot"></span>Active</span></td><td style="color:var(--ink-soft);font-size:13px;line-height:1.5;max-width:320px">분석 대상의 취약점 위험 현황 및 주요 위험 요인 요약</td><td><span class="tb">ISPM</span></td></tr>
+                <tr><td><button class="lk mono" type="button" data-api="security-vulnerability-prioritize" style="font-weight:700;font-size:13px">security-vulnerability-prioritize</button></td><td>취약점 조치 우선순위 추천</td><td class="mono" style="font-size:13px;color:var(--ink-soft)">v1.0.0</td><td><span class="st lc-active" data-st-for="security-vulnerability-prioritize"><span class="dot"></span>Active</span></td><td style="color:var(--ink-soft);font-size:13px;line-height:1.5;max-width:320px">취약점 위험도와 자산·환경 정보를 종합 분석하여 조치 우선순위 및 판단 근거 제공</td><td><span class="tb">ISPM</span></td></tr>
+                <tr><td><button class="lk mono" type="button" data-api="security-assessment-gap-analyze" style="font-weight:700;font-size:13px">security-assessment-gap-analyze</button></td><td>보안 점검 필요 자산 식별</td><td class="mono" style="font-size:13px;color:var(--ink-soft)">v1.0.0</td><td><span class="st lc-active" data-st-for="security-assessment-gap-analyze"><span class="dot"></span>Active</span></td><td style="color:var(--ink-soft);font-size:13px;line-height:1.5;max-width:320px">점검 이력 및 보안 위험 정보를 분석하여 추가 점검이 필요한 자산 식별</td><td><span class="tb">ISPM</span></td></tr>
+                <tr><td><button class="lk mono" type="button" data-api="security-asset-consistency-analyze" style="font-weight:700;font-size:13px">security-asset-consistency-analyze</button></td><td>자산 정보 정합성 분석</td><td class="mono" style="font-size:13px;color:var(--ink-soft)">v1.0.0</td><td><span class="st lc-suspended" data-st-for="security-asset-consistency-analyze"><span class="dot"></span>Suspended</span></td><td style="color:var(--ink-soft);font-size:13px;line-height:1.5;max-width:320px">자산·정보시스템·담당자 정보의 정합성 문제 분석</td><td><span class="tb">ISPM</span></td></tr>
+                <tr><td><button class="lk mono" type="button" data-api="security-risk-reassessment-check" style="font-weight:700;font-size:13px">security-risk-reassessment-check</button></td><td>보안 위험 재검토 필요 대상 식별</td><td class="mono" style="font-size:13px;color:var(--ink-soft)">v1.0.0</td><td><span class="st lc-active" data-st-for="security-risk-reassessment-check"><span class="dot"></span>Active</span></td><td style="color:var(--ink-soft);font-size:13px;line-height:1.5;max-width:320px">신규 위험 정보 및 보안 상태를 분석하여 재검토 필요 대상과 판단 근거 제공</td><td><span class="tb">ISPM</span></td></tr>
+                <tr><td class="cat-cell" rowspan="2"><span class="ct">Evidence Review</span><span class="cs">보안 점검 증적 기본 검토</span></td><td><button class="lk mono" type="button" data-api="security-evidence-relevance-check" style="font-weight:700;font-size:13px">security-evidence-relevance-check</button></td><td>보안 점검 증적 적합성 확인</td><td class="mono" style="font-size:13px;color:var(--ink-soft)">v1.0.0</td><td><span class="st lc-active" data-st-for="security-evidence-relevance-check"><span class="dot"></span>Active</span></td><td style="color:var(--ink-soft);font-size:13px;line-height:1.5;max-width:320px">보안 점검 증적의 점검항목 관련성 및 필수정보 포함 여부 확인</td><td><span class="tb">ISPM</span></td></tr>
+                <tr><td><button class="lk mono" type="button" data-api="security-evidence-review" style="font-weight:700;font-size:13px">security-evidence-review</button></td><td>보안 점검 증적 검토</td><td class="mono" style="font-size:13px;color:var(--ink-soft)">v1.0.0</td><td><span class="st lc-active" data-st-for="security-evidence-review"><span class="dot"></span>Active</span></td><td style="color:var(--ink-soft);font-size:13px;line-height:1.5;max-width:320px">보안 점검 증적과 점검 기준을 비교하여 판정 결과 및 판단 근거 제공</td><td><span class="tb">ISPM</span></td></tr>
+                <tr><td class="cat-cell" rowspan="3"><span class="ct">Approval Review</span><span class="cs">예외·유예 등 보안 신청 지원 및 승인 적정성 검토</span></td><td><button class="lk mono" type="button" data-api="security-exception-request-guide" style="font-weight:700;font-size:13px">security-exception-request-guide</button></td><td>예외·유예 신청 가이드</td><td class="mono" style="font-size:13px;color:var(--ink-soft)">v1.0.0</td><td><span class="st lc-active" data-st-for="security-exception-request-guide"><span class="dot"></span>Active</span></td><td style="color:var(--ink-soft);font-size:13px;line-height:1.5;max-width:320px">대상 자산·취약점 및 보안 정책을 분석하여 예외·유예 신청 가이드 제공</td><td><span class="tb">ISPM</span></td></tr>
+                <tr><td><button class="lk mono" type="button" data-api="security-exception-reason-classify" style="font-weight:700;font-size:13px">security-exception-reason-classify</button></td><td>예외·유예 신청 사유 유형 분류</td><td class="mono" style="font-size:13px;color:var(--ink-soft)">v1.0.0</td><td><span class="st lc-active" data-st-for="security-exception-reason-classify"><span class="dot"></span>Active</span></td><td style="color:var(--ink-soft);font-size:13px;line-height:1.5;max-width:320px">신청 사유를 사전 정의된 유형으로 분류하고 판단 근거 제공</td><td><span class="tb">ISPM</span></td></tr>
+                <tr><td><button class="lk mono" type="button" data-api="security-exception-approval-review" style="font-weight:700;font-size:13px">security-exception-approval-review</button></td><td>예외·유예 신청 적정성 검토</td><td class="mono" style="font-size:13px;color:var(--ink-soft)">v1.0.0</td><td><span class="st lc-active" data-st-for="security-exception-approval-review"><span class="dot"></span>Active</span></td><td style="color:var(--ink-soft);font-size:13px;line-height:1.5;max-width:320px">신청 내용과 보안 위험 및 정책을 분석하여 승인 적정성 검토 의견 제공</td><td><span class="tb">ISPM</span></td></tr>
+                <tr><td class="cat-cell" rowspan="2"><span class="ct">AI Assistant</span><span class="cs">사용자·업무 맥락 기반 대화형 AI 지원</span></td><td><button class="lk mono" type="button" data-api="security-assistant-chat" style="font-weight:700;font-size:13px">security-assistant-chat</button></td><td>대화형 질의응답 및 분석</td><td class="mono" style="font-size:13px;color:var(--ink-soft)">v1.0.0</td><td><span class="st lc-active" data-st-for="security-assistant-chat"><span class="dot"></span>Active</span></td><td style="color:var(--ink-soft);font-size:13px;line-height:1.5;max-width:320px">사용자 권한 및 업무 맥락 기반 보안 질의응답·분석 및 판단 근거 제공</td><td><span class="tb">ISPM</span></td></tr>
+                <tr><td><button class="lk mono" type="button" data-api="security-assistant-search" style="font-weight:700;font-size:13px">security-assistant-search</button></td><td>보안 업무정보 통합 검색</td><td class="mono" style="font-size:13px;color:var(--ink-soft)">v1.0.0</td><td><span class="st lc-deprecated" data-st-for="security-assistant-search"><span class="dot"></span>Deprecated</span></td><td style="color:var(--ink-soft);font-size:13px;line-height:1.5;max-width:320px">Ontology·RAG 기반 보안 업무정보 통합 검색 및 관련 근거 제공</td><td><span class="tb">ISPM</span></td></tr>
+                <tr><td colspan="7" class="sec-cell">Custom</td></tr>
+                <tr class="row-off"><td colspan="7" class="cust-empty">등록된 Custom API가 없습니다.</td></tr>
+          </tbody>
+        </table></div></div>
+      </section>
+
+      <section class="tabpane" id="pane-srv" role="tabpanel" aria-labelledby="tab-srv" hidden>
+        <div class="toolbar">
+          <div class="tb-actions"><button class="btn sm primary" type="button" id="srvAddBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" width="15" height="15"><path d="M12 5v14M5 12h14"/></svg>서버 등록</button></div>
+        </div>
+        <div class="list-panel"><div class="scroll"><table>
+          <thead><tr><th scope="col">MCP 서버명</th><th scope="col">제공 구분</th><th scope="col">전송 방식</th><th scope="col">Endpoint</th><th scope="col">도구 수</th><th scope="col">연결 상태</th><th scope="col">운영 상태</th><th scope="col">최종 연결 확인</th><th scope="col">최종 수정일시</th></tr></thead>
+          <tbody id="srvBody"></tbody>
+        </table></div></div>
+        <p style="margin:10px 2px 0;font-size:12.5px;color:var(--ink-faint)">서버명을 클릭하면 설명 · 인증 · 등록일시 · 운영 상태를 확인하고 관리할 수 있습니다. Inbound 서버의 접속 인증은 Access Management › MCP Tool Users에서 사용자별로 발급합니다.</p>
+      </section>
+
+      <section class="tabpane" id="pane-tool" role="tabpanel" aria-labelledby="tab-tool" hidden>
+        <div class="toolbar">
+          <div class="tb-actions"><button class="btn sm primary" type="button" data-nav="MCP 도구 동기화"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" width="15" height="15"><path d="M12 5v14M5 12h14"/></svg>도구 동기화</button></div>
+        </div>
+        <div class="list-panel"><div class="scroll"><table>
+          <thead><tr><th scope="col">MCP 서버</th><th scope="col">도구명</th><th scope="col">설명</th><th scope="col">상태</th><th scope="col">외부 공개 여부</th><th scope="col">최종 수정일시</th></tr></thead>
+          <tbody></tbody>
+        </table></div></div>
+      </section>
+
+      <section class="tabpane" id="pane-llm" role="tabpanel" aria-labelledby="tab-llm" hidden>
+        <div class="toolbar">
+          <div class="tb-actions"><button class="btn sm primary" type="button" id="llmAddBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" width="15" height="15"><path d="M12 5v14M5 12h14"/></svg>Provider 등록</button></div>
+        </div>
+        <div class="list-panel"><div class="scroll"><table>
+          <thead><tr><th scope="col">Provider 명</th><th scope="col">Endpoint</th><th scope="col">모델 ID</th><th scope="col">상태</th><th scope="col">최근 연결 확인</th><th scope="col">매핑된 대상 시스템</th><th scope="col">사용중인 API</th></tr></thead>
+          <tbody></tbody>
+        </table></div></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ===== API 키 발급 / 재발급 / 폐기 모달 (공통 스타일) ===== === 연동 지점 === -->
+  <div class="so-backdrop modal-backdrop" id="keyBackdrop"></div>
+  <div class="modal" id="keyModal" role="dialog" aria-modal="true" aria-labelledby="kmTitle">
+    <div class="m-head">
+      <div><div class="m-t" id="kmTitle">API 키 발급</div><div class="m-s mono" id="kmSub"></div></div>
+      <button class="so-x" type="button" data-km-close aria-label="닫기">×</button>
+    </div>
+    <div class="m-body" id="kmBody"></div>
+    <div class="m-foot"><span class="sp"></span><button class="btn" type="button" id="kmCancel" data-km-close>취소</button><button class="btn primary" type="button" id="kmConfirm">발급</button></div>
+  </div>
+
+  <!-- ===== API 키 발급내역 조회 팝업 (공통 스타일) ===== === 연동 지점 === -->
+  <div class="so-backdrop modal-backdrop" id="histBackdrop"></div>
+  <div class="modal" id="histModal" role="dialog" aria-modal="true" aria-labelledby="histTitle" style="width:min(760px, calc(100vw - 40px))">
+    <div class="m-head">
+      <div><div class="m-t" id="histTitle">API 키 발급내역</div><div class="m-s mono" id="histSub"></div></div>
+      <button class="so-x" type="button" data-hist-close aria-label="닫기">×</button>
+    </div>
+    <div class="m-body" id="histBody"></div>
+    <div class="m-foot"><span class="sp"></span><button class="btn" type="button" data-hist-close>닫기</button></div>
+  </div>
+
+  <!-- ===== LLM Provider 공통 모달 (등록 · 키 교체 · 모델 추가 · 확인) ===== === 연동 지점 === -->
+  <div class="so-backdrop modal-backdrop" id="llmBackdrop"></div>
+  <div class="modal" id="llmModal" role="dialog" aria-modal="true" aria-labelledby="llmMTitle" style="width:min(580px, calc(100vw - 40px))">
+    <div class="m-head"><div><div class="m-t" id="llmMTitle">Provider</div></div><button class="so-x" type="button" data-llm-close aria-label="닫기">×</button></div>
+    <div class="m-body" id="llmMBody"></div>
+    <div class="m-foot"><span class="sp"></span><button class="btn" type="button" data-llm-close>취소</button><button class="btn primary" type="button" id="llmMConfirm">확인</button></div>
+  </div>
+
+  <!-- ===== MCP 서버 등록/수정 팝업 ===== -->
+  <div class="so-backdrop modal-backdrop" id="srvBackdrop"></div>
+  <div class="modal" id="srvModal" role="dialog" aria-modal="true" aria-labelledby="srvMTitle" style="width:min(620px, calc(100vw - 40px))">
+    <div class="m-head"><div><div class="m-t" id="srvMTitle">MCP 서버 등록</div><div class="m-s" id="srvMSub">Outbound · AgentOn 추가 제공</div></div><button class="so-x" type="button" data-srv-close aria-label="닫기">×</button></div>
+    <div class="m-body" id="srvMBody"></div>
+    <div class="m-foot"><span class="sp"></span><button class="btn" type="button" data-srv-close>취소</button><button class="btn primary" type="button" id="srvMConfirm">등록</button></div>
+  </div>
+
+  <script>
+  (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
+    function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (m) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]; }); }
+    var toastT;
+    function toast(msg, bad) { var t = $("toast"); t.innerHTML = msg; t.classList.toggle("bad", !!bad); t.classList.add("open"); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove("open"); }, 3400); }
+
+    /* 복사 (data-copy) === 연동 지점 없음, UI 데모 === */
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-copy]"); if (!b) return; e.stopPropagation();
+      var v = b.getAttribute("data-copy"); try { navigator.clipboard && navigator.clipboard.writeText(v); } catch (x) {}
+      toast("<b>" + esc(v) + "</b> 복사됨");
+    });
+
+    /* 미구현 메뉴/액션 stub */
+    function navStub(name) { toast("이 프로토타입은 License 화면만 구현되어 있습니다" + (name ? ' <span style="opacity:.7">(' + esc(name) + ')</span>' : "")); }
+    document.querySelectorAll(".sidebar [data-nav], .topbar [data-nav], .content [data-nav]").forEach(function (a) {
+      a.addEventListener("click", function (e) { e.preventDefault(); navStub(a.getAttribute("data-nav")); });
+    });
+
+    /* 사이드바 그룹 접기/펼치기 */
+    document.querySelectorAll("[data-group-toggle]").forEach(function (t) {
+      t.addEventListener("click", function () {
+        var g = t.closest(".nav-group"), open = g.getAttribute("data-open") === "true";
+        g.setAttribute("data-open", String(!open)); t.setAttribute("aria-expanded", String(!open));
+      });
+    });
+
+    /* 모바일 사이드바 토글 */
+    $("menuToggle").addEventListener("click", function (e) { e.stopPropagation(); $("sidebar").classList.toggle("open"); });
+    document.addEventListener("click", function (e) { if (!e.target.closest("#sidebar")) $("sidebar").classList.remove("open"); });
+
+    /* 로그아웃 (데모) === 연동 지점 === */
+    $("logoutBtn").addEventListener("click", function () { toast("로그아웃되었습니다 (데모)"); });
+
+    /* Service Management 탭 전환 */
+    (function () {
+      var tabs = document.querySelectorAll(".tab"); if (!tabs.length) return;
+      function show(t) {
+        tabs.forEach(function (b) { b.setAttribute("aria-selected", String(b.getAttribute("data-tab") === t)); });
+        document.querySelectorAll(".tabpane").forEach(function (p) { p.hidden = (p.id !== "pane-" + t); });
+      }
+      tabs.forEach(function (b) { b.addEventListener("click", function () { show(b.getAttribute("data-tab")); }); });
+    })();
+
+    /* AI Service API 상세 — Expandable Row (선택 행 바로 아래 확장) === 연동 지점 === */
+    (function () {
+      var tbody = document.querySelector("#pane-api tbody"); if (!tbody) return;
+      var DETAIL = {"security-risk-summarize": {"svc": "보안 위험 요약", "category": "Security Risk Analysis", "domain": "Security", "tier": "Standard", "version": "v1.0.0", "status": "ok", "desc": "분석 대상의 취약점 위험 현황 및 주요 위험 요인 요약", "target": "ISPM", "method": "POST", "endpoint": "/api/v1/ai/security-risk-summarize", "handler": "AISVC-H-01", "auth": "Bearer Token (API Key)", "timeout": "30s", "lifecycle": "active", "keyState": "issued", "keyId": "ak_live_b034b7····bbf9", "keyIssued": "2026-06-10", "keyExpiry": "무기한", "keyRevoked": "", "history": [{"ts": "2026-06-10 09:12", "kind": "최초 발급", "keyId": "ak_live_b034b7····bbf9", "valid": "2026-06-10 ~ 무기한", "actor": "agenton-admin", "result": "활성"}], "updatedAt": "2026-04-01 09:00", "statusAt": "2026-04-01 09:00"}, "security-vulnerability-prioritize": {"svc": "취약점 조치 우선순위 추천", "category": "Security Risk Analysis", "domain": "Security", "tier": "Standard", "version": "v1.0.0", "status": "ok", "desc": "취약점 위험도와 자산·환경 정보를 종합 분석하여 조치 우선순위 및 판단 근거 제공", "target": "ISPM", "method": "POST", "endpoint": "/api/v1/ai/security-vulnerability-prioritize", "handler": "AISVC-H-02", "auth": "Bearer Token (API Key)", "timeout": "30s", "lifecycle": "active", "keyState": "issued", "keyId": "ak_live_bb39cf····25b7", "keyIssued": "2026-08-05", "keyExpiry": "2027-08-05", "keyRevoked": "", "history": [{"ts": "2026-02-11 09:30", "kind": "최초 발급", "keyId": "ak_live_e5de59····85fd", "valid": "2026-02-11 ~ 2027-02-11", "actor": "agenton-admin", "result": "교체됨"}, {"ts": "2026-08-05 11:15", "kind": "재발급", "keyId": "ak_live_bb39cf····25b7", "valid": "2026-08-05 ~ 2027-08-05", "actor": "agenton-admin", "result": "활성"}], "updatedAt": "2026-04-02 10:11", "statusAt": "2026-04-02 10:11"}, "security-assessment-gap-analyze": {"svc": "보안 점검 필요 자산 식별", "category": "Security Risk Analysis", "domain": "Security", "tier": "Standard", "version": "v1.0.0", "status": "ok", "desc": "점검 이력 및 보안 위험 정보를 분석하여 추가 점검이 필요한 자산 식별", "target": "ISPM", "method": "POST", "endpoint": "/api/v1/ai/security-assessment-gap-analyze", "handler": "AISVC-H-03", "auth": "Bearer Token (API Key)", "timeout": "30s", "lifecycle": "active", "keyState": "issued", "keyId": "ak_live_8d3d02····ad9d", "keyIssued": "2026-06-10", "keyExpiry": "2027-06-10", "keyRevoked": "", "history": [{"ts": "2026-06-10 09:12", "kind": "최초 발급", "keyId": "ak_live_8d3d02····ad9d", "valid": "2026-06-10 ~ 2027-06-10", "actor": "agenton-admin", "result": "활성"}], "updatedAt": "2026-04-03 11:22", "statusAt": "2026-04-03 11:22"}, "security-asset-consistency-analyze": {"svc": "자산 정보 정합성 분석", "category": "Security Risk Analysis", "domain": "Security", "tier": "Standard", "version": "v1.0.0", "status": "ok", "desc": "자산·정보시스템·담당자 정보의 정합성 문제 분석", "target": "ISPM", "method": "POST", "endpoint": "/api/v1/ai/security-asset-consistency-analyze", "handler": "AISVC-H-04", "auth": "Bearer Token (API Key)", "timeout": "30s", "lifecycle": "suspended", "keyState": "issued", "keyId": "ak_live_efd232····4468", "keyIssued": "2026-06-10", "keyExpiry": "2027-06-10", "keyRevoked": "", "history": [{"ts": "2026-06-10 09:12", "kind": "최초 발급", "keyId": "ak_live_efd232····4468", "valid": "2026-06-10 ~ 2027-06-10", "actor": "agenton-admin", "result": "활성"}], "updatedAt": "2026-04-04 12:33", "statusAt": "2026-10-05 14:12"}, "security-risk-reassessment-check": {"svc": "보안 위험 재검토 필요 대상 식별", "category": "Security Risk Analysis", "domain": "Security", "tier": "Standard", "version": "v1.0.0", "status": "ok", "desc": "신규 위험 정보 및 보안 상태를 분석하여 재검토 필요 대상과 판단 근거 제공", "target": "ISPM", "method": "POST", "endpoint": "/api/v1/ai/security-risk-reassessment-check", "handler": "AISVC-H-05", "auth": "Bearer Token (API Key)", "timeout": "30s", "lifecycle": "active", "keyState": "none", "keyId": "", "keyIssued": "", "keyExpiry": "", "keyRevoked": "", "history": [], "updatedAt": "2026-04-05 13:44", "statusAt": "2026-04-05 13:44"}, "security-evidence-relevance-check": {"svc": "보안 점검 증적 적합성 확인", "category": "Evidence Review", "domain": "Security", "tier": "Standard", "version": "v1.0.0", "status": "ok", "desc": "보안 점검 증적의 점검항목 관련성 및 필수정보 포함 여부 확인", "target": "ISPM", "method": "POST", "endpoint": "/api/v1/ai/security-evidence-relevance-check", "handler": "AISVC-H-06", "auth": "Bearer Token (API Key)", "timeout": "30s", "lifecycle": "active", "keyState": "issued", "keyId": "ak_live_6d8a9d····92c8", "keyIssued": "2026-06-10", "keyExpiry": "2027-06-10", "keyRevoked": "", "history": [{"ts": "2026-06-10 09:12", "kind": "최초 발급", "keyId": "ak_live_6d8a9d····92c8", "valid": "2026-06-10 ~ 2027-06-10", "actor": "agenton-admin", "result": "활성"}], "updatedAt": "2026-04-06 14:55", "statusAt": "2026-04-06 14:55"}, "security-evidence-review": {"svc": "보안 점검 증적 검토", "category": "Evidence Review", "domain": "Security", "tier": "Standard", "version": "v1.0.0", "status": "ok", "desc": "보안 점검 증적과 점검 기준을 비교하여 판정 결과 및 판단 근거 제공", "target": "ISPM", "method": "POST", "endpoint": "/api/v1/ai/security-evidence-review", "handler": "AISVC-H-07", "auth": "Bearer Token (API Key)", "timeout": "30s", "lifecycle": "active", "keyState": "issued", "keyId": "ak_live_8a8335····0c1a", "keyIssued": "2026-06-10", "keyExpiry": "2027-06-10", "keyRevoked": "", "history": [{"ts": "2026-06-10 09:12", "kind": "최초 발급", "keyId": "ak_live_8a8335····0c1a", "valid": "2026-06-10 ~ 2027-06-10", "actor": "agenton-admin", "result": "활성"}], "updatedAt": "2026-04-07 15:06", "statusAt": "2026-04-07 15:06"}, "security-exception-request-guide": {"svc": "예외·유예 신청 가이드", "category": "Approval Review", "domain": "Security", "tier": "Standard", "version": "v1.0.0", "status": "ok", "desc": "대상 자산·취약점 및 보안 정책을 분석하여 예외·유예 신청 가이드 제공", "target": "ISPM", "method": "POST", "endpoint": "/api/v1/ai/security-exception-request-guide", "handler": "AISVC-H-08", "auth": "Bearer Token (API Key)", "timeout": "30s", "lifecycle": "active", "keyState": "issued", "keyId": "ak_live_b0e93c····691f", "keyIssued": "2026-06-10", "keyExpiry": "2027-06-10", "keyRevoked": "", "history": [{"ts": "2026-06-10 09:12", "kind": "최초 발급", "keyId": "ak_live_b0e93c····691f", "valid": "2026-06-10 ~ 2027-06-10", "actor": "agenton-admin", "result": "활성"}], "updatedAt": "2026-04-08 16:17", "statusAt": "2026-04-08 16:17"}, "security-exception-reason-classify": {"svc": "예외·유예 신청 사유 유형 분류", "category": "Approval Review", "domain": "Security", "tier": "Standard", "version": "v1.0.0", "status": "ok", "desc": "신청 사유를 사전 정의된 유형으로 분류하고 판단 근거 제공", "target": "ISPM", "method": "POST", "endpoint": "/api/v1/ai/security-exception-reason-classify", "handler": "AISVC-H-09", "auth": "Bearer Token (API Key)", "timeout": "30s", "lifecycle": "active", "keyState": "issued", "keyId": "ak_live_7f0880····7fe5", "keyIssued": "2026-06-10", "keyExpiry": "무기한", "keyRevoked": "", "history": [{"ts": "2026-06-10 09:12", "kind": "최초 발급", "keyId": "ak_live_7f0880····7fe5", "valid": "2026-06-10 ~ 무기한", "actor": "agenton-admin", "result": "활성"}], "updatedAt": "2026-04-09 09:28", "statusAt": "2026-04-09 09:28"}, "security-exception-approval-review": {"svc": "예외·유예 신청 적정성 검토", "category": "Approval Review", "domain": "Security", "tier": "Standard", "version": "v1.0.0", "status": "ok", "desc": "신청 내용과 보안 위험 및 정책을 분석하여 승인 적정성 검토 의견 제공", "target": "ISPM", "method": "POST", "endpoint": "/api/v1/ai/security-exception-approval-review", "handler": "AISVC-H-10", "auth": "Bearer Token (API Key)", "timeout": "30s", "lifecycle": "active", "keyState": "issued", "keyId": "ak_live_26b248····607c", "keyIssued": "2026-06-10", "keyExpiry": "2027-06-10", "keyRevoked": "", "history": [{"ts": "2026-06-10 09:12", "kind": "최초 발급", "keyId": "ak_live_26b248····607c", "valid": "2026-06-10 ~ 2027-06-10", "actor": "agenton-admin", "result": "활성"}], "updatedAt": "2026-04-10 10:39", "statusAt": "2026-04-10 10:39"}, "security-assistant-chat": {"svc": "대화형 질의응답 및 분석", "category": "AI Assistant", "domain": "Security", "tier": "Standard", "version": "v1.0.0", "status": "ok", "desc": "사용자 권한 및 업무 맥락 기반 보안 질의응답·분석 및 판단 근거 제공", "target": "ISPM", "method": "POST", "endpoint": "/api/v1/ai/security-assistant-chat", "handler": "AISVC-H-11", "auth": "Bearer Token (API Key)", "timeout": "60s", "lifecycle": "active", "keyState": "issued", "keyId": "ak_live_fc550d····18d5", "keyIssued": "2026-06-10", "keyExpiry": "2027-06-10", "keyRevoked": "", "history": [{"ts": "2026-06-10 09:12", "kind": "최초 발급", "keyId": "ak_live_fc550d····18d5", "valid": "2026-06-10 ~ 2027-06-10", "actor": "agenton-admin", "result": "활성"}], "updatedAt": "2026-04-11 11:50", "statusAt": "2026-04-11 11:50"}, "security-assistant-search": {"svc": "보안 업무정보 통합 검색", "category": "AI Assistant", "domain": "Security", "tier": "Standard", "version": "v1.0.0", "status": "beta", "desc": "Ontology·RAG 기반 보안 업무정보 통합 검색 및 관련 근거 제공", "target": "ISPM", "method": "POST", "endpoint": "/api/v1/ai/security-assistant-search", "handler": "AISVC-H-12", "auth": "Bearer Token (API Key)", "timeout": "60s", "lifecycle": "deprecated", "keyState": "revoked", "keyId": "ak_live_a7d39d····c404", "keyIssued": "2026-05-20", "keyExpiry": "2027-05-20", "keyRevoked": "2026-10-18", "history": [{"ts": "2026-05-20 10:04", "kind": "최초 발급", "keyId": "ak_live_a7d39d····c404", "valid": "2026-05-20 ~ 2027-05-20", "actor": "agenton-admin", "result": "폐기"}, {"ts": "2026-10-18 16:22", "kind": "폐기", "keyId": "ak_live_a7d39d····c404", "valid": "—", "actor": "agenton-admin", "result": "완료"}], "updatedAt": "2026-04-12 12:01", "statusAt": "2026-09-22 11:30"}};
+      var open = null, openApi = null;
+
+      var LC = {
+        active:     { label: "Active",     ko: "정상 운영",                cls: "lc-active" },
+        suspended:  { label: "Suspended",  ko: "관리자에 의한 일시 중단",   cls: "lc-suspended" },
+        deprecated: { label: "Deprecated", ko: "사용 중단 예정",           cls: "lc-deprecated" },
+        retired:    { label: "Retired",    ko: "서비스 종료",              cls: "lc-retired" }
+      };
+      var LC_ORDER = ["active", "suspended", "deprecated", "retired"];
+
+      function lcBadge(k) { var o = LC[k] || LC.active; return '<span class="st ' + o.cls + '"><span class="dot"></span>' + o.label + '</span>'; }
+      function keyBadge(d) {
+        if (d.keyState === "issued") return '<span class="st key-issued"><span class="dot"></span>발급됨</span>';
+        if (d.keyState === "revoked") return '<span class="st key-revoked"><span class="dot"></span>폐기됨</span>';
+        return '<span class="st off"><span class="dot"></span>미발급</span>';
+      }
+
+      function kvi(k, v, wide) { return '<div class="kv-item' + (wide ? ' wide' : '') + '"><span class="kv-k">' + k + '</span><span class="kv-v' + (wide ? ' mono' : '') + '">' + v + '</span></div>'; }
+      function keyActs(api, d) {
+        if (d.keyState === "issued") return '<button class="btn sm primary" type="button" data-act="reissue" data-api="' + esc(api) + '">재발급</button><button class="btn sm ghost" type="button" data-act="revoke" data-api="' + esc(api) + '">폐기</button><button class="btn sm" type="button" data-act="history" data-api="' + esc(api) + '">발급내역 조회</button>';
+        if (d.keyState === "revoked") return '<button class="btn sm primary" type="button" data-act="reissue" data-api="' + esc(api) + '">재발급</button><button class="btn sm" type="button" data-act="history" data-api="' + esc(api) + '">발급내역 조회</button>';
+        return '<button class="btn sm primary" type="button" data-act="issue" data-api="' + esc(api) + '">최초 발급</button><button class="btn sm" type="button" data-act="history" data-api="' + esc(api) + '">발급내역 조회</button>';
+      }
+      function footLine(label, ts) { return '<div class="exp-foot"><span class="lbl">' + label + '</span><span class="sep">·</span><span class="dt">' + esc(ts || "—") + '</span></div>'; }
+      function lastKeyTs(d) { return (d.history && d.history.length) ? d.history[d.history.length - 1].ts : "—"; }
+      function detailHTML(api) {
+        var d = DETAIL[api];
+        var h = '<td colspan="6"><div class="exp-wrap">';
+        h += '<div class="exp-head"><div><div class="exp-title">' + esc(d.svc) + '</div><div class="exp-id mono">' + esc(api) + '</div></div><div>' + lcBadge(d.lifecycle) + '</div></div>';
+
+        /* 기본 정보 — 2~3열 그리드 */
+        h += '<div class="exp-sec"><div class="exp-sec-h"><div class="exp-sec-t">기본 정보</div></div><div class="exp-grid">';
+        h += kvi('Endpoint', esc(d.method) + ' ' + esc(d.endpoint), true);
+        h += kvi('HTTP Method', '<span class="tb">' + esc(d.method) + '</span>');
+        h += kvi('Handler ID', '<button class="oid" type="button" data-copy="' + esc(d.handler) + '" title="클릭하여 복사">' + esc(d.handler) + '</button>');
+        h += kvi('버전', '<span class="mono">' + esc(d.version) + '</span>');
+        h += kvi('인증 방식', esc(d.auth));
+        h += kvi('타임아웃', esc(d.timeout));
+        h += '</div>' + footLine('최종 등록 일시', d.updatedAt) + '</div>';
+
+        /* API 키 — 헤더 우측 버튼 + 정보 그리드 (전체 키는 발급 시 1회만 노출) */
+        h += '<div class="exp-sec"><div class="exp-sec-h"><div class="exp-sec-t">API 키</div>' + keyBadge(d) + '<span class="sp"></span><div class="acts">' + keyActs(api, d) + '</div></div>';
+        if (d.keyState === "issued") {
+          h += '<div class="exp-grid">';
+          h += kvi('키(마스킹)', '<span class="mono">' + esc(d.keyId) + '</span>');
+          h += kvi('발급일', '<span class="mono">' + esc(d.keyIssued) + '</span>');
+          h += kvi('유효기간', '<span class="mono">' + esc(d.keyIssued) + ' ~ ' + esc(d.keyExpiry) + '</span>');
+          h += '</div>';
+          h += '<p class="exp-hint">전체 API 키 값은 <b>발급 시 1회만</b> 표시됩니다. 분실 시 재발급해야 합니다.</p>';
+        } else if (d.keyState === "revoked") {
+          h += '<div class="exp-grid">';
+          h += kvi('키(마스킹)', '<span class="mono" style="color:var(--ink-faint);text-decoration:line-through">' + esc(d.keyId) + '</span>');
+          h += kvi('폐기일', '<span class="mono">' + esc(d.keyRevoked) + '</span>');
+          h += '</div>';
+        } else {
+          h += '<p class="key-none">발급된 API 키가 없습니다. 최초 발급 시 전체 키 값이 1회만 표시됩니다.</p>';
+        }
+        h += footLine('최종 발급 일시', lastKeyTs(d)) + '</div>';
+
+        /* API 상태 관리 — 헤더 우측 상태 버튼 */
+        var cur = d.lifecycle || "active";
+        h += '<div class="exp-sec"><div class="exp-sec-h"><div class="exp-sec-t">API 상태 관리</div><div class="lc-current">현재 상태 ' + lcBadge(cur) + '<span class="sep">·</span>' + esc(LC[cur].ko) + '</div><span class="sp"></span><div class="lc-opts">';
+        LC_ORDER.forEach(function (k) {
+          var isCur = (k === cur);
+          h += '<button class="lc-opt' + (isCur ? ' cur' : '') + '" type="button"' + (isCur ? ' disabled aria-current="true"' : ' data-act="status" data-api="' + esc(api) + '" data-status="' + k + '"') + '><span class="d ' + k + '"></span>' + LC[k].label + '</button>';
+        });
+        h += '</div></div>';
+        h += '<p class="exp-hint"><b>Active</b> 정상 운영 · <b>Suspended</b> 관리자에 의한 일시 중단 · <b>Deprecated</b> 사용 중단 예정 · <b>Retired</b> 서비스 종료</p>';
+        h += footLine('최종 변경 일시', d.statusAt) + '</div>';
+
+        h += '</div></td>';
+        return h;
+      }
+
+      /* 확장 시 병합 셀(도메인·카테고리) rowspan 을 delta 만큼 조정 */
+      function adjust(tr, delta) {
+        var dom = tbody.querySelector("td.lv-cell");
+        if (dom) dom.rowSpan += delta;
+        var cur = tr;
+        while (cur) {
+          var cc = null;
+          Array.prototype.forEach.call(cur.children, function (c) { if (c.classList.contains("cat-cell")) cc = c; });
+          if (cc) { cc.rowSpan += delta; break; }
+          cur = cur.previousElementSibling;
+        }
+      }
+      function collapse() {
+        if (!open) return;
+        var dr = open.nextElementSibling;
+        if (dr && dr.classList.contains("exp-row")) dr.parentNode.removeChild(dr);
+        adjust(open, -1);
+        open.classList.remove("row-active");
+        open = null; openApi = null;
+      }
+      function expand(tr, api) {
+        var dr = document.createElement("tr");
+        dr.className = "exp-row";
+        dr.innerHTML = detailHTML(api);
+        if (tr.nextSibling) tr.parentNode.insertBefore(dr, tr.nextSibling); else tr.parentNode.appendChild(dr);
+        adjust(tr, 1);
+        tr.classList.add("row-active");
+        open = tr; openApi = api;
+      }
+      function rerender(api) {
+        if (openApi !== api || !open) return;
+        var dr = open.nextElementSibling;
+        if (dr && dr.classList.contains("exp-row")) dr.innerHTML = detailHTML(api);
+      }
+      function setTableStatus(api, lc) {
+        var cell = tbody.querySelector('[data-st-for="' + api + '"]');
+        if (!cell) return;
+        var o = LC[lc] || LC.active;
+        cell.className = "st " + o.cls;
+        cell.innerHTML = '<span class="dot"></span>' + o.label;
+      }
+      function setLifecycle(api, lc) {
+        var d = DETAIL[api]; if (!d || !LC[lc] || d.lifecycle === lc) return;
+        d.lifecycle = lc; d.statusAt = nowTs();
+        setTableStatus(api, lc);
+        rerender(api);
+        toast("API 상태가 <b>" + LC[lc].label + "</b>(으)로 변경되었습니다");
+      }
+
+      /* ---- 날짜·키 유틸 ---- */
+      function pad(n) { return (n < 10 ? "0" : "") + n; }
+      function today() { var t = new Date(); return t.getFullYear() + "-" + pad(t.getMonth() + 1) + "-" + pad(t.getDate()); }
+      function nowTs() { var t = new Date(); return today() + " " + pad(t.getHours()) + ":" + pad(t.getMinutes()); }
+      function addYears(n) { var t = new Date(); t.setFullYear(t.getFullYear() + n); return t.getFullYear() + "-" + pad(t.getMonth() + 1) + "-" + pad(t.getDate()); }
+      function genKeyFull() { var s = "0123456789abcdef", r = "ak_live_", i; for (i = 0; i < 32; i++) r += s[Math.floor(Math.random() * 16)]; return r; }
+      function maskKey(full) { var b = full.replace(/^ak_live_/, ""); return "ak_live_" + b.slice(0, 6) + "····" + b.slice(-4); }
+
+      /* ---- API 키 발급/재발급/폐기 모달 === 연동 지점 === ---- */
+      var kBack = $("keyBackdrop"), kModal = $("keyModal");
+      var kMode = null, kApi = null;
+      function closeKeyModal() { kModal.classList.remove("open"); kBack.classList.remove("open"); kMode = null; kApi = null; }
+      function computeExpiry() { var sel = $("kmValid"); if (!sel) return "무기한"; var v = sel.value; return v === "0" ? "무기한" : addYears(parseInt(v, 10)); }
+      function refreshKmExp() { var el = $("kmExpView"); if (!el) return; el.innerHTML = '적용 기간: <b>' + today() + '</b> ~ <b>' + computeExpiry() + '</b>'; }
+      function openKeyModal(api, reissue) {
+        var d = DETAIL[api]; if (!d) return;
+        kApi = api; kMode = reissue ? "reissue" : "issue";
+        $("kmCancel").style.display = "";
+        $("kmTitle").textContent = reissue ? "API 키 재발급" : "API 키 최초 발급";
+        $("kmSub").textContent = d.svc + " · " + api;
+        var warn = reissue ? '<div class="notice warn" style="margin-bottom:14px">재발급 시 기존 키는 즉시 폐기되며, 새 키로 교체해야 정상 호출됩니다.</div>' : '';
+        $("kmBody").innerHTML = warn +
+          '<div class="field" style="margin-bottom:4px"><label for="kmValid">유효기간<span class="req">*</span></label>' +
+          '<select class="select" id="kmValid"><option value="1">1년</option><option value="2">2년</option><option value="3">3년</option><option value="5">5년</option><option value="0">무기한</option></select>' +
+          '<p class="km-exp" id="kmExpView"></p></div>';
+        $("kmConfirm").textContent = reissue ? "재발급" : "발급";
+        $("kmConfirm").className = "btn primary";
+        kBack.classList.add("open"); kModal.classList.add("open");
+        $("kmValid").addEventListener("change", refreshKmExp);
+        refreshKmExp();
+      }
+      function openRevokeModal(api) {
+        var d = DETAIL[api]; if (!d) return;
+        kApi = api; kMode = "revoke";
+        $("kmCancel").style.display = "";
+        $("kmTitle").textContent = "API 키 폐기";
+        $("kmSub").textContent = d.svc + " · " + api;
+        $("kmBody").innerHTML = '<div class="notice bad" style="margin-bottom:0">키 <b>' + esc(d.keyId) + '</b> 를 폐기합니다. 폐기 후에는 해당 키로 API를 호출할 수 없으며, 되돌릴 수 없습니다. 계속 사용하려면 재발급이 필요합니다.</div>';
+        $("kmConfirm").textContent = "폐기";
+        $("kmConfirm").className = "btn danger";
+        kBack.classList.add("open"); kModal.classList.add("open");
+      }
+      function showReveal(full, reissue) {
+        kMode = "reveal";
+        $("kmTitle").textContent = reissue ? "API 키 재발급 완료" : "API 키 발급 완료";
+        $("kmBody").innerHTML =
+          '<div class="notice warn" style="margin-bottom:14px">이 API 키는 <b>지금 한 번만</b> 표시됩니다. 복사하여 안전한 곳에 보관하세요. 창을 닫으면 전체 키 값을 다시 확인할 수 없으며, 분실 시 재발급해야 합니다.</div>' +
+          '<div class="field" style="margin-bottom:0"><label>API 키</label><div class="key-reveal"><code>' + esc(full) + '</code><button class="btn sm" type="button" data-copy="' + esc(full) + '">복사</button></div></div>';
+        $("kmConfirm").textContent = "확인"; $("kmConfirm").className = "btn primary";
+        $("kmCancel").style.display = "none";
+      }
+      $("kmConfirm").addEventListener("click", function () {
+        if (kMode === "reveal") { closeKeyModal(); return; }
+        if (!kApi) return;
+        var d = DETAIL[kApi], a = kApi, reissue = (kMode === "reissue");
+        if (kMode === "revoke") {
+          d.history.push({ ts: nowTs(), kind: "폐기", keyId: d.keyId, valid: "—", actor: "agenton-admin", result: "완료" });
+          d.keyState = "revoked"; d.keyRevoked = today();
+          toast("API 키가 폐기되었습니다");
+          closeKeyModal();
+          rerender(a);
+          return;
+        }
+        var exp = computeExpiry(), full = genKeyFull(), masked = maskKey(full);
+        d.history.push({ ts: nowTs(), kind: (reissue ? "재발급" : "최초 발급"), keyId: masked, valid: today() + " ~ " + exp, actor: "agenton-admin", result: "활성" });
+        d.keyState = "issued"; d.keyId = masked; d.keyIssued = today(); d.keyExpiry = exp; d.keyRevoked = "";
+        rerender(a);
+        showReveal(full, reissue);
+      });
+      kBack.addEventListener("click", closeKeyModal);
+      Array.prototype.forEach.call(kModal.querySelectorAll("[data-km-close]"), function (b) { b.addEventListener("click", closeKeyModal); });
+
+      /* ---- API 키 발급내역 조회 팝업 === 연동 지점 === ---- */
+      var hBack = $("histBackdrop"), hModal = $("histModal");
+      function closeHist() { hModal.classList.remove("open"); hBack.classList.remove("open"); }
+      function historyBody(api) {
+        var d = DETAIL[api];
+        var h = '<dl class="kv hist-kv">';
+        h += '<dt>API</dt><dd>' + esc(d.svc) + ' <span class="muted mono">· ' + esc(api) + '</span></dd>';
+        h += '<dt>키 상태</dt><dd>' + keyBadge(d) + '</dd>';
+        if (d.keyState === "issued") {
+          h += '<dt>현재 키(마스킹)</dt><dd class="mono">' + esc(d.keyId) + '</dd>';
+          h += '<dt>유효기간</dt><dd class="mono">' + esc(d.keyIssued) + ' ~ ' + esc(d.keyExpiry) + '</dd>';
+        } else if (d.keyState === "revoked") {
+          h += '<dt>폐기일</dt><dd class="mono">' + esc(d.keyRevoked) + '</dd>';
+        }
+        h += '</dl>';
+        h += '<div class="flabel" style="margin:4px 0 8px">발급 내역</div>';
+        h += '<table class="mini-tbl"><thead><tr><th>일시</th><th>구분</th><th>키 ID</th><th>유효기간</th><th>처리자</th><th>결과</th></tr></thead><tbody>';
+        if (!d.history || !d.history.length) {
+          h += '<tr><td colspan="6"><div class="hist-empty">발급 내역이 없습니다.</div></td></tr>';
+        } else {
+          d.history.slice().reverse().forEach(function (e) {
+            var kc = (e.kind === "폐기") ? "kind rev" : "kind";
+            var rc = (e.result === "폐기" || e.result === "완료") ? "off" : "ok";
+            var rlab = (e.result === "활성") ? '<span class="st ok"><span class="dot"></span>활성</span>'
+                     : (e.result === "폐기") ? '<span class="st key-revoked"><span class="dot"></span>폐기</span>'
+                     : (e.result === "완료") ? '<span class="st off"><span class="dot"></span>완료</span>'
+                     : '<span class="st off"><span class="dot"></span>' + esc(e.result) + '</span>';
+            h += '<tr><td class="mono">' + esc(e.ts) + '</td><td><span class="' + kc + '">' + esc(e.kind) + '</span></td>'
+               + '<td class="mono">' + esc(e.keyId) + '</td><td class="mono">' + esc(e.valid) + '</td>'
+               + '<td class="mono">' + esc(e.actor) + '</td><td>' + rlab + '</td></tr>';
+          });
+        }
+        h += '</tbody></table>';
+        return h;
+      }
+      function openHist(api) {
+        var d = DETAIL[api]; if (!d) return;
+        $("histSub").textContent = api;
+        $("histBody").innerHTML = historyBody(api);
+        hBack.classList.add("open"); hModal.classList.add("open");
+      }
+      hBack.addEventListener("click", closeHist);
+      Array.prototype.forEach.call(hModal.querySelectorAll("[data-hist-close]"), function (b) { b.addEventListener("click", closeHist); });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key !== "Escape") return;
+        if (kModal.classList.contains("open")) closeKeyModal();
+        if (hModal.classList.contains("open")) closeHist();
+      });
+
+      tbody.addEventListener("click", function (e) {
+        var act = e.target.closest("[data-act]");
+        if (act) {
+          var api = act.getAttribute("data-api"), a = act.getAttribute("data-act");
+          if (a === "issue") openKeyModal(api, false);
+          else if (a === "reissue") openKeyModal(api, true);
+          else if (a === "revoke") openRevokeModal(api);
+          else if (a === "history") openHist(api);
+          else if (a === "status") setLifecycle(api, act.getAttribute("data-status"));
+          return;
+        }
+        var b = e.target.closest("button.lk[data-api]"); if (!b) return;
+        var tr = b.closest("tr");
+        if (open === tr) { collapse(); return; }
+        collapse();
+        expand(tr, b.getAttribute("data-api"));
+      });
+    })();
+
+    /* ============================================================
+     * LLM Providers 탭 === 연동 지점 (모두 목업) ===
+     * ============================================================ */
+    (function () {
+      var tbody = document.querySelector("#pane-llm tbody");
+      if (!tbody) return;
+      var COLS = 7;
+
+      var LST = {
+        active:    { label: "Active",    ko: "정상",                              cls: "lc-active" },
+        suspended: { label: "Suspended", ko: "관리자에 의한 일시 중단",             cls: "lc-suspended" },
+        error:     { label: "Error",     ko: "최근 연결 테스트 또는 호출 실패 누적", cls: "llm-error" }
+      };
+      var PURPOSES = ["chat", "embedding", "rerank"];
+      var API_NAMES = ["security-risk-summarize", "security-vulnerability-prioritize", "security-evidence-review", "security-exception-approval-review", "security-assistant-chat"];
+
+      var LLMP = {
+        "ref-llm": {
+          name: "Reference LLM (소프트웍스)", kind: "reference",
+          ptype: "vLLM", endpoint: "https://llm.softworks.internal/v1",
+          timeout: "60s", concur: "8", desc: "소프트웍스가 기본 제공·검증한 Reference Provider", updatedAt: "2026-11-01 10:20",
+          auth: "API Key (Bearer)", keyMask: "sk-****…9f2a", keyRegAt: "2026-11-01",
+          status: "active", lastCheck: "2026-11-09 09:00", lastResult: "성공 (412ms)", lastOk: true,
+          globalDefault: true, targets: [], apiCount: 10, errNote: "",
+          models: [ { id: "google/gemma-4-26B", purpose: "chat", ctx: "128K", maxout: "8K", default: true, status: "active" } ]
+        },
+        "cust-onprem": {
+          name: "Customer LLM (현대자동차)", kind: "customer",
+          ptype: "vLLM", endpoint: "https://ai-gw.customer.local/llm/v1",
+          timeout: "90s", concur: "4", desc: "현대자동차 사내 LLM 게이트웨이 경유 (Gemma 4 26B)", updatedAt: "2026-11-08 18:30",
+          auth: "없음(사내망)", keyMask: "", keyRegAt: "",
+          status: "active", lastCheck: "2026-11-08 18:30", lastResult: "성공 (1,230ms)", lastOk: true,
+          globalDefault: false, targets: ["ISPM"], apiCount: 2, errNote: "",
+          models: [ { id: "google/gemma-4-26B", purpose: "chat", ctx: "32K", maxout: "4K", default: true, status: "active" } ]
+        }
+      };
+      var ORDER = ["ref-llm", "cust-onprem"];
+      var openId = "ref-llm";
+
+      function pad2(n) { return (n < 10 ? "0" : "") + n; }
+      function today2() { var t = new Date(); return t.getFullYear() + "-" + pad2(t.getMonth() + 1) + "-" + pad2(t.getDate()); }
+      function nowTs2() { var t = new Date(); return today2() + " " + pad2(t.getHours()) + ":" + pad2(t.getMinutes()); }
+      function dash(v) { return v && v !== "—" ? esc(v) : '<span class="dash">—</span>'; }
+
+      function stBadge(k) { var o = LST[k] || LST.active; return '<span class="st ' + o.cls + '"><span class="dot"></span>' + o.label + '</span>'; }
+      function kvi2(k, v, wide) { return '<div class="kv-item' + (wide ? ' wide' : '') + '"><span class="kv-k">' + k + '</span><span class="kv-v">' + v + '</span></div>'; }
+      function footLine2(label, ts) { return '<div class="exp-foot"><span class="lbl">' + label + '</span><span class="sep">·</span><span class="dt">' + esc(ts || "—") + '</span></div>'; }
+      function defaultPurposes(p) { var a = []; p.models.forEach(function (m) { if (m.default) a.push(m.purpose); }); return a; }
+      function providerDefault(p, pur) { var f = null; p.models.forEach(function (m) { if (m.purpose === pur && m.default) f = m; }); return f; }
+      function clearProviderDefault(p, pur) { p.models.forEach(function (m) { if (m.purpose === pur) m.default = false; }); }
+      function hasAllDefaults(p) { return PURPOSES.every(function (pur) { return !!providerDefault(p, pur); }); }
+      function globalProvider() { var f = null; ORDER.forEach(function (x) { if (LLMP[x].globalDefault) f = LLMP[x]; }); return f; }
+
+      function rowHTML(id) {
+        var p = LLMP[id];
+        var dp = defaultPurposes(p);
+        var dpHtml = dp.length ? dp.map(function (x) { return '<span class="tb">' + esc(x) + '</span>'; }).join(" ") : '<span class="dash">—</span>';
+        var resHtml = '<span class="mono" style="font-size:12.5px;color:var(--ink-soft)">' + esc(p.lastCheck) + ' · <span style="color:' + (p.lastOk ? 'var(--ok)' : 'var(--danger)') + ';font-weight:700">' + (p.lastOk ? '성공' : '실패') + '</span></span>';
+        var tHtml;
+        if (p.kind === "reference" && (!p.targets || !p.targets.length)) tHtml = '<span style="color:var(--ink-faint);font-size:12px">(기본) 매핑 없는 시스템</span>';
+        else if (p.targets && p.targets.length) tHtml = p.targets.map(function (t) { return '<a class="tb" href="#" data-llm-gototarget>' + esc(t) + '</a>'; }).join(" ");
+        else tHtml = '<span class="dash">—</span>';
+        var warn = (p.status === "error") ? ' <span class="llm-warn" title="' + esc(p.errNote) + '">⚠</span>' : '';
+        return '<tr data-llm="' + id + '">'
+          + '<td><button class="lk" type="button" data-llm-open="' + id + '" style="font-weight:700">' + esc(p.name) + '</button>' + warn + '</td>'
+          + '<td class="mono llm-ep" style="font-size:13px" title="' + esc(p.endpoint) + '">' + esc(p.endpoint) + '</td>'
+          + '<td class="mono" style="font-size:13px">' + (p.models.length ? p.models.map(function (m) { return esc(m.id); }).join('<br>') : '<span class="dash">—</span>') + '</td>'
+          + '<td>' + stBadge(p.status) + '</td>'
+          + '<td>' + resHtml + '</td>'
+          + '<td>' + tHtml + '</td>'
+          + '<td><a class="llm-apichip" href="#" data-llm-gotoapi>API ' + p.apiCount + '</a></td>'
+          + '</tr>';
+      }
+
+      function detailHTML(id) {
+        var p = LLMP[id];
+        var h = '<td colspan="' + COLS + '"><div class="exp-wrap">';
+        h += '<div class="exp-head"><div><div class="exp-title">' + esc(p.name) + '</div><div class="exp-id mono">' + esc(p.endpoint) + '</div></div><div>' + stBadge(p.status) + '</div></div>';
+
+        /* 카드 1 — 기본 정보 */
+        var delReason = (p.kind !== "customer") ? null : (p.apiCount > 0 ? "API " + p.apiCount + "개에서 사용 중 — 삭제 불가" : ((p.targets && p.targets.length) ? "대상 시스템 " + p.targets.length + "개 매핑됨 — 삭제 불가" : null));
+        h += '<div class="exp-sec"><div class="exp-sec-h"><div class="exp-sec-t">기본 정보</div><span class="sp"></span><div class="acts"><button class="btn sm" type="button" data-llm-act="test" data-llm="' + id + '">연결 테스트</button>';
+        if (p.kind === "customer") h += delReason ? '<button class="btn sm ghost" type="button" disabled title="' + esc(delReason) + '">삭제</button>' : '<button class="btn sm ghost" type="button" data-llm-act="delprovider" data-llm="' + id + '">삭제</button>';
+        h += '</div></div><div class="exp-grid">';
+        h += kvi2('Provider 명', esc(p.name));
+        h += kvi2('구분', p.kind === "reference" ? "Reference" : "Customer");
+        h += kvi2('Connection Type', '<span class="tb">' + esc(p.ptype) + '</span>');
+        h += kvi2('Endpoint', '<span class="mono">' + esc(p.endpoint) + '</span>', true);
+        h += kvi2('모델', p.models.length ? p.models.map(function (m) { return '<span class="mono">' + esc(m.id) + '</span>'; }).join(', ') : '<span class="dash">—</span>', true);
+        h += kvi2('타임아웃', esc(p.timeout));
+        h += kvi2('최대 동시 요청', '<span class="mono">' + esc(p.concur) + '</span>');
+        h += kvi2('설명', p.desc ? esc(p.desc) : '<span class="dash">—</span>', true);
+        h += '</div>';
+        if (p._testing) h += '<div class="llm-note testing"><span class="spin"></span> 연결 테스트 중…</div>';
+        else if (p._testResult) h += '<div class="llm-note ' + (p._testOk ? "ok" : "bad") + '">' + esc(p._testResult) + '</div>';
+        if (p.status === "error" && p.errNote) h += '<div class="notice bad" style="margin-top:10px">' + esc(p.errNote) + '</div>';
+        h += footLine2('최종 수정 일시', p.updatedAt) + '</div>';
+
+        /* 카드 2 — 인증 */
+        h += '<div class="exp-sec"><div class="exp-sec-h"><div class="exp-sec-t">인증</div><span class="sp"></span><div class="acts"><button class="btn sm primary" type="button" data-llm-act="keyswap" data-llm="' + id + '">키 교체</button>';
+        if (p.auth !== "없음(사내망)") h += '<button class="btn sm ghost" type="button" data-llm-act="keydel" data-llm="' + id + '">키 삭제</button>';
+        h += '</div></div><div class="exp-grid">';
+        h += kvi2('인증 방식', esc(p.auth));
+        if (p.keyMask) h += kvi2('키(마스킹)', '<span class="mono">' + esc(p.keyMask) + '</span>');
+        if (p.keyRegAt) h += kvi2('등록일', '<span class="mono">' + esc(p.keyRegAt) + '</span>');
+        h += '</div>';
+        h += '<p class="exp-hint">키 값은 저장 후 다시 표시되지 않습니다. 교체 시 새 키를 입력하세요.</p>';
+        h += footLine2('등록일', p.keyRegAt || "—") + '</div>';
+
+        /* 카드 3 — 상태 */
+        h += '<div class="exp-sec"><div class="exp-sec-h"><div class="exp-sec-t">상태</div></div>';
+        /* 상태 관리 */
+        h += '<div class="llm-sub">Provider 상태 관리</div>';
+        h += '<div class="lc-current">현재 상태 ' + stBadge(p.status) + '<span class="sep">·</span>' + esc(LST[p.status].ko) + '</div>';
+        h += '<div class="lc-opts">';
+        ["active", "suspended", "error"].forEach(function (k) {
+          var isCur = (k === p.status);
+          var dot = (k === "error") ? '<span class="d" style="background:var(--danger)"></span>' : '<span class="d ' + k + '"></span>';
+          if (isCur) h += '<button class="lc-opt cur" type="button" disabled aria-current="true">' + dot + LST[k].label + '</button>';
+          else if (k === "error") h += '<button class="lc-opt" type="button" disabled title="Error는 시스템이 자동 설정합니다" style="opacity:.5;cursor:not-allowed">' + dot + LST[k].label + '</button>';
+          else if (k === "suspended" && p.kind === "reference") h += '<button class="lc-opt" type="button" disabled title="기본 Provider(Reference LLM)는 일시 중단할 수 없습니다" style="opacity:.5;cursor:not-allowed">' + dot + LST[k].label + '</button>';
+          else h += '<button class="lc-opt" type="button" data-llm-act="status" data-llm="' + id + '" data-llm-status="' + k + '">' + dot + LST[k].label + '</button>';
+        });
+        h += '</div>';
+        h += '<p class="exp-hint">Active 정상 · Suspended 관리자에 의한 일시 중단(이 Provider 모델을 쓰는 API 호출은 실패) · Error 최근 연결 테스트 또는 호출 실패 누적</p>';
+        h += footLine2('상태 최종 확인', p.lastCheck) + '</div>';
+
+
+        h += '</div></td>';
+        return h;
+      }
+
+      function renderRows() {
+        var html = "", last = null;
+        ORDER.forEach(function (id) {
+          var p = LLMP[id];
+          if (p.kind !== last) { html += '<tr class="llm-band"><td colspan="' + COLS + '" class="sec-cell">' + (p.kind === "reference" ? "Reference" : "Customer") + '</td></tr>'; last = p.kind; }
+          html += rowHTML(id);
+        });
+        tbody.innerHTML = html;
+      }
+      function renderAll() {
+        renderRows();
+        if (openId && LLMP[openId]) {
+          var row = tbody.querySelector('tr[data-llm="' + openId + '"]');
+          if (row) {
+            var dr = document.createElement("tr");
+            dr.className = "exp-row";
+            dr.innerHTML = detailHTML(openId);
+            if (row.nextSibling) tbody.insertBefore(dr, row.nextSibling); else tbody.appendChild(dr);
+            row.classList.add("row-active");
+          }
+        }
+      }
+      function toggle(id) { openId = (openId === id) ? null : id; renderAll(); }
+      function updateCount() { var n = $("tab-llm").querySelector(".n"); if (n) n.textContent = ORDER.length; }
+
+      /* ---- 공통 모달 ---- */
+      var lBack = $("llmBackdrop"), lModal = $("llmModal"), lCb = null;
+      function closeLlm() { lModal.classList.remove("open"); lBack.classList.remove("open"); lCb = null; }
+      function openLlm(title, body, confirmLabel, cb, danger) {
+        $("llmMTitle").textContent = title;
+        $("llmMBody").innerHTML = body;
+        var cf = $("llmMConfirm");
+        if (confirmLabel) { cf.style.display = ""; cf.textContent = confirmLabel; cf.className = "btn " + (danger ? "danger" : "primary"); }
+        else cf.style.display = "none";
+        lCb = cb || null;
+        lBack.classList.add("open"); lModal.classList.add("open");
+      }
+      $("llmMConfirm").addEventListener("click", function () { var cb = lCb; if (cb && cb() === false) return; closeLlm(); });
+      lBack.addEventListener("click", closeLlm);
+      Array.prototype.forEach.call(lModal.querySelectorAll("[data-llm-close]"), function (b) { b.addEventListener("click", closeLlm); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && lModal.classList.contains("open")) closeLlm(); });
+      function val(id) { var e = $(id); return e ? e.value.trim() : ""; }
+
+      function affectedList(p) {
+        var out = "";
+        if (p.apiCount) {
+          var show = API_NAMES.slice(0, Math.min(3, p.apiCount)), extra = p.apiCount - show.length;
+          var items = show.map(function (n) { return '<li class="mono">' + esc(n) + '</li>'; }).join("");
+          if (extra > 0) items += '<li style="color:var(--ink-faint)">외 ' + extra + '개</li>';
+          out += '<div class="flabel" style="margin:13px 0 7px">영향받는 API (' + p.apiCount + ')</div><ul class="llm-apilist">' + items + '</ul>';
+        }
+        if (p.targets && p.targets.length) {
+          out += '<div class="flabel" style="margin:13px 0 7px">매핑된 대상 시스템 (' + p.targets.length + ')</div><ul class="llm-apilist">' + p.targets.map(function (t) { return '<li class="mono">' + esc(t) + '</li>'; }).join("") + '</ul>';
+        }
+        if (!p.apiCount && !(p.targets && p.targets.length)) out += '<p class="field-hint" style="margin-top:10px">영향받는 API·대상 시스템이 없습니다.</p>';
+        return out;
+      }
+
+      function handleAct(el) {
+        var id = el.getAttribute("data-llm"), act = el.getAttribute("data-llm-act");
+        var p = LLMP[id]; if (!p) return;
+        var mi = el.getAttribute("data-llm-mi"); mi = (mi == null) ? null : parseInt(mi, 10);
+
+        if (act === "test") {
+          p._testing = true; p._testResult = null; renderAll();
+          setTimeout(function () {
+            p._testing = false;
+            if (id === "cust-aoai") { p._testOk = false; p._testResult = "연결 실패 — 401 Unauthorized"; p.status = "error"; p.lastResult = "실패 (401 Unauthorized)"; p.lastOk = false; }
+            else { var ms = 300 + Math.floor(Math.random() * 500); p._testOk = true; p._testResult = "연결 성공 — 응답 " + ms + "ms"; if (p.status === "error") p.status = "active"; p.lastResult = "성공 (" + ms + "ms)"; p.lastOk = true; }
+            p.lastCheck = nowTs2(); renderAll();
+          }, 1000);
+          return;
+        }
+        if (act === "status") {
+          var ns = el.getAttribute("data-llm-status");
+          if (ns === "suspended") {
+            if (p.kind === "reference") { toast("기본 Provider(Reference LLM)는 일시 중단할 수 없습니다", true); return; }
+            openLlm("Provider 일시 중단", '<div class="notice warn">이 Provider를 사용하는 API <b>' + p.apiCount + '개</b> · 매핑된 대상 시스템 <b>' + (p.targets ? p.targets.length : 0) + '개</b>가 영향을 받습니다. 중단 시 해당 호출이 실패합니다.</div>' + affectedList(p), "Suspended로 변경", function () { p.status = "suspended"; renderAll(); toast("<b>" + esc(p.name) + "</b> 일시 중단됨"); }, true);
+          } else { p.status = "active"; renderAll(); toast("<b>" + esc(p.name) + "</b> 활성화됨"); }
+          return;
+        }
+        if (act === "keyswap") {
+          openLlm("인증 키 교체", '<div class="field" style="margin-bottom:6px"><label for="llmKeyIn">새 API 키<span class="req">*</span></label><input class="input mono" id="llmKeyIn" placeholder="새 키 입력" /></div><p class="field-hint">저장 후 키 값은 다시 표시되지 않습니다.</p>', "저장", function () {
+            var v = val("llmKeyIn"), last = v ? v.slice(-4) : "0000";
+            p.keyMask = (p.auth === "Azure Key" ? "****…" : "sk-****…") + last;
+            if (p.auth === "없음(사내망)") p.auth = "API Key (Bearer)";
+            p.keyRegAt = today2(); renderAll(); toast("<b>" + esc(p.name) + "</b> 인증 키를 교체했습니다");
+          });
+          return;
+        }
+        if (act === "keydel") {
+          openLlm("인증 키 삭제", '<div class="notice bad">저장된 인증 키를 삭제하고 인증 방식을 <b>없음(사내망)</b>으로 변경합니다. 계속하시겠습니까?</div>', "키 삭제", function () { p.auth = "없음(사내망)"; p.keyMask = ""; p.keyRegAt = ""; renderAll(); toast("인증 키를 삭제했습니다"); }, true);
+          return;
+        }
+        if (act === "delprovider") {
+          openLlm("Provider 삭제", '<div class="notice bad">Customer Provider <b>' + esc(p.name) + '</b>를 삭제합니다. 이 작업은 되돌릴 수 없습니다.</div>', "삭제", function () { var ix = ORDER.indexOf(id); if (ix >= 0) ORDER.splice(ix, 1); delete LLMP[id]; openId = null; renderAll(); updateCount(); toast("<b>" + esc(p.name) + "</b> Provider를 삭제했습니다"); }, true);
+          return;
+        }
+        if (act === "addmodel") {
+          openLlm("모델 추가",
+            '<div class="field"><label for="llmMid">모델 ID<span class="req">*</span></label><input class="input mono" id="llmMid" placeholder="예: ref-chat-mini" /></div>'
+            + '<div class="frow"><div class="field"><label for="llmMpur">용도</label><select class="select" id="llmMpur"><option value="chat">chat</option><option value="embedding">embedding</option><option value="rerank">rerank</option></select></div><div class="field"><label for="llmMctx">컨텍스트</label><input class="input" id="llmMctx" placeholder="예: 128K" /></div></div>'
+            + '<div class="field" style="margin-bottom:0"><label for="llmMout">최대 출력 토큰</label><input class="input" id="llmMout" placeholder="예: 8K" /></div>',
+            "추가", function () {
+              var mid = val("llmMid"); if (!mid) { toast("모델 ID를 입력하세요", true); return; }
+              p.models.push({ id: mid, purpose: val("llmMpur") || "chat", ctx: val("llmMctx") || "—", maxout: val("llmMout") || "—", default: false, status: "active" });
+              renderAll(); toast("<b>" + esc(mid) + "</b> 모델을 추가했습니다");
+            });
+          return;
+        }
+        if (act === "delmodel") { var mid = p.models[mi].id; p.models.splice(mi, 1); renderAll(); toast("<b>" + esc(mid) + "</b> 모델을 삭제했습니다"); return; }
+        if (act === "undefault") {
+          var mu = p.models[mi];
+          mu.default = false; renderAll(); toast("기본 지정을 해제했습니다"); return;
+        }
+        if (act === "setdefault") {
+          var m = p.models[mi], ex2 = providerDefault(p, m.purpose);
+          if (ex2 && ex2 !== m) {
+            openLlm("기본 모델 변경", '<div class="notice">이 Provider의 ' + esc(m.purpose) + ' 용도 기존 기본 모델 <b>' + esc(ex2.id) + '</b>을 해제하고 <b>' + esc(m.id) + '</b>을 기본으로 지정합니다.</div>', "지정", function () { clearProviderDefault(p, m.purpose); m.default = true; renderAll(); toast("<b>" + esc(m.id) + "</b>을 " + esc(m.purpose) + " 기본 모델로 지정했습니다"); });
+          } else { m.default = true; renderAll(); toast("<b>" + esc(m.id) + "</b>을 " + esc(m.purpose) + " 기본 모델로 지정했습니다"); }
+          return;
+        }
+      }
+
+      function openRegister() {
+        var AUTH_DEF = { "vLLM": "API Key (Bearer)", "OpenAI Compatible API": "API Key (Bearer)", "Ollama": "없음(사내망)", "Azure OpenAI": "api-key 헤더 (Azure)" };
+        openLlm("Provider 등록",
+          '<div class="frow"><div class="field"><label for="llmRname">Provider 명<span class="req">*</span></label><input class="input" id="llmRname" placeholder="예: Customer LLM (현대자동차)" /></div>'
+          + '<div class="field"><label>구분</label><input class="input" value="Customer" disabled /><p class="field-hint">Reference LLM은 기본 제공되며 콘솔에서 추가 등록하지 않습니다</p></div></div>'
+          + '<div class="frow"><div class="field"><label for="llmRtype">Connection Type<span class="req">*</span></label><select class="select" id="llmRtype"><option>vLLM</option><option>OpenAI Compatible API</option><option>Ollama</option><option>Azure OpenAI</option></select><p class="field-hint" id="llmRtypeHint">OpenAI 호환 요청 규격 · /v1/models로 모델 목록 조회</p></div>'
+          + '<div class="field"><label for="llmRto">타임아웃(초)</label><input class="input" id="llmRto" placeholder="60" /></div></div>'
+          + '<div class="field"><label for="llmRep">Endpoint URL<span class="req">*</span></label><input class="input mono" id="llmRep" placeholder="https://llm.customer.local/v1" /></div>'
+          + '<div class="frow" id="llmRazure" style="display:none"><div class="field"><label for="llmRdep">배포명<span class="req">*</span></label><input class="input mono" id="llmRdep" placeholder="예: gemma-deploy" /></div><div class="field"><label for="llmRver">api-version</label><input class="input mono" id="llmRver" placeholder="2025-04-01-preview" /></div></div>'
+          + '<div class="field"><label for="llmRmodel">모델 ID<span class="req">*</span></label><input class="input mono" id="llmRmodel" placeholder="예: google/gemma-4-26B" /><p class="field-hint">요청의 model 값. 연결 후 상세에서 [모델 목록 불러오기]로 확인·추가할 수 있습니다</p></div>'
+          + '<div class="frow"><div class="field"><label for="llmRauth">인증 방식<span class="req">*</span></label><select class="select" id="llmRauth"><option>API Key (Bearer)</option><option>없음(사내망)</option><option>api-key 헤더 (Azure)</option></select></div>'
+          + '<div class="field"><label for="llmRkey">인증 정보</label><input class="input mono" id="llmRkey" type="password" placeholder="키 또는 토큰" /><p class="field-hint">저장 후 다시 표시되지 않습니다</p></div></div>'
+          + '<div class="field"><label for="llmRdesc">설명</label><input class="input" id="llmRdesc" placeholder="예: 현대자동차 사내 LLM 게이트웨이 경유 (Gemma 4 26B)" /></div>',
+          "등록", function () {
+            var nm = val("llmRname"), ep = val("llmRep"), model = val("llmRmodel"), key = val("llmRkey"), auth = val("llmRauth"), ct = val("llmRtype");
+            var bad = false;
+            [["llmRname", !nm], ["llmRep", !/^https?:\/\/\S+$/.test(ep)], ["llmRmodel", !model], ["llmRdep", ct === "Azure OpenAI" && !val("llmRdep")]].forEach(function (c) { var el = $(c[0]); if (!el) return; el.setAttribute("aria-invalid", c[1] ? "true" : "false"); if (c[1]) bad = true; });
+            if (bad) { toast("필수 항목을 확인하세요", true); return false; }
+            var id = "cust-" + Date.now();
+            var mask = (key && auth !== "없음(사내망)") ? (key.slice(0, 2) + "-****…" + key.slice(-4)) : "";
+            LLMP[id] = { name: nm, kind: "customer", ptype: ct, endpoint: ep, deployment: ct === "Azure OpenAI" ? val("llmRdep") : "", apiVersion: ct === "Azure OpenAI" ? val("llmRver") : "", timeout: (val("llmRto") || "60") + "s", concur: "4", desc: val("llmRdesc") || "—", updatedAt: nowTs2(), auth: auth, keyMask: mask, keyRegAt: mask ? today2() : "", status: "active", lastCheck: "—", lastResult: "미확인", lastOk: true, globalDefault: false, targets: [], apiCount: 0, errNote: "", models: [{ id: model, purpose: "chat", ctx: "—", maxout: "—", default: true, status: "active" }] };
+            ORDER.push(id); openId = id; renderAll(); updateCount(); toast("<b>" + esc(nm) + "</b> Provider를 등록했습니다 — 연결 테스트를 실행하세요");
+          });
+        /* Connection Type에 따라 인증 기본값·Azure 필드·힌트 변경 */
+        var HINT = { "vLLM": "OpenAI 호환 요청 규격 · /v1/models로 모델 목록·컨텍스트 길이 자동 조회", "OpenAI Compatible API": "OpenAI 호환 요청 규격 · /v1/models로 모델 목록 조회", "Ollama": "네이티브 /api/chat · /api/tags로 모델 목록·양자화 자동 조회 · 인증 없음 기본", "Azure OpenAI": "배포명·api-version 필요 · 모델 목록 조회 불가(직접 입력)" };
+        var tsel = $("llmRtype");
+        function syncType() { var t = tsel.value; $("llmRauth").value = AUTH_DEF[t]; $("llmRazure").style.display = (t === "Azure OpenAI") ? "" : "none"; $("llmRtypeHint").textContent = HINT[t]; $("llmRep").placeholder = t === "Azure OpenAI" ? "https://{resource}.openai.azure.com" : (t === "Ollama" ? "http://llm.customer.local:11434" : "https://llm.customer.local/v1"); }
+        tsel.addEventListener("change", syncType); syncType();
+      }
+      $("llmAddBtn").addEventListener("click", openRegister);
+
+      tbody.addEventListener("click", function (e) {
+        var gt = e.target.closest("[data-llm-gototarget]");
+        if (gt) { e.preventDefault(); toast("System › Access Management › Target Systems 로 이동 (데모)"); return; }
+        var ga = e.target.closest("[data-llm-gotoapi]");
+        if (ga) { e.preventDefault(); var t = $("tab-api"); if (t) t.click(); return; }
+        var act = e.target.closest("[data-llm-act]");
+        if (act) { handleAct(act); return; }
+        var op = e.target.closest("[data-llm-open]");
+        if (op) { toggle(op.getAttribute("data-llm-open")); return; }
+      });
+
+      renderAll();
+    })();
+
+    /* ============================================================
+     * MCP Tools 탭 === 연동 지점 (모두 목업) ===
+     * ============================================================ */
+    (function () {
+      var tbody = document.querySelector("#pane-tool tbody");
+      if (!tbody) return;
+      var COLS = 6;
+
+      function pad2(n) { return (n < 10 ? "0" : "") + n; }
+      function nowTs() { var t = new Date(); return t.getFullYear() + "-" + pad2(t.getMonth() + 1) + "-" + pad2(t.getDate()) + " " + pad2(t.getHours()) + ":" + pad2(t.getMinutes()); }
+
+      /* 연결된 AI Service API 상태(AI Service APIs 탭과 동기 · 참고 표시용) */
+      var API_ST = {
+        "security-risk-summarize": "active", "security-vulnerability-prioritize": "active",
+        "security-assessment-gap-analyze": "active", "security-asset-consistency-analyze": "suspended",
+        "security-risk-reassessment-check": "active", "security-evidence-relevance-check": "active",
+        "security-evidence-review": "active", "security-exception-request-guide": "active",
+        "security-exception-reason-classify": "active", "security-exception-approval-review": "active"
+      };
+      var API_LABEL = { active: "Active", suspended: "Suspended", deprecated: "Deprecated", retired: "Retired" };
+      function apiStBadge(k) { k = k || "active"; return '<span class="st lc-' + k + '"><span class="dot"></span>' + (API_LABEL[k] || k) + '</span>'; }
+      function toolStBadge(on) { return on ? '<span class="st ok"><span class="dot"></span>사용 가능</span>' : '<span class="st off"><span class="dot"></span>비활성</span>'; }
+      function pubCell(t) { if (t.dir !== "inbound") return '<span class="dash" title="Outbound 도구 — AgentOn이 외부 MCP 서버를 호출">—</span>'; return t["public"] ? '<span class="tb">공개</span>' : '<span class="tb" style="opacity:.6">비공개</span>'; }
+      function pubText(t) { if (t.dir !== "inbound") return "해당 없음 (Outbound)"; return t["public"] ? "공개 — 외부 AI 에이전트 호출 허용" : "비공개 — 내부 전용"; }
+
+      var MT = {
+        /* ---- Inbound: AgentOn 제공, 서버 agenton-mcp, Standard API 10개와 1:1 ---- */
+        "security_summarize_risks": { dir: "inbound", "public": true, server: "agenton-mcp", transport: "내부", api: "security-risk-summarize", desc: "보안 위험 요약 — 분석 대상의 취약점 위험 현황 및 주요 위험 요인", input: "targetScope, riskCriteria", output: "riskSummary", enabled: true, updatedAt: "2026-11-09 14:20", regAt: "2026-06-10 09:12", statusAt: "2026-06-10 09:12" },
+        "security_prioritize_vulnerabilities": { dir: "inbound", "public": true, server: "agenton-mcp", transport: "내부", api: "security-vulnerability-prioritize", desc: "취약점 조치 우선순위 추천 — 위험도·자산·환경 종합 분석", input: "vulnerabilities[], assetContext", output: "prioritizedList", enabled: true, updatedAt: "2026-11-09 14:20", regAt: "2026-06-10 09:12", statusAt: "2026-06-10 09:12" },
+        "security_analyze_assessment_gaps": { dir: "inbound", "public": true, server: "agenton-mcp", transport: "내부", api: "security-assessment-gap-analyze", desc: "보안 점검 필요 자산 식별 — 점검 이력·위험 정보 기반", input: "assessmentHistory, riskData", output: "gapAssets[]", enabled: true, updatedAt: "2026-11-08 17:05", regAt: "2026-06-10 09:12", statusAt: "2026-06-10 09:12" },
+        "security_analyze_asset_consistency": { dir: "inbound", "public": false, server: "agenton-mcp", transport: "내부", api: "security-asset-consistency-analyze", desc: "자산 정보 정합성 분석 — 자산·정보시스템·담당자 정합성", input: "assetRecords[]", output: "inconsistencies[]", enabled: false, updatedAt: "2026-10-05 14:12", regAt: "2026-06-10 09:12", statusAt: "2026-10-05 14:12" },
+        "security_identify_reassessment_targets": { dir: "inbound", "public": true, server: "agenton-mcp", transport: "내부", api: "security-risk-reassessment-check", desc: "보안 위험 재검토 필요 대상 식별 — 신규 위험 정보 반영", input: "newRiskInfo, currentState", output: "reassessTargets[]", enabled: true, updatedAt: "2026-11-08 17:05", regAt: "2026-06-10 09:12", statusAt: "2026-06-10 09:12" },
+        "security_check_evidence_relevance": { dir: "inbound", "public": true, server: "agenton-mcp", transport: "내부", api: "security-evidence-relevance-check", desc: "보안 점검 증적 적합성 확인 — 점검항목 관련성·필수정보", input: "evidence, checkItem", output: "relevanceResult", enabled: true, updatedAt: "2026-11-07 11:40", regAt: "2026-06-10 09:12", statusAt: "2026-06-10 09:12" },
+        "security_review_evidence": { dir: "inbound", "public": true, server: "agenton-mcp", transport: "내부", api: "security-evidence-review", desc: "보안 점검 증적 검토 — 점검 기준 대비 판정·근거", input: "evidence, criteria", output: "reviewResult", enabled: true, updatedAt: "2026-11-07 11:40", regAt: "2026-06-10 09:12", statusAt: "2026-06-10 09:12" },
+        "security_get_exception_guidance": { dir: "inbound", "public": true, server: "agenton-mcp", transport: "내부", api: "security-exception-request-guide", desc: "예외·유예 신청 가이드 — 자산·취약점·정책 기반 안내", input: "asset, vulnerability, policy", output: "guidance", enabled: true, updatedAt: "2026-11-06 09:30", regAt: "2026-06-10 09:12", statusAt: "2026-06-10 09:12" },
+        "security_classify_exception_reason": { dir: "inbound", "public": true, server: "agenton-mcp", transport: "내부", api: "security-exception-reason-classify", desc: "예외·유예 신청 사유 유형 분류", input: "requestReason", output: "reasonType", enabled: true, updatedAt: "2026-11-06 09:30", regAt: "2026-06-10 09:12", statusAt: "2026-06-10 09:12" },
+        "security_review_exception_request": { dir: "inbound", "public": false, server: "agenton-mcp", transport: "내부", api: "security-exception-approval-review", desc: "예외·유예 신청 적정성 검토 — 위험·정책 기반 검토 의견", input: "request, riskContext", output: "reviewOpinion", enabled: true, updatedAt: "2026-11-06 09:30", regAt: "2026-06-10 09:12", statusAt: "2026-06-10 09:12" },
+
+        /* ---- Outbound: 외부 MCP 서버에서 발견·활성화 (MCP Servers 탭 서버들) ---- */
+        "ispm.search_vulnerabilities": { dir: "outbound", server: "ispm-mcp", transport: "HTTP · SSE", endpoint: "https://ispm.local/mcp", desc: "ISPM 취약점 DB 검색 — 조건별 취약점 목록 조회", enabled: true, updatedAt: "2026-11-06 10:02", discoveredAt: "2026-11-02 09:40", statusAt: "2026-11-02 09:40" },
+        "ispm.lookup_asset": { dir: "outbound", server: "ispm-mcp", transport: "HTTP · SSE", endpoint: "https://ispm.local/mcp", desc: "ISPM 자산 정보 조회 — 자산 ID 기준 상세 정보", enabled: true, updatedAt: "2026-11-06 10:02", discoveredAt: "2026-11-02 09:40", statusAt: "2026-11-02 09:40" },
+        "ispm.get_assessment_history": { dir: "outbound", server: "ispm-mcp", transport: "HTTP · SSE", endpoint: "https://ispm.local/mcp", desc: "ISPM 점검 이력 조회 — 자산·기간별 점검 내역", enabled: false, updatedAt: "2026-11-02 09:40", discoveredAt: "2026-11-02 09:40", statusAt: "2026-11-02 09:40" }
+      };
+      var MT_ORDER = [
+        "security_summarize_risks", "security_prioritize_vulnerabilities", "security_analyze_assessment_gaps",
+        "security_analyze_asset_consistency", "security_identify_reassessment_targets", "security_check_evidence_relevance",
+        "security_review_evidence", "security_get_exception_guidance", "security_classify_exception_reason", "security_review_exception_request",
+        "ispm.search_vulnerabilities", "ispm.lookup_asset", "ispm.get_assessment_history"
+      ];
+      var openId = null;
+
+      function kvi(k, v, wide) { return '<div class="kv-item' + (wide ? ' wide' : '') + '"><span class="kv-k">' + k + '</span><span class="kv-v">' + v + '</span></div>'; }
+      function footLine(label, ts) { return '<div class="exp-foot"><span class="lbl">' + label + '</span><span class="sep">·</span><span class="dt">' + esc(ts || "—") + '</span></div>'; }
+      function dirBadge(dir) { return '<span class="tb">' + (dir === "inbound" ? "Inbound" : "Outbound") + '</span>'; }
+
+      function serverCell(t, span) {
+        return '<td class="lv-cell" rowspan="' + span + '" style="width:190px;text-align:left;vertical-align:top;padding:11px 14px">'
+          + '<div class="mono" style="font-weight:700;font-size:13px;word-break:break-all">' + esc(t.server) + '</div>'
+          + '</td>';
+      }
+      function dataCells(id) {
+        var t = MT[id];
+        return '<td><button class="lk mono" type="button" data-mt-open="' + id + '" style="font-weight:700;font-size:13px">' + esc(id) + '</button></td>'
+          + '<td style="color:var(--ink-soft);font-size:13px;line-height:1.5;max-width:360px">' + esc(t.desc) + '</td>'
+          + '<td>' + toolStBadge(t.enabled) + '</td>'
+          + '<td>' + pubCell(t) + '</td>'
+          + '<td class="mono" style="font-size:13px;color:var(--ink-soft)">' + esc(t.updatedAt) + '</td>';
+      }
+
+      function detailHTML(id) {
+        var t = MT[id], inb = (t.dir === "inbound");
+        var h = '<td colspan="' + (COLS - 1) + '"><div class="exp-wrap">';
+        h += '<div class="exp-head"><div><div class="exp-title mono">' + esc(id) + '</div><div class="exp-id">' + (inb ? "Inbound · AgentOn 제공" : "Outbound · 외부 서버 발견") + ' · <span class="mono">' + esc(t.server) + '</span></div></div><div>' + toolStBadge(t.enabled) + '</div></div>';
+
+        /* 카드 1 — 기본 정보 */
+        h += '<div class="exp-sec"><div class="exp-sec-h"><div class="exp-sec-t">기본 정보</div></div><div class="exp-grid">';
+        h += kvi('도구명', '<span class="mono">' + esc(id) + '</span>', true);
+        h += kvi('방향', dirBadge(t.dir));
+        h += kvi('외부 공개', pubText(t));
+        h += kvi('MCP 서버', '<span class="mono">' + esc(t.server) + '</span>');
+        h += kvi('전송', esc(t.transport));
+        h += kvi('설명', esc(t.desc), true);
+        h += '</div>' + footLine('최종 수정 일시', t.updatedAt) + '</div>';
+
+        /* 카드 2 — 방향별 연결 정보 */
+        if (inb) {
+          var ast = API_ST[t.api] || "active";
+          h += '<div class="exp-sec"><div class="exp-sec-h"><div class="exp-sec-t">AI Service 연결</div></div><div class="exp-grid">';
+          h += kvi('연결 API', '<button class="lk mono" type="button" data-mt-gotoapi style="font-weight:700">' + esc(t.api) + '</button>', true);
+          h += kvi('API 상태', apiStBadge(ast));
+          h += kvi('입력', '<span class="mono">' + esc(t.input) + '</span>', true);
+          h += kvi('출력', '<span class="mono">' + esc(t.output) + '</span>', true);
+          h += '</div>';
+          if (ast === "suspended") h += '<div class="notice warn" style="margin-top:10px">연결된 API가 <b>Suspended</b> 상태입니다. 이 도구는 호출할 수 없습니다.</div>';
+          h += '<p class="exp-hint">Inbound 도구는 AgentOn이 제공하며, 사용자·에이전트별 접근은 <b>Access Management › MCP Tool Users</b>에서 허용합니다.</p>';
+          h += footLine('등록 일시', t.regAt) + '</div>';
+        } else {
+          h += '<div class="exp-sec"><div class="exp-sec-h"><div class="exp-sec-t">원본 서버</div></div><div class="exp-grid">';
+          h += kvi('원본 서버', '<span class="mono">' + esc(t.server) + '</span>');
+          h += kvi('전송', esc(t.transport));
+          h += kvi('Endpoint · 명령', '<span class="mono">' + esc(t.endpoint) + '</span>', true);
+          h += '</div>';
+          if (t.srvDown) h += '<div class="notice bad" style="margin-top:10px">원본 서버 연결 상태 <b>비정상</b> — Service Management › MCP Servers에서 확인하세요.</div>';
+          h += '<p class="exp-hint">Outbound 도구는 외부 MCP 서버에서 발견되며, <b>Agent API 구성</b>에서 Tool로 선택해 사용합니다.</p>';
+          h += footLine('발견 일시', t.discoveredAt) + '</div>';
+        }
+
+        /* 카드 3 — 활성화 관리 */
+        var apiSusp = inb && ((API_ST[t.api] || "active") === "suspended");
+        var srvDown = !!t.srvDown;
+        h += '<div class="exp-sec"><div class="exp-sec-h"><div class="exp-sec-t">활성화 · 공개 관리</div></div>';
+        h += '<div class="lc-current">현재 상태 ' + toolStBadge(t.enabled) + '<span class="sep">·</span>' + (t.enabled ? "호출 가능" : "호출 차단") + '</div>';
+        h += '<div class="lc-opts" style="margin-top:11px">';
+        /* 사용 가능 */
+        if (t.enabled) h += '<button class="lc-opt cur" type="button" disabled aria-current="true"><span class="d active"></span>사용 가능</button>';
+        else if (apiSusp) h += '<button class="lc-opt" type="button" disabled title="연결된 API가 Suspended 상태입니다" style="opacity:.5;cursor:not-allowed"><span class="d active"></span>사용 가능</button>';
+        else if (srvDown) h += '<button class="lc-opt" type="button" disabled title="원본 서버 연결이 끊겨 있습니다" style="opacity:.5;cursor:not-allowed"><span class="d active"></span>사용 가능</button>';
+        else h += '<button class="lc-opt" type="button" data-mt-act="enable" data-mt="' + id + '"><span class="d active"></span>사용 가능</button>';
+        /* 비활성 */
+        if (!t.enabled) h += '<button class="lc-opt cur" type="button" disabled aria-current="true"><span class="d retired"></span>비활성</button>';
+        else h += '<button class="lc-opt" type="button" data-mt-act="disable" data-mt="' + id + '"><span class="d retired"></span>비활성</button>';
+        h += '</div>';
+        h += '<p class="exp-hint">비활성 도구는 ' + (inb ? "Access Management › MCP Tool Users에서 선택할 수 없습니다." : "Agent API 구성에서 Tool로 선택할 수 없습니다.") + ' 도구 명세·동작은 ' + (inb ? "제조사 배포로 반영됩니다." : "원본 MCP 서버에서 관리합니다.") + '</p>';
+        /* 외부 공개 여부 관리 */
+        h += '<div class="llm-sub" style="margin-top:17px">외부 공개 여부</div>';
+        if (inb) {
+          h += '<div class="lc-current">현재 ' + pubCell(t) + '<span class="sep">·</span>' + (t["public"] ? "외부 AI 에이전트 호출 허용" : "내부 전용") + '</div>';
+          h += '<div class="lc-opts" style="margin-top:11px">';
+          if (t["public"]) h += '<button class="lc-opt cur" type="button" disabled aria-current="true"><span class="d active"></span>공개</button>';
+          else if (!t.enabled) h += '<button class="lc-opt" type="button" disabled title="비활성 도구는 공개할 수 없습니다. 먼저 사용 가능으로 전환하세요." style="opacity:.5;cursor:not-allowed"><span class="d active"></span>공개</button>';
+          else h += '<button class="lc-opt" type="button" data-mt-act="publish" data-mt="' + id + '"><span class="d active"></span>공개</button>';
+          if (!t["public"]) h += '<button class="lc-opt cur" type="button" disabled aria-current="true"><span class="d retired"></span>비공개</button>';
+          else h += '<button class="lc-opt" type="button" data-mt-act="unpublish" data-mt="' + id + '"><span class="d retired"></span>비공개</button>';
+          h += '</div>';
+          h += '<p class="exp-hint">공개 도구만 <b>Access Management › MCP Tool Users</b>에서 외부 AI 에이전트에 허용할 수 있습니다. 비공개로 전환하면 기존 허용이 즉시 차단됩니다.</p>';
+        } else {
+          h += '<div class="lc-current">' + pubCell(t) + '<span class="sep">·</span>외부 공개 대상 아님</div>';
+          h += '<p class="exp-hint">Outbound 도구는 AgentOn이 외부 MCP 서버를 호출하는 방향이라 외부 공개 설정이 없습니다.</p>';
+        }
+        h += footLine('상태 변경 일시', t.statusAt) + '</div>';
+
+        /* 안내 (전체 폭) */
+        h += '<div class="llm-foot-note">Inbound 도구 접근 권한은 <b>System › Access Management › MCP Tool Users</b>에서 관리합니다.<br>Outbound 도구의 원본 서버는 <b>Service Management › MCP Servers</b>에서, Tool 선택은 <b>Agent API 구성</b>에서 설정합니다.</div>';
+
+        h += '</div></td>';
+        return h;
+      }
+
+      function renderAll() {
+        var html = "", lastDir = null, i = 0, n = MT_ORDER.length;
+        while (i < n) {
+          var t0 = MT[MT_ORDER[i]];
+          if (t0.dir !== lastDir) { html += '<tr class="mt-band"><td colspan="' + COLS + '" class="sec-cell">' + (t0.dir === "inbound" ? "Inbound" : "Outbound") + '</td></tr>'; lastDir = t0.dir; }
+          var group = [];
+          while (i < n) { var tg = MT[MT_ORDER[i]]; if (tg.dir === t0.dir && tg.server === t0.server) { group.push(MT_ORDER[i]); i++; } else break; }
+          var openIn = (openId && group.indexOf(openId) >= 0);
+          var span = group.length + (openIn ? 1 : 0);
+          group.forEach(function (gid, gi) {
+            html += '<tr data-mt="' + gid + '"' + (gid === openId ? ' class="row-active"' : '') + '>';
+            if (gi === 0) html += serverCell(MT[gid], span);
+            html += dataCells(gid);
+            html += '</tr>';
+            if (gid === openId) html += '<tr class="exp-row">' + detailHTML(gid) + '</tr>';
+          });
+        }
+        tbody.innerHTML = html;
+      }
+      function toggle(id) { openId = (openId === id) ? null : id; renderAll(); }
+      function updateCount() { var n = $("tab-tool").querySelector(".n"); if (n) n.textContent = MT_ORDER.length; }
+
+      tbody.addEventListener("click", function (e) {
+        var ga = e.target.closest("[data-mt-gotoapi]");
+        if (ga) { e.preventDefault(); var t = $("tab-api"); if (t) t.click(); return; }
+        var act = e.target.closest("[data-mt-act]");
+        if (act) {
+          var id = act.getAttribute("data-mt"), a = act.getAttribute("data-mt-act"), t = MT[id]; if (!t) return;
+          if (a === "publish" || a === "unpublish") {
+            t["public"] = (a === "publish"); t.updatedAt = nowTs();
+            renderAll(); toast('<b>' + esc(id) + '</b> ' + (t["public"] ? "외부 공개로 전환했습니다" : "비공개로 전환했습니다"));
+            return;
+          }
+          t.enabled = (a === "enable"); if (!t.enabled) t["public"] = false; t.statusAt = nowTs(); t.updatedAt = nowTs();
+          renderAll(); toast('<b>' + esc(id) + '</b> ' + (t.enabled ? "사용 가능으로 전환했습니다" : "비활성으로 전환했습니다"));
+          return;
+        }
+        var op = e.target.closest("[data-mt-open]");
+        if (op) { toggle(op.getAttribute("data-mt-open")); return; }
+      });
+
+      updateCount();
+      renderAll();
+    })();
+    /* ===== MCP Servers 탭 — 목록 · 상세 · 등록 === 연동 지점: GET/POST /system/mcp-servers === */
+    (function () {
+      var SV = {
+        "agenton-mcp": { dir: "inbound",  tier: "기본 제공", transport: "Streamable HTTP", endpoint: "https://agenton.customer.local/mcp/agenton", tools: 10, conn: "ok",  lastCheck: "2026-11-09 09:00 · 성공 (38ms)", updatedAt: "2026-11-09 14:20", createdAt: "2026-04-01 09:00", status: "active",
+          desc: "AgentOn이 외부 AI 에이전트에 제공하는 보안 업무 MCP 도구 서버. 도구 목록은 코드 배포로 등록됩니다.", auth: "mcp-users", key: null },
+        "ispm-mcp":    { dir: "outbound", tier: "추가 제공", transport: "Streamable HTTP", endpoint: "https://agenton.customer.local/mcp/ispm",    tools: 3,  conn: "ok",  lastCheck: "2026-11-09 08:58 · 성공 (212ms)", updatedAt: "2026-11-06 10:02", createdAt: "2026-06-12 11:30", status: "active",
+          desc: "ISPM 취약점 관리 플랫폼 연계 — 자산·취약점·조치 이력 조회", auth: "bearer", key: "mk_****…4e1c", keyAt: "2026-06-12" },
+        "sams-mcp":    { dir: "outbound", tier: "추가 제공", transport: "Streamable HTTP", endpoint: "https://agenton.customer.local/mcp/sams",    tools: 1,  conn: "off", lastCheck: "2026-11-09 08:58 · 실패 (timeout)", updatedAt: "2026-11-05 22:10", createdAt: "2026-09-02 14:05", status: "active",
+          desc: "SAMS 보안 자산 관리 시스템 연계 — 자산 담당자·조직 정보 조회", auth: "bearer", key: "mk_****…9b07", keyAt: "2026-09-02" },
+        "qualys-mcp":  { dir: "outbound", tier: "추가 제공", transport: "Streamable HTTP", endpoint: "https://agenton.customer.local/mcp/qualys",  tools: 4,  conn: "ok",  lastCheck: "2026-11-09 08:58 · 성공 (640ms)", updatedAt: "2026-11-07 15:12", createdAt: "2026-10-20 10:00", status: "active",
+          desc: "Qualys VMDR 연계 — 스캔 결과·탐지 취약점·호스트 정보 조회", auth: "apikey", key: "qk_****…c3aa", keyAt: "2026-10-20" },
+        "wiz-mcp":     { dir: "outbound", tier: "추가 제공", transport: "Streamable HTTP", endpoint: "https://agenton.customer.local/mcp/wiz",     tools: 2,  conn: "ok",  lastCheck: "2026-11-09 08:58 · 성공 (410ms)", updatedAt: "2026-11-08 10:45", createdAt: "2026-11-01 16:20", status: "active",
+          desc: "Wiz 클라우드 보안 연계 — 클라우드 이슈·노출 자산 조회", auth: "bearer", key: "wz_****…71de", keyAt: "2026-11-01" }
+      };
+      var ORDER = ["agenton-mcp", "ispm-mcp", "sams-mcp", "qualys-mcp", "wiz-mcp"];
+      var AUTH = { "mcp-users": "사용자별 (MCP Tool Users)", bearer: "API Key (Bearer)", apikey: "API Key (헤더)", none: "없음(사내망)" };
+      var COLS = 9, openId = null, tbody = $("srvBody"), seq = 6;
+      function nowTs() { var d = new Date(), z = function (n) { return (n < 10 ? "0" : "") + n; }; return d.getFullYear() + "-" + z(d.getMonth() + 1) + "-" + z(d.getDate()) + " " + z(d.getHours()) + ":" + z(d.getMinutes()); }
+      function kv(k, v, wide) { return '<div class="kv-item' + (wide ? ' wide' : '') + '"><span class="kv-k">' + k + '</span><span class="kv-v">' + v + '</span></div>'; }
+      function connBadge(d) {
+        if (d.conn === "ok") return '<span class="st ok"><span class="dot"></span>정상</span>';
+        if (d.conn === "off") return '<span class="st conn"><span class="dot"></span>비정상</span>';
+        return '<span class="st off"><span class="dot"></span>미확인</span>';
+      }
+      function opBadge(d) { return d.status === "active" ? '<span class="st lc-active"><span class="dot"></span>Active</span>' : '<span class="st lc-suspended"><span class="dot"></span>Suspended</span>'; }
+      function rowHTML(id, d) {
+        var open = openId === id;
+        return '<tr class="' + (open ? 'exp-open' : '') + (d.status === "suspended" ? ' row-off' : '') + '">' +
+          '<td><div class="id-cell"><a class="lk" href="#" data-srv-open="' + esc(id) + '" aria-expanded="' + open + '">' + esc(id) + '</a><span class="sub">MCP-SRV-' + (("0" + (ORDER.indexOf(id) + 1)).slice(-2)) + '</span></div></td>' +
+          '<td><div class="id-cell"><span style="font-weight:700">AgentOn</span><span class="sub">' + esc(d.tier) + '</span></div></td>' +
+          '<td><span class="tb">' + esc(d.transport) + '</span></td>' +
+          '<td class="mono" style="font-size:13px">' + esc(d.endpoint) + '</td>' +
+          '<td class="mono">' + d.tools + '</td>' +
+          '<td>' + connBadge(d) + '</td>' +
+          '<td>' + opBadge(d) + '</td>' +
+          '<td class="mono" style="font-size:13px;color:var(--ink-soft)">' + esc(d.lastCheck) + '</td>' +
+          '<td class="mono" style="font-size:13px;color:var(--ink-soft)">' + esc(d.updatedAt) + '</td></tr>';
+      }
+      function detailHTML(id, d) {
+        var inb = d.dir === "inbound";
+        var prov = d.tier === "기본 제공" || d.tier === "추가 제공"; /* AgentOn 제공 서버는 연결 테스트 비활성 */
+        var h = '<tr class="exp-row"><td colspan="' + COLS + '"><div class="exp-wrap">';
+        h += '<div class="exp-head"><div><div class="exp-title">' + esc(id) + '</div><div class="exp-id">' + (inb ? "Inbound" : "Outbound") + ' · AgentOn ' + esc(d.tier) + ' · <span class="mono">' + esc(d.endpoint) + '</span></div></div><div style="display:flex;gap:12px;align-items:center">' + connBadge(d) + opBadge(d) + '</div></div>';
+        /* 카드 1: 기본 정보 */
+        h += '<div class="exp-sec"><div class="exp-sec-h"><div class="exp-sec-t">기본 정보</div><span class="sp"></span><div class="acts"><button class="btn sm" type="button" data-srv-act="test" data-srv="' + esc(id) + '"' + (prov ? ' disabled title="AgentOn ' + esc(d.tier) + ' 서버는 연결 테스트를 지원하지 않습니다"' : '') + '>연결 테스트</button>' + (inb ? '' : '<button class="btn sm" type="button" data-srv-act="sync" data-srv="' + esc(id) + '">도구 동기화</button><button class="btn sm" type="button" data-srv-act="edit" data-srv="' + esc(id) + '">수정</button>') + '</div></div><div class="exp-grid">';
+        h += kv('설명', esc(d.desc), true);
+        h += kv('전송 방식', '<span class="tb">' + esc(d.transport) + '</span>');
+        h += kv('도구 수', '<span class="mono">' + d.tools + '</span> <a class="lk" href="#" data-srv-gototools style="font-size:12px;margin-left:6px">MCP Tools에서 보기 ›</a>');
+        h += kv('등록일시', '<span class="mono">' + esc(d.createdAt) + '</span>');
+        h += kv('최종 수정일시', '<span class="mono">' + esc(d.updatedAt) + '</span>');
+        h += '</div><div id="srvTest-' + esc(id) + '" style="margin-top:10px"></div></div>';
+        /* 카드 2: 인증 */
+        h += '<div class="exp-sec"><div class="exp-sec-h"><div class="exp-sec-t">인증</div><span class="sp"></span>' + (inb || d.auth === "none" ? '' : '<div class="acts"><button class="btn sm primary" type="button" data-srv-act="keyswap" data-srv="' + esc(id) + '">키 교체</button></div>') + '</div><div class="exp-grid">';
+        if (inb) {
+          h += kv('인증 방식', esc(AUTH[d.auth]), true);
+          h += '<p class="exp-hint" style="grid-column:1/-1">외부 AI 에이전트의 접속 키는 서버 단위가 아니라 <b>사용자별</b>로 발급합니다. <a class="lk" href="#" data-nav="Access Management › MCP Tool Users">Access Management › MCP Tool Users ›</a></p>';
+        } else {
+          h += kv('인증 방식', esc(AUTH[d.auth]), true);
+          if (d.auth !== "none") { h += kv('인증 정보', '<span class="mono">' + esc(d.key) + '</span>'); h += kv('등록일', '<span class="mono">' + esc(d.keyAt) + '</span>'); h += '<p class="exp-hint" style="grid-column:1/-1">인증 정보는 저장 후 다시 표시되지 않습니다. 교체 시 새 값을 입력하세요.</p>'; }
+        }
+        h += '</div></div>';
+        /* 카드 3: 상태 */
+        var cur = d.status;
+        h += '<div class="exp-sec"><div class="exp-sec-h"><div class="exp-sec-t">운영 상태</div><div class="lc-current">현재 ' + opBadge(d) + '<span class="sep">·</span>연결 ' + connBadge(d) + '</div><span class="sp"></span><div class="lc-opts">';
+        [["active", "Active"], ["suspended", "Suspended"]].forEach(function (o) {
+          var isCur = o[0] === cur;
+          if (isCur) h += '<button class="lc-opt cur" type="button" disabled aria-current="true"><span class="d ' + o[0] + '"></span>' + o[1] + '</button>';
+          else if (inb && o[0] === "suspended") h += '<button class="lc-opt" type="button" disabled title="기본 제공 서버는 중단할 수 없습니다" style="opacity:.5;cursor:not-allowed"><span class="d ' + o[0] + '"></span>' + o[1] + '</button>';
+          else h += '<button class="lc-opt" type="button" data-srv-act="status" data-srv="' + esc(id) + '" data-status="' + o[0] + '"><span class="d ' + o[0] + '"></span>' + o[1] + '</button>';
+        });
+        h += '</div></div>';
+        h += '<p class="exp-hint"><b>Active</b> 정상 운영 · <b>Suspended</b> 관리자에 의한 일시 중단 (이 서버 도구를 쓰는 AI 서비스·에이전트 호출 실패)' + (inb ? ' · 기본 제공 서버는 중단 불가' : '') + '</p>';
+        h += '<p class="exp-hint" style="margin-top:6px">연결 상태(정상/비정상/미확인)는 연결 테스트·주기 점검으로 갱신되며 운영 상태와 별개입니다.</p>';
+        h += '</div>';
+        h += '</div></td></tr>';
+        return h;
+      }
+      function render() {
+        var html = '', last = null;
+        ORDER.forEach(function (id) {
+          var d = SV[id];
+          if (d.dir !== last) { html += '<tr class="llm-band"><td colspan="' + COLS + '" class="sec-cell">' + (d.dir === "inbound" ? "Inbound" : "Outbound") + '</td></tr>'; last = d.dir; }
+          html += rowHTML(id, d);
+          if (openId === id) html += detailHTML(id, d);
+        });
+        tbody.innerHTML = html;
+        var n = $("tab-srv").querySelector(".n"); if (n) n.textContent = ORDER.length;
+      }
+      /* 팝업 */
+      var sBack = $("srvBackdrop"), sModal = $("srvModal"), sCb = null;
+      function mOpen(title, sub, body, confirmLabel, cb) { $("srvMTitle").textContent = title; $("srvMSub").textContent = sub || ""; $("srvMBody").innerHTML = body; $("srvMConfirm").textContent = confirmLabel || "확인"; sCb = cb; sBack.classList.add("open"); sModal.classList.add("open"); var f = sModal.querySelector("input,select,textarea"); if (f) setTimeout(function () { f.focus(); }, 40); }
+      function mClose() { sBack.classList.remove("open"); sModal.classList.remove("open"); sCb = null; }
+      sBack.addEventListener("click", mClose);
+      sModal.addEventListener("click", function (e) { if (e.target.closest("[data-srv-close]")) mClose(); });
+      $("srvMConfirm").addEventListener("click", function () { if (sCb && sCb() === false) return; mClose(); });
+      function formHTML(d) {
+        d = d || {};
+        return '<div class="field"><label for="svName">MCP 서버명<span class="req">*</span></label><input class="input mono" id="svName" placeholder="예: qualys-mcp" value="' + esc(d.id || "") + '"' + (d.id ? ' disabled' : '') + ' /><p class="field-hint">소문자·숫자·하이픈. 등록 후 변경 불가</p></div>' +
+          '<div class="frow"><div class="field"><label>제공 구분</label><input class="input" value="AgentOn · 추가 제공" disabled /><p class="field-hint">콘솔에서 등록하는 서버는 모두 추가 제공으로 분류됩니다</p></div>' +
+          '<div class="field"><label for="svTr">전송 방식<span class="req">*</span></label><select class="select" id="svTr"><option' + (d.transport === "Streamable HTTP" || !d.transport ? ' selected' : '') + '>Streamable HTTP</option><option' + (d.transport === "SSE" ? ' selected' : '') + '>SSE</option><option' + (d.transport === "stdio" ? ' selected' : '') + '>stdio</option></select></div></div>' +
+          '<div class="field"><label for="svEp">Endpoint URL<span class="req">*</span></label><input class="input mono" id="svEp" placeholder="https://agenton.customer.local/mcp/{server-id}" value="' + esc(d.endpoint || "") + '" /></div>' +
+          '<div class="field"><label for="svDesc">설명</label><input class="input" id="svDesc" placeholder="연계 대상 시스템과 제공 도구 요약" value="' + esc(d.desc || "") + '" /></div>' +
+          '<div class="frow"><div class="field"><label for="svAuth">인증 방식<span class="req">*</span></label><select class="select" id="svAuth"><option value="bearer"' + (d.auth === "bearer" || !d.auth ? ' selected' : '') + '>API Key (Bearer)</option><option value="apikey"' + (d.auth === "apikey" ? ' selected' : '') + '>API Key (헤더)</option><option value="none"' + (d.auth === "none" ? ' selected' : '') + '>없음(사내망)</option></select></div>' +
+          '<div class="field"><label for="svKey">인증 정보' + (d.id ? '' : '<span class="req">*</span>') + '</label><input class="input mono" id="svKey" type="password" placeholder="' + (d.id ? '변경 시에만 입력' : '키 또는 토큰') + '" /><p class="field-hint">저장 후 다시 표시되지 않습니다</p></div></div>';
+      }
+      function readForm(existing) {
+        var id = (existing || $("svName").value.trim()), ep = $("svEp").value.trim(), auth = $("svAuth").value, key = $("svKey").value.trim();
+        var bad = false;
+        [["svName", !existing && !/^[a-z0-9-]+$/.test(id)], ["svEp", !/^https?:\/\/\S+$/.test(ep)], ["svKey", !existing && auth !== "none" && !key]].forEach(function (c) { var el = $(c[0]); if (!el) return; el.setAttribute("aria-invalid", c[1] ? "true" : "false"); if (c[1]) bad = true; });
+        if (!existing && SV[id]) { $("svName").setAttribute("aria-invalid", "true"); toast("이미 등록된 서버명입니다", true); return null; }
+        if (bad) { toast("필수 항목을 확인하세요", true); return null; }
+        return { id: id, transport: $("svTr").value, endpoint: ep, desc: $("svDesc").value.trim(), auth: auth, key: key };
+      }
+      $("srvAddBtn").addEventListener("click", function () {
+        mOpen("MCP 서버 등록", "Outbound · AgentOn 추가 제공", formHTML(), "등록", function () {
+          var f = readForm(null); if (!f) return false;
+          SV[f.id] = { dir: "outbound", tier: "추가 제공", transport: f.transport, endpoint: f.endpoint, tools: 0, conn: "unknown", lastCheck: "—", updatedAt: nowTs(), createdAt: nowTs(), status: "active", desc: f.desc || "—", auth: f.auth, key: f.auth === "none" ? null : (f.key.slice(0, 2) + "_****…" + f.key.slice(-4)), keyAt: nowTs().slice(0, 10) };
+          ORDER.push(f.id); openId = f.id; render();
+          toast('<b>' + esc(f.id) + '</b> 등록됨 — 연결 테스트 후 도구 동기화를 실행하세요');
+        });
+      });
+      tbody.addEventListener("click", function (e) {
+        var gt = e.target.closest("[data-srv-gototools]"); if (gt) { e.preventDefault(); var t = $("tab-tool"); if (t) t.click(); return; }
+        var op = e.target.closest("[data-srv-open]"); if (op) { e.preventDefault(); var id = op.getAttribute("data-srv-open"); openId = (openId === id) ? null : id; render(); return; }
+        var act = e.target.closest("[data-srv-act]"); if (!act) return;
+        var id = act.getAttribute("data-srv"), a = act.getAttribute("data-srv-act"), d = SV[id]; if (!d) return;
+        if (a === "test") {
+          if (act.disabled || d.tier === "기본 제공" || d.tier === "추가 제공") return;
+          var box = $("srvTest-" + id); box.innerHTML = '<span class="exp-hint">연결 확인 중…</span>';
+          setTimeout(function () {
+            var ok = id !== "sams-mcp"; d.conn = ok ? "ok" : "off"; d.lastCheck = nowTs() + (ok ? " · 성공 (" + (120 + Math.floor(Math.random() * 400)) + "ms)" : " · 실패 (timeout)");
+            render(); var b2 = $("srvTest-" + id); if (b2) b2.innerHTML = ok ? '<div class="notice" style="margin:0">연결 정상 — ' + esc(d.lastCheck.split(" · ")[1]) + '</div>' : '<div class="notice" style="margin:0;border-color:var(--danger);color:var(--danger)">연결 비정상 — timeout. Endpoint·인증 정보·네트워크 경로를 확인하세요.</div>';
+          }, 900); return;
+        }
+        if (a === "sync") { toast('<b>' + esc(id) + '</b> 도구 동기화 완료 — ' + d.tools + '개 도구'); d.updatedAt = nowTs(); render(); return; }
+        if (a === "status") { var ns = act.getAttribute("data-status"); if (ns === "suspended" && !confirm("이 서버를 중단하면 이 서버 도구를 사용하는 AI 서비스·에이전트 호출이 실패합니다. 계속할까요?")) return; d.status = ns; d.updatedAt = nowTs(); render(); toast('<b>' + esc(id) + '</b> ' + (ns === "active" ? "Active" : "Suspended") + '로 변경'); return; }
+        if (a === "keyswap") {
+          mOpen("인증 정보 교체", id + " · " + AUTH[d.auth], '<div class="field"><label for="svKey2">새 인증 정보<span class="req">*</span></label><input class="input mono" id="svKey2" type="password" placeholder="키 또는 토큰" /><p class="field-hint">저장 즉시 이전 값은 무효화됩니다</p></div>', "교체", function () {
+            var k = $("svKey2").value.trim(); if (!k) { $("svKey2").setAttribute("aria-invalid", "true"); return false; }
+            d.key = k.slice(0, 2) + "_****…" + k.slice(-4); d.keyAt = nowTs().slice(0, 10); d.updatedAt = nowTs(); render(); toast('<b>' + esc(id) + '</b> 인증 정보 교체됨');
+          }); return;
+        }
+        if (a === "edit") {
+          mOpen("MCP 서버 수정", id, formHTML({ id: id, transport: d.transport, endpoint: d.endpoint, desc: d.desc, auth: d.auth }), "저장", function () {
+            var f = readForm(id); if (!f) return false;
+            d.transport = f.transport; d.endpoint = f.endpoint; d.desc = f.desc || "—"; if (f.auth !== d.auth) { d.auth = f.auth; d.key = f.auth === "none" ? null : d.key; } if (f.key) { d.key = f.key.slice(0, 2) + "_****…" + f.key.slice(-4); d.keyAt = nowTs().slice(0, 10); }
+            d.updatedAt = nowTs(); render(); toast('<b>' + esc(id) + '</b> 저장됨');
+          }); return;
+        }
+      });
+      render();
+    })();
+
+  })();
+  </script>
+</body>
+</html>

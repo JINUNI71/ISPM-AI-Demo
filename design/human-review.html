@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AgentOn Console · Agent · Human Review (Security › Vulnerability · 공개 취약점 영향평가 · v1.0)" />
+  <title>AgentOn Console — Human Review</title>
+  <style>
+    /* ============================================================
+     * AgentOn Console — Agent › Human Review (스펙 docs/specs/human-review-spec.md v1.0)
+     *   도메인 Tab: Security · 2차 탭: Vulnerability · Panel: 공개 취약점 영향평가
+     *   배치가 조치 우선순위 판단 기준으로 매긴 AI 등급을 사람이 검토(동의 · 등급 조정 · 보류)하고 변경 관리한다.
+     * 셸·토큰·공통 컴포넌트는 service-management.html / domain-knowledge.html 에서 복사. 신규 클래스는 hr- 접두어.
+     * ============================================================ */
+    :root {
+      --sky: #6db3e8; --sky-light: #a9d4f5; --sky-dark: #3d8fd4; --sky-deep: #2f74b5;
+      --bg: #eaf3fb; --panel: #ffffff; --panel-2: #f4f8fd;
+      --ink: #1f2a3a; --ink-soft: #586374; --ink-faint: #8a93a6;
+      --line: #e2e8f1; --line-strong: #cfd9e6;
+      --accent: var(--sky-dark); --accent-hover: var(--sky-deep); --accent-soft: #e7f2fc;
+      --danger: #d23a3a; --danger-soft: #fdecec;
+      --ok: #1f9d6b; --ok-soft: #eaf6f0;
+      --warn: #d4a017; --warn-soft: #fdf6e3; --warn-ink: #8a6410;
+      --navy-1: #20407e; --navy-2: #0c2340;
+      --band-1: #354b69; --band-2: #172437;
+      --icon: #0c2340;
+      --radius: 10px;
+      --shadow-sm: 0 1px 2px rgba(45, 110, 175, .06), 0 6px 20px rgba(45, 110, 175, .07);
+      --shadow-lg: 0 20px 64px rgba(8, 24, 48, .26);
+      --focus: 0 0 0 3px rgba(61, 143, 212, .28);
+      --chip-bg: #eef2f7; --input-bg: #ffffff;
+      --topbar-1: rgba(234, 243, 251, .94); --topbar-2: rgba(255, 255, 255, .9);
+      --mono: "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+      color-scheme: light;
+    }
+
+    * { box-sizing: border-box; }
+    html { height: 100%; }
+    body {
+      margin: 0; min-height: 100vh;
+      display: grid; grid-template-columns: 236px minmax(0, 1fr);
+      background: var(--bg); color: var(--ink);
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-size: 15px; font-weight: 500; -webkit-font-smoothing: antialiased;
+    }
+    [hidden] { display: none !important; }
+    .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    button, input, select, textarea { font-family: inherit; }
+    :focus-visible { outline: none; box-shadow: var(--focus); }
+
+    /* ============================================================
+     * 1. 셸 — 사이드바
+     * ============================================================ */
+    .sidebar {
+      position: sticky; top: 0; align-self: start; height: 100vh;
+      display: flex; flex-direction: column; color: #fff;
+      background: var(--sky-deep); overflow-y: auto;
+    }
+    .side-brand { display: flex; align-items: center; gap: 9px; padding: 20px 18px 18px; color: #fff; text-decoration: none; }
+    .side-brand .nm { font-size: 19px; font-weight: 800; letter-spacing: .2px; line-height: 1.15; }
+    .side-brand .nm span { opacity: .9; font-weight: 700; }
+    .side-brand .nm small { display: block; font-size: 12px; font-weight: 600; font-style: italic; letter-spacing: .02em; opacity: .78; margin-top: 2px; }
+    .side-nav { padding: 8px 12px; flex: 1; }
+    .nav-item, .nav-child, .nav-parent {
+      display: flex; align-items: center; gap: 10px; width: 100%;
+      padding: 8px 10px; border-radius: 8px; margin-bottom: 2px;
+      background: none; border: none; cursor: pointer; text-align: left;
+      text-decoration: none; color: #fff; font-size: 14.5px; font-weight: 600; letter-spacing: .1px;
+      min-height: 40px; transition: background .12s;
+    }
+    .nav-child { padding-left: 38px; font-size: 14px; font-weight: 500; color: rgba(255, 255, 255, .72); min-height: 35px; }
+    .nav-item:hover, .nav-child:hover, .nav-parent:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+    .nav-item > svg, .nav-parent > svg:first-child { width: 17px; height: 17px; flex: none; color: var(--navy-2); }
+    .np-label { flex: 1; min-width: 0; }
+    .np-chev { width: 14px; height: 14px; opacity: .65; transition: transform .18s; flex: none; margin-left: auto; }
+    .nav-group[data-open="true"] .np-chev { transform: rotate(180deg); }
+    .nav-children { display: none; margin-bottom: 4px; }
+    .nav-group[data-open="true"] .nav-children { display: block; }
+    .nav-child.active {
+      background: linear-gradient(135deg, var(--band-1) 0%, var(--band-2) 100%);
+      color: #fff; font-weight: 700;
+      width: calc(100% + 24px); margin-left: -12px; border-radius: 0; padding-left: 50px;
+      box-shadow: 0 6px 14px -6px rgba(8, 24, 48, .6), inset 0 1px 0 rgba(255, 255, 255, .16), inset 0 -1px 0 rgba(0, 0, 0, .28);
+    }
+    .nav-sep { height: 1px; margin: 12px 10px; background: rgba(255, 255, 255, .18); }
+    /* Demo 메뉴 영역 — 은은한 보라 배경(#F5F3FF), 내부 텍스트는 잉크색 */
+    .nav-group.nav-demo { background: #F5F3FF; border-radius: 10px; padding: 6px; margin-top: 2px; }
+    .nav-demo .nav-parent { color: var(--ink); }
+    .nav-demo .nav-child { color: rgba(31, 42, 58, .74); }
+    .nav-demo .nav-parent:hover, .nav-demo .nav-child:hover { background: rgba(31, 42, 58, .08); color: var(--ink); }
+    .nav-demo .np-chev { opacity: .55; }
+    .nav-demo .nav-children { margin-bottom: 0; }
+    .side-foot {
+      padding: 14px 20px 18px; font-size: 12px; color: rgba(255, 255, 255, .7);
+      border-top: 1px solid rgba(255, 255, 255, .18);
+      display: flex; justify-content: space-between; gap: 10px; font-variant-numeric: tabular-nums;
+    }
+
+    /* ============================================================
+     * 2. 셸 — 메인 칼럼 · topbar
+     * ============================================================ */
+    .main { min-width: 0; display: flex; flex-direction: column; background: var(--panel); }
+    .topbar {
+      position: sticky; top: 0; z-index: 20;
+      display: flex; align-items: center; gap: 12px;
+      background: linear-gradient(180deg, var(--topbar-1) 0%, var(--topbar-2) 100%);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line); padding: 11px 24px; min-height: 60px;
+    }
+    .crumb { font-size: 11.5px; color: var(--ink-faint); display: flex; align-items: center; gap: 7px; line-height: 1.2; min-width: 0; }
+    .crumb b { color: var(--ink-soft); font-weight: 600; font-size: 13px; }
+    .crumb .sep { opacity: .5; }
+    .topbar .spacer { flex: 1; }
+    .ic-btn { position: relative; background: none; border: none; padding: 5px; cursor: pointer; display: grid; place-items: center; border-radius: 9px; color: var(--icon); flex: none; }
+    .ic-btn:hover { background: var(--panel-2); }
+    .ic-btn svg { width: 22px; height: 22px; }
+    .menu-toggle { display: none; }
+    .user { display: flex; align-items: center; gap: 9px; padding: 4px 8px 4px 6px; background: none; border: 1px solid transparent; border-radius: 9px; cursor: pointer; }
+    .user:hover { background: var(--panel-2); border-color: var(--line); }
+    .user .avatar { width: 30px; height: 30px; display: grid; place-items: center; flex: none; }
+    .user .avatar svg { width: 24px; height: 24px; }
+    .user .u-meta { text-align: left; }
+    .user .u-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+    .user .u-role { font-size: 12px; color: var(--ink-faint); }
+    .content { padding: 22px 24px 60px; width: 100%; }
+    .phead { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 18px; flex-wrap: wrap; }
+    .phead h1 { margin: 0; font-size: 23px; font-weight: 700; letter-spacing: -.02em; }
+    .phead .psub { margin: 5px 0 0; font-size: 13.5px; color: var(--ink-soft); }
+
+    /* ============================================================
+     * 3. 버튼 · 폼 컨트롤 · 공통 조각
+     * ============================================================ */
+    .btn {
+      font-size: 14px; font-weight: 600; border-radius: 8px;
+      border: 1px solid var(--line-strong); background: var(--input-bg); color: var(--ink);
+      height: 36px; padding: 0 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+      transition: border-color .12s, filter .12s, transform .04s; white-space: nowrap;
+    }
+    .btn:hover { border-color: var(--accent); }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary { color: #fff; border: none; background: linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 100%); }
+    .btn.primary:hover { filter: brightness(1.12); }
+    .btn.second { color: var(--sky-deep); background: var(--accent-soft); border-color: transparent; }
+    .btn.sm { height: 30px; padding: 0 11px; font-size: 13px; border-radius: 7px; }
+    .btn.ghost { background: none; border-color: transparent; color: var(--ink-soft); }
+    .btn.ghost:hover { border-color: var(--line-strong); color: var(--ink); }
+    .btn.danger { color: #fff; border: none; background: var(--danger); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn:disabled:active { transform: none; }
+    .btn svg { width: 15px; height: 15px; flex: none; }
+    .link { font-size: 13.5px; color: var(--accent); text-decoration: none; background: none; border: none; padding: 0; cursor: pointer; font-weight: 600; }
+    .link:hover { text-decoration: underline; }
+    .link.sm { font-size: 12.5px; }
+    .input, .select, .textarea {
+      width: 100%; height: 36px; padding: 0 12px; font-size: 13.5px; color: var(--ink); background: var(--input-bg);
+      border: 1px solid var(--line-strong); border-radius: 8px; outline: none; font-weight: 500;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .input:focus, .select:focus, .textarea:focus { border-color: var(--accent); box-shadow: var(--focus); }
+    .input:disabled, .select:disabled, .textarea:disabled { background: var(--panel-2); cursor: not-allowed; color: var(--ink-soft); }
+    .input[aria-invalid="true"], .textarea[aria-invalid="true"] { border-color: var(--danger); }
+    .input.mono { font-family: var(--mono); font-size: 13px; }
+    .select {
+      appearance: none; -webkit-appearance: none; cursor: pointer; padding-right: 32px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a93a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 11px center; background-size: 13px;
+    }
+    .select.auto { width: auto; flex: none; max-width: 100%; }
+    .textarea { height: auto; min-height: 72px; padding: 9px 12px; resize: vertical; line-height: 1.55; }
+    .field { margin-bottom: 14px; }
+    .field > label, .field .flabel { display: block; margin-bottom: 6px; font-size: 12.5px; font-weight: 700; color: var(--ink-soft); }
+    .field .req { color: var(--danger); margin-left: 3px; }
+    .field-hint { margin: 6px 0 0; font-size: 12px; color: var(--ink-faint); line-height: 1.5; }
+    .field-hint.err { color: var(--danger); }
+    .field-hint.warn { color: var(--warn-ink); }
+    .frow { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .check { display: inline-flex; align-items: flex-start; gap: 8px; font-size: 13.5px; color: var(--ink); line-height: 1.5; cursor: pointer; }
+    .check input { width: 16px; height: 16px; margin: 2px 0 0; accent-color: var(--sky-deep); flex: none; cursor: pointer; }
+    .check.dis { color: var(--ink-faint); cursor: not-allowed; }
+    .check-row { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+    .seg { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 3px; border-radius: 9px; background: var(--panel-2); }
+    .seg button { height: 30px; padding: 0 12px; border: none; border-radius: 7px; background: none; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+    .seg button:hover { color: var(--ink); }
+    .seg button.on { background: var(--panel); color: var(--sky-deep); box-shadow: 0 1px 3px rgba(8, 24, 48, .12); }
+    .seg button:disabled { cursor: not-allowed; opacity: .6; }
+    .seg.block { display: flex; }
+    .seg.block button { flex: 1; }
+    .notice { padding: 11px 13px; border-radius: 10px; background: var(--panel-2); font-size: 12.5px; line-height: 1.65; color: var(--ink-soft); }
+    .notice strong { color: var(--ink); font-weight: 700; }
+    .notice.warn { background: var(--warn-soft); color: var(--warn-ink); }
+    .notice.warn strong { color: inherit; }
+    .notice.bad { background: var(--danger-soft); color: var(--danger); }
+    .notice.ok { background: var(--ok-soft); color: var(--ok); }
+    .notice.info { background: var(--accent-soft); color: var(--sky-deep); }
+    .notice code, .kv code { font-family: var(--mono); font-size: 12px; background: var(--chip-bg); padding: 0 4px; border-radius: 3px; }
+    .tip-wrap { position: relative; display: inline-flex; }
+    .tip-wrap::after {
+      content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%);
+      width: max-content; max-width: 260px; padding: 8px 11px; border-radius: 8px;
+      background: var(--navy-2); color: #fff; font-size: 12px; font-weight: 500; line-height: 1.5; text-align: left;
+      white-space: normal; opacity: 0; visibility: hidden; transition: opacity .12s; pointer-events: none; z-index: 90;
+      box-shadow: 0 8px 22px rgba(12, 35, 64, .22);
+    }
+    .tip-wrap:hover::after, .tip-wrap:focus-within::after { opacity: 1; visibility: visible; }
+    .tip-wrap.right::after { left: auto; right: 0; transform: none; }
+    .tb { display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 700; padding: 3px 8px; border-radius: 5px; background: var(--chip-bg); color: var(--ink-soft); white-space: nowrap; }
+    .tb.g { background: var(--accent-soft); color: var(--sky-deep); }
+    .pc { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 5px; background: var(--chip-bg); color: var(--ink-soft); font-family: var(--mono); white-space: nowrap; }
+    .tag { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 5px; background: var(--panel); color: var(--ink-soft); box-shadow: 0 0 0 1px var(--line); white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; }
+    .tag .x { border: none; background: none; padding: 0; color: var(--ink-faint); cursor: pointer; font-size: 13px; line-height: 1; }
+    .tag .x:hover { color: var(--danger); }
+    .kv { display: grid; grid-template-columns: 112px 1fr; gap: 8px 12px; font-size: 13px; margin: 0; }
+    .kv dt { color: var(--ink-faint); font-weight: 500; white-space: nowrap; }
+    .kv dd { margin: 0; color: var(--ink); min-width: 0; word-break: break-word; display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; }
+    .dsec { background: var(--panel-2); border-radius: 11px; padding: 13px 15px; margin-bottom: 12px; }
+    .dsec-t { font-size: 12px; font-weight: 700; color: var(--ink-soft); letter-spacing: .02em; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .dsec-t .sp { flex: 1; }
+    .mini-tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .mini-tbl th { text-align: left; font-size: 11px; font-weight: 700; color: var(--ink-faint); padding: 4px 8px 6px 0; border-bottom: 1px solid var(--line); text-transform: uppercase; letter-spacing: .03em; white-space: nowrap; }
+    .mini-tbl td { padding: 6px 8px 6px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .mini-tbl tr:last-child td { border-bottom: none; }
+    .mini-tbl .mono { font-size: 12px; }
+    .tl { list-style: none; margin: 0; padding: 0; }
+    .tl li { display: grid; grid-template-columns: 116px 1fr auto; gap: 8px; padding: 6px 0; font-size: 12.5px; align-items: center; border-bottom: 1px solid var(--line); }
+    .tl li:last-child { border-bottom: none; }
+    .tl .at { font-family: var(--mono); color: var(--ink-faint); font-variant-numeric: tabular-nums; font-size: 12px; }
+    .hist li { grid-template-columns: 64px 128px 110px 1fr; }
+    .hist .who { font-weight: 600; color: var(--ink-soft); }
+    .radio-row { display: flex; gap: 6px; flex-direction: column; }
+    .radio-row label { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 8px; background: var(--panel-2); font-size: 13px; cursor: pointer; border: 1.5px solid transparent; position: relative; }
+    .radio-row label:hover { background: var(--accent-soft); }
+    .radio-row input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .radio-row label.on { border-color: var(--sky-dark); background: var(--accent-soft); }
+    .radio-row label.on .rn { color: var(--sky-deep); }
+    .radio-row .rn { font-weight: 700; display: block; }
+    .radio-row .rd { display: block; font-size: 12px; color: var(--ink-faint); margin-top: 2px; line-height: 1.5; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+    /* 탭 (도메인 Tab · 2차 탭) */
+    .tabs { display: flex; gap: 2px; margin: -4px 0 18px; border-bottom: 1px solid var(--line); }
+    .tab { position: relative; height: 40px; padding: 0 14px; border: none; background: none; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 7px; }
+    .tab:hover { color: var(--ink); }
+    .tab .n { font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 5px; background: var(--chip-bg); color: var(--ink-faint); font-family: var(--mono); }
+    .tab[aria-selected="true"] { color: var(--sky-deep); font-weight: 700; }
+    .tab[aria-selected="true"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2.5px; border-radius: 2px; background: var(--sky-deep); }
+    .tab[aria-selected="true"] .n { background: var(--accent-soft); color: var(--sky-deep); }
+    .tab:focus-visible { box-shadow: var(--focus); border-radius: 6px; }
+    .tabpane[hidden] { display: none; }
+    .tabs.sub { margin: -8px 0 16px; border-bottom: none; gap: 6px; }
+    .tabs.sub .tab { height: 32px; padding: 0 12px; border-radius: 8px; font-size: 13px; }
+    .tabs.sub .tab[aria-selected="true"] { background: var(--accent-soft); }
+    .tabs.sub .tab[aria-selected="true"]::after { display: none; }
+    .dk-bar { display: flex; align-items: center; justify-content: flex-start; gap: 16px; flex-wrap: wrap; margin: -4px 0 18px; padding-bottom: 11px; border-bottom: 1px solid var(--line); }
+    .dk-bar .tabs.sub { margin: 0; }
+    .dk-dom { display: flex; align-items: center; gap: 9px; }
+    .dk-dom-lb { font-size: 12.5px; font-weight: 650; color: var(--ink-faint); white-space: nowrap; }
+    .dk-dom .select.auto { height: 36px; font-size: 13.5px; font-weight: 600; min-width: 148px; }
+
+    /* 슬라이드오버 · 모달 · 토스트 */
+    .so-backdrop { position: fixed; inset: 0; background: rgba(12, 26, 46, .40); opacity: 0; visibility: hidden; transition: opacity .16s; z-index: 60; }
+    .so-backdrop.open { opacity: 1; visibility: visible; }
+    .so { position: fixed; top: 0; right: 0; bottom: 0; width: 480px; max-width: 100vw; z-index: 62; display: flex; flex-direction: column; background: var(--panel); box-shadow: -12px 0 44px rgba(8, 24, 48, .22); transform: translateX(100%); transition: transform .2s ease; visibility: hidden; }
+    .so.open { transform: none; visibility: visible; }
+    .so-head { display: flex; align-items: flex-start; gap: 12px; padding: 18px 20px 14px; border-bottom: 1px solid var(--line); }
+    .so-head .so-t { font-size: 16.5px; font-weight: 700; line-height: 1.3; }
+    .so-head .so-s { font-size: 12.5px; color: var(--ink-faint); font-weight: 600; margin-top: 5px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .so-x { margin-left: auto; width: 30px; height: 30px; flex: none; border: none; border-radius: 8px; background: var(--panel-2); color: var(--ink-soft); font-size: 19px; line-height: 1; cursor: pointer; }
+    .so-x:hover { background: var(--line); color: var(--ink); }
+    .so-body { flex: 1; overflow-y: auto; padding: 18px 20px 24px; }
+    .so-foot { display: flex; align-items: center; gap: 9px; padding: 12px 20px 16px; border-top: 1px solid var(--line); }
+    .so-foot .sp { flex: 1; }
+    .modal { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -47%) scale(.985); z-index: 72; width: min(520px, calc(100vw - 40px)); max-height: calc(100vh - 40px); display: flex; flex-direction: column; background: var(--panel); border-radius: 14px; box-shadow: var(--shadow-lg); opacity: 0; visibility: hidden; transition: opacity .16s ease, transform .16s ease; }
+    .modal.open { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+    .modal.lg { width: min(820px, calc(100vw - 40px)); }
+    .modal.md { width: min(640px, calc(100vw - 40px)); }
+    .modal.xl { width: min(1180px, calc(100vw - 40px)); }
+    .modal-backdrop { z-index: 70; }
+    .m-head { display: flex; align-items: flex-start; gap: 12px; padding: 18px 20px 12px; }
+    .m-t { font-size: 16px; font-weight: 700; }
+    .m-s { font-size: 12.5px; color: var(--ink-faint); font-weight: 600; margin-top: 4px; }
+    .m-body { padding: 0 20px 6px; font-size: 13.5px; line-height: 1.65; color: var(--ink-soft); overflow-y: auto; }
+    .m-body b { color: var(--ink); }
+    .m-foot { display: flex; align-items: center; gap: 9px; padding: 12px 20px 18px; }
+    .m-foot .sp { flex: 1; }
+    .toast { position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 14px); z-index: 90; max-width: min(560px, calc(100vw - 32px)); padding: 12px 16px; border-radius: 11px; background: linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 100%); color: #eaf2fb; font-size: 13px; line-height: 1.6; font-weight: 600; box-shadow: 0 16px 40px rgba(8, 24, 48, .34); opacity: 0; visibility: hidden; transition: opacity .16s, transform .16s; }
+    .toast.open { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+    .toast b { color: #fff; font-weight: 700; }
+    .toast.bad { background: var(--danger); }
+
+    /* ---- 공통 컴포넌트 (domain-knowledge.html 에서 복사: 단계 배지 · 토글 스위치 · 판정 경로 · 목록/툴바/검색/상태 · 유형 전환 버튼) ---- */
+    .cr-no { width: 24px; height: 24px; border-radius: 7px; display: grid; place-items: center; font-size: 12px; font-weight: 800; color: #fff; background: linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 100%); flex: none; }
+    .cr-sw { display: inline-flex; align-items: center; gap: 9px; cursor: pointer; font-size: 13px; font-weight: 600; }
+    .cr-sw input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .cr-sw .tr { width: 34px; height: 20px; border-radius: 10px; background: var(--line-strong); position: relative; transition: background .15s; flex: none; }
+    .cr-sw .tr::after { content: ""; position: absolute; left: 2px; top: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .15s; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+    .cr-sw input:checked + .tr { background: var(--sky-deep); }
+    .cr-sw input:checked + .tr::after { transform: translateX(14px); }
+    .cr-sw input:focus-visible + .tr { box-shadow: var(--focus); }
+    .cr-sw.off { color: var(--ink-faint); }
+    .cr-path { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .cr-path li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; padding: 9px 11px; border-radius: 9px; background: var(--panel-2); font-size: 13px; line-height: 1.5; color: var(--ink); }
+    .cr-path li .cr-no { width: 22px; height: 22px; font-size: 11px; }
+    .cr-path li .t { font-weight: 700; }
+    .cr-path li .d { color: var(--ink-soft); font-size: 12.5px; }
+    .cr-path li.fin { background: linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 100%); color: #eaf2fb; }
+    .cr-path li.fin .d { color: rgba(255,255,255,.75); }
+    .cr-path li.fin .cr-no { background: #fff; color: var(--navy-2); }
+    .cr-path li.fin b, .m-body .cr-path li.fin b { color: #fff; }
+    .cr-path .cr-grade { opacity: 1; cursor: default; vertical-align: -6px; }
+    .cr-need { display: inline-flex; align-items: center; font-size: 10.5px; font-weight: 800; padding: 1px 6px; border-radius: 4px; background: var(--warn-soft); color: var(--warn-ink); margin-left: 6px; vertical-align: 1px; }
+    .toolbar { display: flex; gap: 9px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+    .tb-actions { display: flex; gap: 9px; align-items: center; margin-left: auto; }
+    .search { flex: 1; min-width: 189px; max-width: 360px; height: 36px; display: flex; align-items: center; gap: 7px; background: var(--input-bg); border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 0 12px; }
+    .search input { border: none; background: none; outline: none; font-size: 13px; color: var(--ink); width: 100%; flex: 1; min-width: 0; height: 32px; padding: 0; }
+    .search input::placeholder { color: var(--ink-faint); }
+    .search > svg { flex: none; color: var(--ink-faint); width: 15px; height: 15px; }
+    .search:focus-within { border-color: var(--accent); box-shadow: var(--focus); }
+    .list-panel { background: var(--panel); border-radius: 12px; overflow: visible; box-shadow: var(--shadow-sm); }
+    .list-panel .scroll { overflow-x: auto; border-radius: 12px; }
+    .list-panel table { width: 100%; border-collapse: collapse; min-width: 920px; }
+    .list-panel thead th { text-align: left; font-size: 12px; font-weight: 650; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .04em; padding: 12px 12px; border-bottom: 1px solid var(--line); background: var(--panel-2); white-space: nowrap; }
+    .list-panel tbody td { padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; font-size: 14px; color: var(--ink); }
+    .list-panel tbody tr:last-child td { border-bottom: none; }
+    .list-panel tbody tr:hover { background: var(--panel-2); }
+    .list-panel tbody tr.row-active { background: var(--accent-soft); }
+    .list-panel tbody tr.row-off td { color: var(--ink-faint); }
+    .list-panel .lk { color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; background: none; border: none; font-size: inherit; padding: 0; text-align: left; font-family: inherit; }
+    .list-panel .lk:hover { color: var(--sky-deep); }
+    .list-panel .sub { font-size: 11.5px; color: var(--ink-faint); font-weight: 600; margin-top: 2px; font-family: var(--mono); }
+    .list-panel .dash { color: var(--ink-faint); }
+    .list-panel td.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 13px; }
+    .list-panel td.dt { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--ink-soft); white-space: nowrap; }
+    .list-panel input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--sky-deep); cursor: pointer; margin: 0; display: block; }
+    .list-empty { padding: 36px 20px; text-align: center; font-size: 13px; color: var(--ink-faint); line-height: 1.6; }
+    .st { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; white-space: nowrap; color: var(--ink-soft); }
+    .st .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; background: var(--ink-faint); }
+    .st.ok .dot { background: var(--ok); }
+    .st.ok { color: var(--ok); }
+    .st.off .dot { background: transparent; box-shadow: inset 0 0 0 1.5px var(--ink-faint); }
+    .st.off { color: var(--ink-faint); }
+    /* 상단 전환 버튼 */
+    .rf-switch { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+    .rf-sw { height: 38px; padding: 0 16px; border-radius: 9px; border: 1.5px solid var(--line-strong); background: var(--panel); color: var(--ink-soft); font-size: 14px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 9px; white-space: nowrap; transition: border-color .12s, color .12s; }
+    .rf-sw:hover { border-color: var(--accent); color: var(--ink); }
+    .rf-sw .n { font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 5px; background: var(--chip-bg); color: var(--ink-faint); font-family: var(--mono); }
+    .rf-sw[aria-selected="true"] { background: linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 100%); border-color: transparent; color: #fff; }
+    .rf-sw[aria-selected="true"] .n { background: rgba(255, 255, 255, .18); color: #fff; }
+
+    /* ============================================================
+     * 4. Human Review — 공개 취약점 영향평가 (스펙 docs/specs/human-review-spec.md v1.0, 접두어 hr-)
+     * ============================================================ */
+    .hr-panel-t { font-size: 16px; font-weight: 700; color: var(--ink); margin: 0 0 12px; display: flex; align-items: center; gap: 10px; }
+    .hr-panel-t small { font-size: 12.5px; font-weight: 500; color: var(--ink-faint); }
+
+    /* Run bar */
+    .hr-run { display: flex; flex-direction: column; gap: 6px; padding: 13px 16px; border-radius: 11px; background: var(--accent-soft); margin-bottom: 14px; font-size: 13px; }
+    .hr-run .row { display: flex; align-items: center; gap: 8px 20px; flex-wrap: wrap; }
+    .hr-run .ttl { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--ink); white-space: nowrap; }
+    .hr-run .ttl svg { width: 15px; height: 15px; color: var(--sky-deep); flex: none; }
+    .hr-run .k { font-size: 12px; font-weight: 600; color: var(--ink-faint); margin-right: 6px; white-space: nowrap; }
+    .hr-run .v { font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .hr-run .v small { font-weight: 500; color: var(--ink-soft); }
+    .hr-run .v .mono { font-size: 12.5px; }
+    .hr-run .lk { font-size: 12.5px; font-weight: 700; color: var(--sky-deep); background: none; border: none; cursor: pointer; padding: 0; white-space: nowrap; }
+    .hr-run .lk:hover { text-decoration: underline; }
+    .hr-run .sp { flex: 1; }
+    .hr-run .sub { font-size: 12.5px; color: var(--ink-soft); display: flex; align-items: center; gap: 8px 18px; flex-wrap: wrap; }
+    .hr-run .sub b { color: var(--ink); font-weight: 700; }
+    .hr-run .sub .dim { color: var(--ink-faint); }
+    .hr-run.running { background: var(--panel-2); box-shadow: inset 0 0 0 1.5px var(--sky-light); }
+    .hr-steps { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .hr-step { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--ink-faint); }
+    .hr-step .d { width: 8px; height: 8px; border-radius: 50%; background: var(--line-strong); flex: none; }
+    .hr-step.run { color: var(--sky-deep); } .hr-step.run .d { background: var(--sky-dark); animation: hr-pulse 1s ease-in-out infinite; }
+    .hr-step.done { color: var(--ok); } .hr-step.done .d { background: var(--ok); }
+    .hr-step .ar { color: var(--line-strong); }
+    @keyframes hr-pulse { 50% { opacity: .35; } }
+    .hr-prog { width: 160px; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; flex: none; }
+    .hr-prog i { display: block; height: 100%; background: var(--sky-dark); transition: width .5s linear; }
+
+    /* 유형 전환 */
+    .hr-switch { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+
+    /* KPI 스트립 */
+    .hr-kpi { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .hr-kpi .grp { display: flex; gap: 6px; align-items: stretch; padding: 6px; border-radius: 11px; background: var(--panel-2); }
+    .hr-kpi .grp + .grp { margin-left: 4px; }
+    .hr-k { display: inline-flex; flex-direction: column; justify-content: center; gap: 2px; min-width: 76px; padding: 6px 12px; border-radius: 8px; border: 1.5px solid transparent; background: var(--panel); cursor: pointer; text-align: left; font-family: inherit; box-shadow: var(--shadow-sm); transition: border-color .12s; }
+    .hr-k:hover { border-color: var(--sky-light); }
+    .hr-k.on { border-color: var(--sky-dark); background: var(--accent-soft); }
+    .hr-k .l { font-size: 11.5px; font-weight: 700; color: var(--ink-faint); white-space: nowrap; }
+    .hr-k .n { font-size: 17px; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .hr-k .n small { font-size: 11px; font-weight: 600; color: var(--ink-faint); margin-left: 4px; }
+    .hr-k.P1 .n { color: var(--danger); } .hr-k.P2 .n { color: var(--warn-ink); } .hr-k.P3 .n { color: var(--sky-deep); } .hr-k.P4 .n { color: var(--ink-soft); }
+    .hr-k.need .n { color: var(--warn-ink); } .hr-k.reeval .n { color: var(--danger); } .hr-k.corr .n { color: var(--sky-deep); }
+
+    /* 툴바 */
+    .hr-tools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .hr-tools .select.auto { height: 34px; font-size: 12.5px; padding-left: 10px; }
+    .hr-tools .check { font-size: 12.5px; align-items: center; white-space: nowrap; }
+    .hr-tools .check input { margin-top: 0; }
+    .hr-tools .search { height: 34px; min-width: 200px; max-width: 300px; }
+    .hr-actions { display: flex; align-items: center; gap: 9px; margin-left: auto; flex-wrap: wrap; }
+    .hr-selinfo { font-size: 13px; color: var(--ink-soft); font-weight: 600; white-space: nowrap; }
+    .hr-selinfo b { color: var(--ink); }
+    .hr-draft-note { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--warn-ink); background: var(--warn-soft); border-radius: 8px; padding: 7px 12px; margin-bottom: 10px; }
+    .hr-draft-note b { font-weight: 700; }
+    .hr-filterbar { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-faint); margin: -2px 2px 10px; }
+    .hr-filterbar .tag { cursor: pointer; }
+    .hr-filterbar .tag:hover { color: var(--danger); }
+
+    /* 등급 칩 — P1 danger · P2 warn · P3 sky-deep · P4 ink-faint */
+    .hr-g { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; height: 23px; padding: 0 7px; border-radius: 6px; font-family: var(--mono); font-size: 12px; font-weight: 800; border: 1.5px solid transparent; white-space: nowrap; }
+    .hr-g.P1 { background: var(--danger-soft); color: var(--danger); border-color: #f1bcbc; }
+    .hr-g.P2 { background: var(--warn-soft); color: var(--warn-ink); border-color: #ead9a4; }
+    .hr-g.P3 { background: var(--accent-soft); color: var(--sky-deep); border-color: #bcd9f3; }
+    .hr-g.P4 { background: var(--chip-bg); color: var(--ink-faint); border-color: var(--line-strong); }
+    .hr-g.sel { cursor: pointer; opacity: .5; }
+    .hr-g.sel:hover { opacity: .85; }
+    .hr-g.sel.on { opacity: 1; box-shadow: 0 0 0 2px var(--accent-soft); }
+    .hr-g.sel:disabled { cursor: not-allowed; opacity: .3; }
+    .hr-base { font-size: 11.5px; color: var(--ink-faint); margin-left: 4px; white-space: nowrap; }
+    .hr-path { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 22px; padding: 0 6px; border-radius: 6px; background: var(--chip-bg); color: var(--ink-soft); font-family: var(--mono); font-size: 11.5px; font-weight: 800; cursor: help; }
+    .hr-need { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; background: var(--warn-soft); color: var(--warn-ink); font-size: 13px; font-weight: 800; cursor: help; }
+    .hr-re { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 800; color: var(--danger); white-space: nowrap; margin-left: 6px; }
+    .hr-re::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--danger); }
+    .hr-corr { display: inline-flex; align-items: center; font-size: 10.5px; font-weight: 800; padding: 1px 6px; border-radius: 4px; background: var(--accent-soft); color: var(--sky-deep); white-space: nowrap; margin-left: 6px; }
+    .hr-corr.ok { background: var(--ok-soft); color: var(--ok); }
+    .st.agree .dot { background: var(--ok); } .st.agree { color: var(--ok); }
+    .st.adjust .dot { background: var(--warn); } .st.adjust { color: var(--warn-ink); }
+    .st.hold .dot { background: var(--sky-dark); } .st.hold { color: var(--sky-deep); }
+    .st.none .dot { background: transparent; box-shadow: inset 0 0 0 1.5px var(--ink-faint); } .st.none { color: var(--ink-faint); }
+    .hr-crit { font-size: 10.5px; font-weight: 800; padding: 1px 6px; border-radius: 4px; background: var(--chip-bg); color: var(--ink-soft); margin-left: 5px; white-space: nowrap; }
+    .hr-crit.core { background: var(--danger-soft); color: var(--danger); }
+    .hr-final.diff .hr-g { box-shadow: 0 0 0 2px var(--panel), 0 0 0 3.5px currentColor; font-weight: 900; }
+    .hr-due { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+    .hr-due small { color: var(--ink-faint); font-size: 11.5px; margin-left: 4px; }
+    .hr-due.over { color: var(--danger); } .hr-due.over small { color: var(--danger); }
+    .hr-draftcol { white-space: nowrap; }
+    .list-panel tbody tr.hr-draft-diff td { background: var(--warn-soft); }
+    .list-panel tbody tr.hr-draft-diff:hover td { background: #f8edcb; }
+    .hr-arrow { color: var(--ink-faint); margin: 0 5px; }
+    .hr-draftcol .hr-base { margin-left: 8px; }
+    #hrTable { min-width: 0; }
+    #hrTable thead th { padding: 11px 9px; font-size: 11.5px; letter-spacing: .02em; }
+    #hrTable tbody td { padding: 10px 9px; font-size: 13.5px; }
+    #hrTable .hr-g { min-width: 30px; height: 22px; padding: 0 6px; font-size: 11.5px; }
+    .list-panel td.hr-vuln { min-width: 170px; }
+    .list-panel td .hr-vt { font-size: 11.5px; color: var(--ink-faint); margin-top: 2px; max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .list-panel td .hr-sub { font-size: 11.5px; color: var(--ink-faint); margin-top: 2px; }
+    .list-panel td.hr-nw { white-space: nowrap; }
+    .list-panel td.hr-sys { white-space: nowrap; }
+    .list-panel td.hr-by { font-size: 12.5px; color: var(--ink-soft); white-space: nowrap; }
+    .list-panel td.hr-by .mono { font-size: 12px; }
+    /* 목록 안 툴팁은 호버 전에는 레이아웃에서 제외 (숨김 상태의 ::after 폭이 패널 가로 스크롤을 만들지 않도록) */
+    .list-panel .scroll .tip-wrap:not(:hover):not(:focus-within)::after { display: none; }
+    .list-panel .scroll .tip-wrap::after { transition: none; }
+    .so.hr .dsec-t { flex-wrap: wrap; }
+    .so.hr .dsec-t > span:first-child, .so.hr .dsec-t { white-space: nowrap; }
+    .so.hr .dsec-t > span:last-child { white-space: normal; }
+    .hr-count { font-size: 12.5px; color: var(--ink-faint); margin: 10px 2px 0; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .hr-count b { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+    /* 드로어 520px — 딤 없음, 목록은 우측 여백 */
+    .so.hr { width: 520px; }
+    .so.hr .so-body { padding-top: 14px; }
+    .so.hr .so-foot { flex-wrap: wrap; }
+    #pane-vuln.drawer-open { padding-right: 532px; }
+    #pane-vuln { transition: padding .2s ease; }
+    .so-head .hr-id { font-family: var(--mono); font-size: 13px; font-weight: 800; color: var(--ink); }
+    .so-head .hr-badges { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; }
+    .so-head .hr-ttl { font-size: 13.5px; color: var(--ink-soft); font-weight: 600; margin-top: 3px; line-height: 1.4; }
+    .hr-simlink { font-size: 12.5px; font-weight: 700; color: var(--sky-deep); background: none; border: none; cursor: pointer; padding: 0; white-space: nowrap; }
+    .hr-simlink:hover { text-decoration: underline; }
+    .hr-tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .hr-tbl th { text-align: left; font-size: 11px; font-weight: 700; color: var(--ink-faint); padding: 4px 8px 6px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    .hr-tbl td { padding: 7px 8px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.5; }
+    .hr-tbl td:first-child { white-space: nowrap; }
+    .hr-tbl td:nth-child(2) { min-width: 150px; }
+    .hr-tbl tr:last-child td { border-bottom: none; }
+    .hr-tbl tr.need td { background: var(--warn-soft); }
+    .hr-tbl .mono { font-size: 12px; }
+    .hr-tbl .y { color: var(--ok); font-weight: 700; } .hr-tbl .n { color: var(--ink-faint); font-weight: 700; } .hr-tbl .x { color: var(--ink-faint); font-style: italic; }
+    .hr-tbl .src { font-size: 11.5px; color: var(--ink-faint); }
+    .hr-result { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; padding: 9px 11px; border-radius: 9px; background: linear-gradient(135deg, var(--navy-1) 0%, var(--navy-2) 100%); color: #eaf2fb; font-size: 13px; font-weight: 600; }
+    .hr-result b { color: #fff; font-weight: 800; }
+    .hr-result .hr-g { border-color: rgba(255,255,255,.4); }
+    .hr-ctx { display: grid; grid-template-columns: 1fr; gap: 6px; font-size: 13px; }
+    .hr-ctx .r { display: grid; grid-template-columns: 124px 1fr; gap: 10px; align-items: start; }
+    .hr-ctx .k { color: var(--ink-faint); font-size: 12.5px; line-height: 1.45; }
+    .hr-ctx .v { color: var(--ink); line-height: 1.5; }
+    .hr-ctx .v b { font-weight: 700; }
+    .hr-ctx .v .dim { color: var(--ink-faint); }
+    .hr-form .field { margin-bottom: 12px; }
+    .hr-form .radio-row { flex-direction: row; gap: 6px; }
+    .hr-form .radio-row label { flex: 1; padding: 9px 10px; }
+    .hr-form .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .hr-chip { height: 30px; padding: 0 11px; border-radius: 8px; border: 1.5px solid var(--line-strong); background: var(--panel); font-size: 12.5px; font-weight: 600; color: var(--ink-soft); cursor: pointer; }
+    .hr-chip:hover { border-color: var(--accent); }
+    .hr-chip.on { border-color: var(--sky-dark); background: var(--accent-soft); color: var(--sky-deep); }
+    .hr-form .chips.bad .hr-chip { border-color: #f1bcbc; }
+    .hr-corrbox { border: 1px dashed var(--line-strong); border-radius: 10px; padding: 10px 12px; margin-top: 8px; background: var(--panel); }
+    .hr-corrbox .frow { gap: 8px; }
+    .hr-corrbox .field { margin-bottom: 8px; }
+    .hr-corrbox .cur { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); background: var(--chip-bg); padding: 4px 8px; border-radius: 6px; display: inline-block; }
+    .hr-reeval { border: 1.5px solid #f1bcbc; background: var(--danger-soft); border-radius: 10px; padding: 10px 12px; margin-bottom: 12px; }
+    .hr-reeval .t { font-size: 13px; font-weight: 700; color: var(--danger); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .hr-reeval .radio-row label { background: var(--panel); }
+    .hr-evalhist { display: flex; flex-wrap: wrap; gap: 6px; }
+    .hr-evalhist span { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-family: var(--mono); color: var(--ink-soft); background: var(--panel); border-radius: 6px; padding: 3px 8px; box-shadow: 0 0 0 1px var(--line); }
+    .hr-evalhist span.chg { font-weight: 800; color: var(--ink); box-shadow: 0 0 0 1.5px var(--warn); }
+    .hr-rhist li { grid-template-columns: 100px 1fr; align-items: start; }
+    .hr-rhist .who { font-weight: 700; color: var(--ink-soft); }
+    .hr-rhist .memo { font-size: 12px; color: var(--ink-faint); margin-top: 2px; line-height: 1.5; }
+    .hr-sim { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 16px; }
+    .hr-sim .field { margin-bottom: 10px; }
+    .hr-sim .select, .hr-sim .input { height: 32px; font-size: 13px; }
+    .hr-runhist td.mono { font-size: 12.5px; }
+    .hr-runhist .fail { color: var(--danger); font-weight: 700; }
+
+    /* 반응형 */
+    @media (max-width: 1320px) {
+      .list-panel td.hr-by, .list-panel th.hr-by { display: none; }
+      .hr-run .row { gap: 8px 12px; }
+      .hr-run .v small.detail { display: none; }
+      #hrTable thead th, #hrTable tbody td { padding-left: 7px; padding-right: 7px; }
+      .list-panel td .hr-vt { max-width: 150px; }
+    }
+    @media (max-width: 1100px) { #pane-vuln.drawer-open { padding-right: 0; } .hr-sim { grid-template-columns: 1fr; } }
+
+    @media (max-width: 900px) {
+      body { grid-template-columns: 1fr; }
+      .sidebar { position: fixed; left: 0; top: 0; width: 236px; height: 100vh; transform: translateX(-100%); transition: transform .2s; z-index: 40; }
+      .sidebar.open { transform: none; }
+      .menu-toggle { display: grid; }
+      .content { padding: 18px 16px 40px; }
+      .topbar { padding: 10px 16px; gap: 8px; }
+      .crumb, .user .u-meta { display: none; }
+      .so { width: 100vw; }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <a class="side-brand" href="#" data-nav="Home">
+      <span class="nm">AgentOn<span> Console</span><small>Enterprise AI Agent Platform</small></span>
+    </a>
+
+    <nav class="side-nav" aria-label="AgentOn Console 메뉴">
+      <a class="nav-item" href="#" data-nav="Dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Dashboard
+      </a>
+
+      <div class="nav-group" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.66 3.58 3 8 3s8-1.34 8-3V6"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg>
+          <span class="np-label">Data Fabric</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Data Monitor">Data Monitor</a>
+          <a class="nav-child" href="#" data-nav="Data Sync">Data Sync</a>
+          <a class="nav-child" href="mnu-120-connections.html">Connections</a>
+          <a class="nav-child" href="#" data-nav="Mappings">Mappings</a>
+          <a class="nav-child" href="#" data-nav="Workflows">Workflows</a>
+          <a class="nav-child" href="#" data-nav="Schedules">Schedules</a>
+        </div>
+      </div>
+
+      <div class="nav-group" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.2 7.3 10.8 16M15.8 7.3 13.2 16M8.5 6h7"/></svg>
+          <span class="np-label">Ontology</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Graph Explorer">Graph Explorer</a>
+          <a class="nav-child" href="#" data-nav="Graph Query">Graph Query</a>
+          <a class="nav-child" href="#" data-nav="Modeler">Modeler</a>
+        </div>
+      </div>
+
+      <!-- Agent 그룹 — docs/menu/agent-menu-v1.0.md 확정 구조 -->
+      <div class="nav-group" data-open="true">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="2.5"/><path d="M12 3v4M9 12h.01M15 12h.01M9 16h6"/></svg>
+          <span class="np-label">Agent</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Monitoring">Monitoring</a>
+          <a class="nav-child active" href="#" aria-current="page">Human Review</a>
+          <a class="nav-child" href="domain-knowledge.html">Domain Knowledge</a>
+          <a class="nav-child" href="ai-services.html">Configuration</a>
+        </div>
+      </div>
+
+      <div class="nav-group" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 7.9 8 9 4.6-1.1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span class="np-label">Security</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Risk Monitor">Risk Monitor</a>
+          <a class="nav-child" href="mnu-810-topology.html">Topology</a>
+          <a class="nav-child" href="#" data-nav="AI Assistant">AI Assistant</a>
+          <a class="nav-child" href="#" data-nav="Priorities">Priorities</a>
+          <a class="nav-child" href="#" data-nav="Asset Integrity">Asset Integrity</a>
+        </div>
+      </div>
+
+      <div class="nav-group" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+          <span class="np-label">System</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="#" data-nav="Users & Permissions">Users &amp; Permissions</a>
+          <a class="nav-child" href="mnu-920-license.html">License</a>
+          <a class="nav-child" href="service-management.html">Service Management</a>
+          <a class="nav-child" href="access-management.html">Access Management</a>
+          <a class="nav-child" href="#" data-nav="Audit Logs">Audit Logs</a>
+        </div>
+      </div>
+
+      <div class="nav-sep" role="separator"></div>
+
+      <div class="nav-group nav-demo" data-open="false">
+        <button class="nav-parent" type="button" data-group-toggle aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+          <span class="np-label">Demo</span>
+          <svg class="np-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="nav-children">
+          <a class="nav-child" href="demo-ontology-compare.html">온톨로지 효과 비교</a>
+          <a class="nav-child" href="#" data-nav="보안 증적 제출·검토">보안 증적 제출·검토</a>
+          <a class="nav-child" href="#" data-nav="보안 예외·유예 처리 지원">보안 예외·유예 처리 지원</a>
+          <a class="nav-child" href="#" data-nav="취약점 조치 우선순위 분석">취약점 조치 우선순위 분석</a>
+          <a class="nav-child" href="#" data-nav="보안 관리 사각지대 탐지">보안 관리 사각지대 탐지</a>
+          <a class="nav-child" href="#" data-nav="보안 업무 어시스턴트">보안 업무 어시스턴트</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="side-foot"><span>AgentOn Security</span><span>v1.0.0</span></div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="ic-btn menu-toggle" type="button" id="menuToggle" aria-label="메뉴">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="crumb"><span>Agent</span><span class="sep">›</span><b>Human Review</b></div>
+      <div class="spacer"></div>
+      <button class="user" type="button" data-nav="내 계정">
+        <span class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--icon)"><circle cx="12" cy="8" r="4.2"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg></span>
+        <span class="u-meta"><span class="u-name" style="display:block">agenton-admin</span><span class="u-role" style="display:block">제조사 관리자</span></span>
+      </button>
+      <button class="ic-btn" type="button" id="logoutBtn" aria-label="로그아웃" title="로그아웃">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+      </button>
+    </div>
+
+    <div class="content">
+      <div class="phead">
+        <div>
+          <h1>Human Review</h1>
+          <p class="psub">AI 판단 결과를 검토하고 의견을 기록합니다</p>
+        </div>
+      </div>
+
+      <!-- 도메인 패키지 선택 + 검토 큐 (Domain Knowledge 화면과 같은 구조 — 도메인 확장 시 select 옵션 추가) -->
+      <div class="dk-bar">
+        <label class="dk-dom"><span class="dk-dom-lb">도메인 패키지</span>
+          <select class="select auto" id="domainSel" aria-label="도메인 패키지"><option value="sec" selected>Security</option></select>
+        </label>
+        <div class="tabs sub" role="tablist" aria-label="Security 검토 큐">
+          <button class="tab" role="tab" type="button" id="tab-vuln" aria-selected="true" aria-controls="pane-vuln">Vulnerability</button>
+        </div>
+      </div>
+
+      <section class="tabpane" id="pane-sec" role="tabpanel" aria-label="Security 도메인">
+
+        <!-- ===== 공개 취약점 영향평가 ===== === 연동 지점: GET /agent/human-review/security/vulnerability/runs/latest · GET /.../items ===-->
+        <div class="tabpane" id="pane-vuln" role="tabpanel" aria-labelledby="tab-vuln">
+          <h2 class="hr-panel-t">취약점 영향평가 <small>AI가 산정한 취약점 조치 우선순위를 검토하고, 향후 평가에 적용할 등급 조정 조건을 관리합니다.</small></h2>
+          <div id="hrRun"></div>
+          <div class="hr-switch" role="tablist" aria-label="평가 유형" id="hrSwitch"></div>
+          <div id="hrKpi"></div>
+          <div id="hrTools"></div>
+          <div id="hrDraftNote"></div>
+          <div id="hrFilterBar"></div>
+          <div class="list-panel"><div class="scroll"><table id="hrTable"><thead id="hrThead"></thead><tbody id="hrTbody"></tbody></table></div></div>
+          <div class="hr-count" id="hrCount"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ===== 공통 모달 (지금 실행 확인 · 실행 이력 · 시뮬레이션 · 일괄 동의) ===== -->
+  <div class="so-backdrop modal-backdrop" id="mBackdrop"></div>
+  <div class="modal" id="mModal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="m-head"><div><div class="m-t" id="mTitle"></div><div class="m-s" id="mSub"></div></div><button class="so-x" type="button" data-m-close aria-label="닫기">×</button></div>
+    <div class="m-body" id="mBody"></div>
+    <div class="m-foot" id="mFoot"></div>
+  </div>
+
+  <!-- ===== 평가 건 드로어 (520px, 배경 딤 없음) ===== === 연동 지점: GET /.../items/{id} · PUT /.../items/{id}/review === -->
+  <aside class="so hr" id="hrDrawer" role="dialog" aria-labelledby="hrDTitle">
+    <div class="so-head"><div style="min-width:0;flex:1"><div class="so-t" id="hrDTitle"></div><div id="hrDSub"></div></div><button class="so-x" type="button" data-hr-close aria-label="닫기">×</button></div>
+    <div class="so-body" id="hrDBody"></div>
+    <div class="so-foot" id="hrDFoot"></div>
+  </aside>
+
+  <script>
+  (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
+    function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (m) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]; }); }
+    function pad(n) { return (n < 10 ? "0" : "") + n; }
+    function now() { var d = new Date(); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) + " " + pad(d.getHours()) + ":" + pad(d.getMinutes()); }
+    function nowShort() { return now().slice(5); }
+    function fmtN(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+    var toastT;
+    function toast(msg, bad) { var t = $("toast"); t.innerHTML = msg; t.classList.toggle("bad", !!bad); t.classList.add("open"); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove("open"); }, 3400); }
+
+    /* ---------- 셸 공통 ---------- */
+    function navStub(name) { toast("이 프로토타입은 Human Review › Security › Vulnerability 화면만 구현되어 있습니다" + (name ? ' <span style="opacity:.7">(' + esc(name) + ')</span>' : "")); }
+    document.querySelectorAll(".sidebar [data-nav], .topbar [data-nav]").forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); navStub(a.getAttribute("data-nav")); }); });
+    document.querySelectorAll("[data-group-toggle]").forEach(function (t) {
+      t.addEventListener("click", function () { var g = t.closest(".nav-group"), open = g.getAttribute("data-open") === "true"; g.setAttribute("data-open", String(!open)); t.setAttribute("aria-expanded", String(!open)); });
+    });
+    $("menuToggle").addEventListener("click", function (e) { e.stopPropagation(); $("sidebar").classList.toggle("open"); });
+    document.addEventListener("click", function (e) { if (!e.target.closest("#sidebar")) $("sidebar").classList.remove("open"); });
+    $("logoutBtn").addEventListener("click", function () { toast("로그아웃되었습니다 (데모)"); });
+
+    /* ---------- 모달 ---------- */
+    var MACT = {};
+    function openModal(o) {
+      $("mTitle").textContent = o.title || ""; $("mSub").innerHTML = o.sub || ""; $("mSub").hidden = !o.sub;
+      $("mBody").innerHTML = o.body || ""; $("mFoot").innerHTML = o.foot || '<span class="sp"></span><button class="btn" type="button" data-m-close>닫기</button>';
+      var m = $("mModal"); m.className = "modal open" + (o.size ? " " + o.size : ""); $("mBackdrop").classList.add("open");
+      MACT = o.actions || {};
+    }
+    function closeModal() { $("mModal").classList.remove("open"); $("mBackdrop").classList.remove("open"); MACT = {}; }
+    document.addEventListener("click", function (e) {
+      if (e.target.closest("[data-m-close]") || e.target === $("mBackdrop")) { closeModal(); return; }
+      var a = e.target.closest("[data-mact]"); if (a && MACT[a.getAttribute("data-mact")]) MACT[a.getAttribute("data-mact")](a);
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") { if ($("mModal").classList.contains("open")) closeModal(); else closeDrawer(); } });
+
+    /* ============================================================
+     * 상수 · 판정 규칙 (criteria-spec §4 — 적용 v1.2 / 초안 v1.3)
+     * ============================================================ */
+    var GRADES = ["P1", "P2", "P3", "P4"];
+    var OPR_LABEL = { OPR: "운영(OPR)", DEV: "개발", QA: "품질", DR: "재해복구", STBY: "대기", "": "미입력" };
+    var MROWS = [["예", "예", "예"], ["예", "예", "아니오"], ["예", "아니오", "판단 제외"], ["아니오", "예", "예"], ["아니오", "예", "아니오"], ["아니오", "아니오", "예"], ["아니오", "아니오", "아니오"]];
+    var RULES = {
+      applied: { ver: "v1.2", at: "2026-11-08 17:20", epssNy: 0.1, matrix: ["P1", "P2", "P3", "P2", "P3", "P3", "P4"], dl: { P1: 3, P2: 7, P3: 30, P4: 90 } },
+      draft: { ver: "v1.3", at: "편집 중", epssNy: 0.2, matrix: ["P1", "P2", "P3", "P2", "P3", "P4", "P4"], dl: { P1: 3, P2: 14, P3: 30, P4: 90 } }
+    };
+    var RUN_DATE = "2026-11-11";
+    function rank(g) { return GRADES.indexOf(g); }
+    function gradeDown(g) { return GRADES[Math.min(rank(g) + 1, 3)]; }
+    function addDays(ymd, n) { var d = new Date(ymd + "T00:00:00"); d.setDate(d.getDate() + n); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+
+    /* 판정 — inp: {kev,sev,asset,epss,risk,overdue,crit,exposed,def}  (빈 문자열 = 미입력) */
+    function evalItem(type, inp, rule) {
+      var steps = [], s1, s2, s3, row, need = [];
+      if (type === "cve") s1 = inp.kev === "" ? { yes: false, need: true, note: "CVE 미존재/미입력 → 아니오로 처리됨" } : { yes: inp.kev === "Y", note: inp.kev === "Y" ? "CISA KEV 등재" : "KEV 미등재" };
+      else s1 = inp.sev === "" ? { yes: false, need: true, note: "미입력 → 아니오로 처리됨" } : { yes: inp.sev === "상", note: "점검항목 중요도 " + inp.sev };
+      if (inp.asset === "") s2 = { yes: false, need: true, note: "자산 상태 미입력 → 아니오로 처리됨" }; else s2 = { yes: inp.asset === "OPR", note: "자산 상태 " + OPR_LABEL[inp.asset] + (inp.asset === "OPR" ? " → 운영" : " → 비운영") };
+      steps.push(s1, s2);
+      var b = (s1.yes ? "y" : "n") + (s2.yes ? "y" : "n");
+      if (b === "yn") { s3 = { ex: true, note: "①예·②아니오 가지는 판단 제외 — L3 직행" }; row = 2; }
+      else {
+        var hits = [], miss = [], yes = false;
+        function sig(label, present, ok) { if (!present) { miss.push(label); return false; } if (ok) hits.push(label); return ok; }
+        if (type === "cve") {
+          var ep = inp.epss === "" ? null : parseFloat(inp.epss), thr = b === "yy" ? 0.5 : rule.epssNy;
+          var risk = sig("위험도 높음", inp.risk !== "", inp.risk === "높음"), ov = sig("기한 초과", inp.overdue !== "", inp.overdue === "Y"), cr = sig("중요 시스템", inp.crit !== "", inp.crit === "핵심");
+          if (b === "yy") { var e1 = sig("EPSS " + (ep == null ? "—" : ep) + " ≥ " + thr, ep != null, ep != null && ep >= thr); yes = e1 || risk || ov || cr; }
+          else if (b === "ny") { var e2 = sig("EPSS " + (ep == null ? "—" : ep) + " ≥ " + thr, ep != null, ep != null && ep >= thr); yes = e2 || (risk && ov); }
+          else yes = risk;
+        } else {
+          var ex = sig("외부 노출", inp.exposed !== "", inp.exposed === "Y"), ov2 = sig("기한 초과", inp.overdue !== "", inp.overdue === "Y"), cr2 = sig("중요 시스템", inp.crit !== "", inp.crit === "핵심");
+          if (b === "yy") yes = ex || ov2 || cr2; else if (b === "ny") yes = ex && ov2; else yes = ov2;
+        }
+        s3 = { yes: yes, need: miss.length > 0, note: (yes ? "충족: " + hits.join(", ") : "충족 신호 없음") + (miss.length ? " · 미입력: " + miss.join(", ") + " → 아니오로 처리" : "") };
+        row = b === "yy" ? (yes ? 0 : 1) : b === "ny" ? (yes ? 3 : 4) : (yes ? 5 : 6);
+      }
+      steps.push(s3);
+      var base = rule.matrix[row], fin = base, s4;
+      if (inp.def === "Y") { fin = gradeDown(base); s4 = { yes: true, note: "승인된 유예·예외 적용 — " + base + " → " + fin + " (하향 1등급 · 하한 P4)" }; }
+      else s4 = { yes: false, note: "승인된 유예·예외 없음 — 적용 안 함" };
+      steps.push(s4);
+      return { steps: steps, row: row, path: "L" + (row + 1), base: base, fin: fin, dl: rule.dl[fin], need: steps.some(function (s) { return s.need; }) };
+    }
+
+    /* ============================================================
+     * 목업 데이터 === 연동 지점: GET /human-review/vulnerability/runs/latest · /items ===
+     * ============================================================ */
+    var RUN = { at: "2026-11-11 03:00", mode: "자동(스케줄)", by: "", next: "2026-11-12 03:00", total: 1896, cve: 1284, cce: 612, dur: "4분 12초", delta: { chg: 21, nw: 14, end: 9 } };
+    var RUN_HIST = [
+      ["2026-11-11 03:00", "스케줄", "CVE v1.2 · CCE v1.2", "1,896", "21", ""],
+      ["2026-11-10 03:00", "스케줄", "CVE v1.2 · CCE v1.2", "1,882", "17", ""],
+      ["2026-11-09 14:20", "수동 · 김보안", "CVE v1.2 · CCE v1.2", "1,870", "33", ""],
+      ["2026-11-09 03:00", "스케줄", "CVE v1.2 · CCE v1.2", "1,869", "12", ""],
+      ["2026-11-08 03:00", "스케줄", "CVE v1.1 · CCE v1.2", "1,860", "9", "실패 1 — EPSS 수집 timeout, 재시도 성공"]
+    ];
+    var KPI = {
+      cve: { P1: 18, P2: 96, P3: 410, P4: 760, none: 1102, done: 182, agree: 150, adjust: 24, hold: 8, need: 37, reeval: 21, corr: 6 },
+      cce: { P1: 9, P2: 41, P3: 230, P4: 332, none: 520, done: 92, agree: 76, adjust: 12, hold: 4, need: 14, reeval: 5, corr: 2 }
+    };
+    var TOTAL = { cve: 1284, cce: 612 };
+    function rv(st, by, at, grade, reason, memo) { return { st: st, by: by || "", at: at || "", grade: grade || null, reason: reason || "", memo: memo || "", corr: null }; }
+    var CVE_SRC = { kev: "CISA KEV · 11-11 02:40", asset: "자산관리 · 11-10 23:00", epss: "FIRST · 11-11 02:40", risk: "스캐너 · 11-09", overdue: "ISPM", crit: "정보시스템", def: "ISPM" };
+    var CCE_SRC = { sev: "ISPM 점검기준", asset: "자산관리 · 11-10 23:00", exposed: "네트워크 자산관리 · 11-10", overdue: "ISPM", crit: "정보시스템", def: "ISPM" };
+    var ROWS = [
+      { id: "c1", type: "cve", vid: "CVE-2026-59310", vt: "vCenter Path Traversal", host: "vcenter-prd-01", sys: "생산관리", crit: "핵심", org: "인프라운영1팀", owner: "홍길동", exposed: "Y", linked: 3,
+        inp: { kev: "Y", asset: "OPR", epss: "0.62", risk: "높음", overdue: "N", crit: "핵심", def: "N" }, need: null, exc: null, rv: rv("none"), re: null,
+        others: { n: 12, P1: 4, P2: 6, P3: 2, adj: "P1→P2 조정 2건 (사유: 보완통제 존재)" }, eh: [["11-11", "P1"], ["11-10", "P1"], ["11-09", "P2"], ["11-08", "P2"]], rh: [] },
+      { id: "c2", type: "cve", vid: "CVE-2026-59310", vt: "vCenter Path Traversal", host: "vcenter-prd-02", sys: "품질관리", crit: "핵심", org: "인프라운영1팀", owner: "홍길동", exposed: "N", linked: 2,
+        inp: { kev: "Y", asset: "OPR", epss: "0.62", risk: "높음", overdue: "N", crit: "핵심", def: "N" }, need: null, exc: null, rv: rv("agree", "김보안", "11-10 16:20"), re: null,
+        others: { n: 12, P1: 4, P2: 6, P3: 2, adj: "P1→P2 조정 2건 (사유: 보완통제 존재)" }, eh: [["11-11", "P1"], ["11-10", "P1"], ["11-09", "P1"]], rh: [{ at: "11-10 16:20", by: "김보안", st: "agree", grade: "P1", reason: "", memo: "운영 vCenter — 즉시 조치 대상" }] },
+      { id: "c3", type: "cve", vid: "CVE-2026-59310", vt: "vCenter Path Traversal", host: "vcenter-dev-01", sys: "개발환경", crit: "일반", org: "개발지원팀", owner: "이개발", exposed: "N", linked: 1,
+        inp: { kev: "Y", asset: "DEV", epss: "0.62", risk: "높음", overdue: "N", crit: "일반", def: "N" }, need: null, exc: null, rv: rv("none"), re: null,
+        others: { n: 12, P1: 4, P2: 6, P3: 2, adj: "" }, eh: [["11-11", "P3"], ["11-10", "P3"]], rh: [] },
+      { id: "c4", type: "cve", vid: "CVE-2025-22457", vt: "Ivanti Connect Secure RCE", host: "vpn-prd-01", sys: "원격접속", crit: "핵심", org: "네트워크운영팀", owner: "박네트", exposed: "Y", linked: 2,
+        inp: { kev: "Y", asset: "OPR", epss: "0.71", risk: "높음", overdue: "N", crit: "핵심", def: "Y" }, need: null, exc: "EXC-2026-0412 · ~2027-01-31 (벤더 패치 대기, 보완통제: 접근 IP 제한)", rv: rv("agree", "김보안", "11-10 15:50"), re: null,
+        others: { n: 2, P1: 0, P2: 2, P3: 0, adj: "" }, eh: [["11-11", "P2"], ["11-10", "P2"], ["11-09", "P1"]], rh: [{ at: "11-10 15:50", by: "김보안", st: "agree", grade: "P2", reason: "", memo: "유예 EXC-2026-0412 확인" }] },
+      { id: "c5", type: "cve", vid: "CVE-2024-3400", vt: "PAN-OS Command Injection", host: "fw-prd-03", sys: "경계보안", crit: "일반", org: "네트워크운영팀", owner: "박네트", exposed: "Y", linked: 4,
+        inp: { kev: "Y", asset: "OPR", epss: "0.08", risk: "중간", overdue: "N", crit: "일반", def: "N" }, need: null, exc: null, rv: rv("adjust", "이운영", "11-09 10:05", "P1", "업무 영향", "외부 공개 세그먼트에 위치 — 노출 경로가 실제로 열려 있음"), re: null,
+        others: { n: 3, P1: 1, P2: 2, P3: 0, adj: "P2→P1 조정 1건 (사유: 업무 영향)" }, eh: [["11-11", "P2"], ["11-10", "P2"], ["11-09", "P2"]], rh: [{ at: "11-09 10:05", by: "이운영", st: "adjust", grade: "P1", reason: "업무 영향", memo: "외부 공개 세그먼트에 위치 — 노출 경로가 실제로 열려 있음" }] },
+      { id: "c6", type: "cve", vid: "CVE-2026-41022", vt: "Spring Framework DoS", host: "web-prd-02", sys: "고객포털", crit: "핵심", org: "서비스운영팀", owner: "최포털", exposed: "Y", linked: 5,
+        inp: { kev: "N", asset: "OPR", epss: "0.15", risk: "중간", overdue: "N", crit: "일반", def: "N" }, need: null, exc: null, rv: rv("adjust", "김보안", "11-08 14:30", "P3", "보완통제 존재", "WAF 차단 규칙(SIG-2026-0417) 적용 확인"), re: null,
+        others: { n: 6, P1: 0, P2: 5, P3: 1, adj: "P2→P3 조정 1건 (사유: 보완통제 존재)" }, eh: [["11-11", "P2"], ["11-10", "P2"], ["11-09", "P2"], ["11-08", "P2"]], rh: [{ at: "11-08 14:30", by: "김보안", st: "adjust", grade: "P3", reason: "보완통제 존재", memo: "WAF 차단 규칙(SIG-2026-0417) 적용 확인" }] },
+      { id: "c7", type: "cve", vid: "CVE-2026-41022", vt: "Spring Framework DoS", host: "web-prd-03", sys: "고객포털", crit: "핵심", org: "서비스운영팀", owner: "최포털", exposed: "Y", linked: 5,
+        inp: { kev: "N", asset: "OPR", epss: "0.34", risk: "높음", overdue: "N", crit: "핵심", def: "N" }, need: null, exc: null, rv: rv("none"), re: null,
+        others: { n: 6, P1: 0, P2: 5, P3: 1, adj: "P2→P3 조정 1건 (사유: 보완통제 존재)" }, eh: [["11-11", "P2"], ["11-10", "P2"]], rh: [] },
+      { id: "c8", type: "cve", vid: "CVE-2025-30065", vt: "Apache Parquet RCE", host: "data-prd-07", sys: "데이터플랫폼", crit: "일반", org: "데이터엔지니어링팀", owner: "정데이터", exposed: "N", linked: 8,
+        inp: { kev: "N", asset: "OPR", epss: "", risk: "중간", overdue: "N", crit: "일반", def: "N" }, need: "EPSS 미수집 — CVE ID 매핑 실패", exc: null,
+        rv: (function () { var r = rv("hold", "박분석", "11-10 09:40", null, "입력값 오류", "EPSS 매핑 누락 — 정정 후 재판정 필요"); r.corr = { item: "기타", cur: "EPSS —", val: "CVE ID 매핑 재요청 (FIRST)", note: "취약점 ID 형식 오류로 EPSS 조회 실패", state: "req" }; return r; })(), re: null,
+        others: { n: 9, P1: 0, P2: 0, P3: 9, adj: "" }, eh: [["11-11", "P3"], ["11-10", "P3"], ["11-09", "P3"]], rh: [{ at: "11-10 09:40", by: "박분석", st: "hold", grade: "", reason: "입력값 오류", memo: "EPSS 매핑 누락 — 정정 후 재판정 필요", corr: "정정 요청: 기타 → CVE ID 매핑 재요청 (요청 중)" }] },
+      { id: "c9", type: "cve", vid: "CVE-2025-30065", vt: "Apache Parquet RCE", host: "data-stg-02", sys: "데이터플랫폼", crit: "일반", org: "데이터엔지니어링팀", owner: "정데이터", exposed: "N", linked: 8,
+        inp: { kev: "N", asset: "QA", epss: "0.12", risk: "높음", overdue: "N", crit: "일반", def: "N" }, need: null, exc: null, rv: rv("none"), re: null,
+        others: { n: 9, P1: 0, P2: 0, P3: 9, adj: "" }, eh: [["11-11", "P3"], ["11-10", "P3"]], rh: [] },
+      { id: "c10", type: "cve", vid: "CVE-2026-33817", vt: "OpenSSH Auth Bypass", host: "app-stg-03", sys: "사내포털", crit: "일반", org: "서비스운영팀", owner: "최포털", exposed: "N", linked: 2,
+        inp: { kev: "N", asset: "QA", epss: "0.21", risk: "높음", overdue: "Y", crit: "일반", def: "N" }, need: null, exc: null, rv: rv("agree", "이운영", "11-07 11:12"), re: null,
+        others: { n: 4, P1: 0, P2: 1, P3: 3, adj: "" }, eh: [["11-11", "P3"], ["11-10", "P3"], ["11-09", "P3"], ["11-07", "P3"]], rh: [{ at: "11-07 11:12", by: "이운영", st: "agree", grade: "P3", reason: "", memo: "" }] },
+      { id: "c11", type: "cve", vid: "CVE-2024-6387", vt: "OpenSSH regreSSHion", host: "bastion-prd-01", sys: "운영관리", crit: "핵심", org: "인프라운영1팀", owner: "홍길동", exposed: "Y", linked: 1,
+        inp: { kev: "Y", asset: "", epss: "0.55", risk: "높음", overdue: "N", crit: "핵심", def: "N" }, need: "자산 상태 미입력 — 자산관리 동기화 누락", exc: null,
+        rv: (function () { var r = rv("hold", "박분석", "11-10 09:52", null, "입력값 오류", "운영 배스천 호스트 — 자산 상태 누락으로 판단 제외 처리됨"); r.corr = { item: "자산 상태", cur: "미입력", val: "OPR", note: "운영 배스천 호스트(자산관리 등록 누락)", state: "req" }; return r; })(), re: null,
+        others: { n: 5, P1: 2, P2: 2, P3: 1, adj: "" }, eh: [["11-11", "P3"], ["11-10", "P3"], ["11-09", "P3"]], rh: [{ at: "11-10 09:52", by: "박분석", st: "hold", grade: "", reason: "입력값 오류", memo: "운영 배스천 호스트 — 자산 상태 누락", corr: "정정 요청: 자산 상태 미입력 → OPR (요청 중)" }] },
+      { id: "c12", type: "cve", vid: "CVE-2023-44487", vt: "HTTP/2 Rapid Reset", host: "lb-dr-01", sys: "고객포털", crit: "핵심", org: "서비스운영팀", owner: "최포털", exposed: "N", linked: 5,
+        inp: { kev: "N", asset: "DR", epss: "0.05", risk: "낮음", overdue: "N", crit: "핵심", def: "N" }, need: null, exc: null, rv: rv("none"), re: null,
+        others: { n: 7, P1: 0, P2: 2, P3: 3, adj: "" }, eh: [["11-11", "P4"], ["11-10", "P4"]], rh: [] },
+      /* CCE */
+      { id: "e1", type: "cce", vid: "U-01", vt: "root 원격 접속 제한", host: "web-prd-02", sys: "고객포털", crit: "핵심", org: "서비스운영팀", owner: "최포털", exposed: "Y", linked: 5,
+        inp: { sev: "상", asset: "OPR", exposed: "Y", overdue: "N", crit: "핵심", def: "N" }, need: null, exc: null, rv: rv("none"), re: null,
+        others: { n: 21, P1: 6, P2: 9, P3: 6, adj: "" }, eh: [["11-11", "P1"], ["11-10", "P1"]], rh: [] },
+      { id: "e2", type: "cce", vid: "U-04", vt: "패스워드 최대 사용기간", host: "app-prd-11", sys: "결제", crit: "일반", org: "서비스운영팀", owner: "최포털", exposed: "N", linked: 3,
+        inp: { sev: "상", asset: "OPR", exposed: "N", overdue: "N", crit: "일반", def: "N" }, need: null, exc: null, rv: rv("agree", "김보안", "11-10 11:02"), re: null,
+        others: { n: 34, P1: 0, P2: 30, P3: 4, adj: "" }, eh: [["11-11", "P2"], ["11-10", "P2"]], rh: [{ at: "11-10 11:02", by: "김보안", st: "agree", grade: "P2", reason: "", memo: "" }] },
+      { id: "e3", type: "cce", vid: "D-07", vt: "DBMS 불필요 계정", host: "valkey-sentinel-01", sys: "캐시", crit: "일반", org: "데이터엔지니어링팀", owner: "정데이터", exposed: "N", linked: 2,
+        inp: { sev: "상", asset: "STBY", exposed: "N", overdue: "N", crit: "일반", def: "N" }, need: null, exc: null, rv: rv("adjust", "박분석", "11-09 15:40", "P4", "중복·오탐", "Sentinel 전용 서버 — DBMS 점검항목 적용 제외 (저위험 사유 LR-003)"), re: null,
+        others: { n: 3, P1: 0, P2: 0, P3: 3, adj: "P3→P4 조정 2건 (사유: 중복·오탐)" }, eh: [["11-11", "P3"], ["11-10", "P3"]], rh: [{ at: "11-09 15:40", by: "박분석", st: "adjust", grade: "P4", reason: "중복·오탐", memo: "Sentinel 전용 서버 — 저위험 사유 LR-003" }] },
+      { id: "e4", type: "cce", vid: "N-12", vt: "SMTP 릴레이 제한", host: "mail-gw-01", sys: "메일", crit: "일반", org: "인프라운영2팀", owner: "강메일", exposed: "N", linked: 1,
+        inp: { sev: "중", asset: "OPR", exposed: "N", overdue: "N", crit: "일반", def: "N" }, need: null, exc: "저위험 사유 LR-002 적용 예외 신청 진행 중", rv: rv("agree", "이운영", "11-10 10:30", null, "", "LR-002(SMTP 메일 서버 연동) 예외 진행 중"), re: null,
+        others: { n: 2, P1: 0, P2: 0, P3: 2, adj: "" }, eh: [["11-11", "P3"], ["11-10", "P3"]], rh: [{ at: "11-10 10:30", by: "이운영", st: "agree", grade: "P3", reason: "", memo: "LR-002 예외 진행 중" }] },
+      { id: "e5", type: "cce", vid: "U-19", vt: "FTP 서비스 비활성화", host: "file-stg-01", sys: "파일공유", crit: "일반", org: "인프라운영2팀", owner: "강메일", exposed: "", linked: 1,
+        inp: { sev: "중", asset: "QA", exposed: "", overdue: "Y", crit: "일반", def: "N" }, need: "외부 노출 미입력 — 네트워크 자산관리 미연동", exc: null, rv: rv("none"), re: null,
+        others: { n: 4, P1: 0, P2: 0, P3: 4, adj: "" }, eh: [["11-11", "P3"], ["11-10", "P3"]], rh: [] },
+      { id: "e6", type: "cce", vid: "U-42", vt: "불필요 서비스", host: "legacy-dr-02", sys: "레거시", crit: "일반", org: "인프라운영2팀", owner: "강메일", exposed: "N", linked: 0,
+        inp: { sev: "하", asset: "DR", exposed: "N", overdue: "N", crit: "일반", def: "N" }, need: null, exc: null, rv: rv("none"), re: null,
+        others: { n: 11, P1: 0, P2: 0, P3: 2, adj: "" }, eh: [["11-11", "P4"], ["11-10", "P4"]], rh: [] }
+    ];
+    /* AI 판정은 적용 기준으로 계산해 행에 붙인다 (판정 경로·AI 등급·기한) */
+    function applyEval(r) { var e = evalItem(r.type, r.inp, RULES.applied); r.ev = e; r.path = e.path; r.ai = e.fin; r.base = e.fin !== e.base ? e.base : null; r.due = addDays(RUN_DATE, e.dl); r.dl = e.dl; }
+    ROWS.forEach(applyEval);
+    ROWS.filter(function (r) { return r.id === "c8"; })[0].due = "2026-11-09"; /* 목업: 기한 초과 1건 */
+
+    function finalOf(r) { if (r.rv.st === "adjust" && r.rv.grade) return r.rv.grade; if (r.re && r.re.prev) return r.re.prev; if (r.reKept) return r.reKept; return r.ai; }
+    function draftOf(r) { return evalItem(r.type, r.inp, RULES.draft); }
+    function isOver(r) { return r.due < RUN_DATE; }
+    function stLabel(st) { return { none: "미검토", agree: "동의", adjust: "조정", hold: "보류" }[st]; }
+    var REASONS = ["입력값 오류", "실제 노출 아님", "보완통제 존재", "업무 영향", "중복·오탐", "기타"];
+    var CORR_ITEMS = ["자산 상태", "외부 노출", "정보시스템 중요도", "담당자", "기타"];
+    function corrCur(r, item) { return item === "자산 상태" ? OPR_LABEL[r.inp.asset] : item === "외부 노출" ? (r.inp.exposed === "" ? "미입력" : r.inp.exposed) : item === "정보시스템 중요도" ? r.inp.crit : item === "담당자" ? r.owner + " · " + r.org : "—"; }
+
+    /* ============================================================
+     * 상태 · 렌더
+     * ============================================================ */
+    var S = { type: "cve", f: { grade: "", state: "", path: "", sys: "", env: "", org: "", need: false, reeval: false, exc: false, corr: false, q: "" }, sel: {}, draft: false, drawer: null, F: null, dirty: false, run: null };
+    function rows() { return ROWS.filter(function (r) { return r.type === S.type; }); }
+    function filtered() {
+      var f = S.f, q = f.q.trim().toLowerCase();
+      return rows().filter(function (r) {
+        if (f.grade && r.ai !== f.grade) return false;
+        if (f.state === "done" ? r.rv.st === "none" : (f.state && r.rv.st !== f.state)) return false;
+        if (f.path && r.path !== f.path) return false;
+        if (f.sys && r.sys !== f.sys) return false;
+        if (f.env && r.inp.asset !== f.env) return false;
+        if (f.org && r.org !== f.org) return false;
+        if (f.need && !r.need) return false;
+        if (f.reeval && !r.re) return false;
+        if (f.exc && !r.exc) return false;
+        if (f.corr && !(r.rv.corr && r.rv.corr.state === "req")) return false;
+        if (q && [r.vid, r.vt, r.host, r.sys].join(" ").toLowerCase().indexOf(q) < 0) return false;
+        return true;
+      });
+    }
+    function uniq(arr) { return arr.filter(function (x, i) { return x && arr.indexOf(x) === i; }); }
+    function gchip(g, extra) { return '<span class="hr-g ' + g + (extra || "") + '">' + g + "</span>"; }
+    function selOpt(opts, cur) { return opts.map(function (o) { var v = typeof o === "string" ? o : o[0], l = typeof o === "string" ? o : o[1]; return '<option value="' + esc(v) + '"' + (v === cur ? " selected" : "") + ">" + esc(l) + "</option>"; }).join(""); }
+
+    function renderRun() {
+      var ico = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>';
+      var h;
+      if (S.run) {
+        var st = S.run.step, names = ["입력 수집", "기준 적용", "결과 반영"];
+        h = '<div class="hr-run running"><div class="row"><span class="ttl">' + ico + '평가 실행 중 <small style="font-weight:500;color:var(--ink-faint)">· 시작 ' + esc(S.run.since) + '</small></span><span class="hr-prog"><i style="width:' + Math.round(st / 3 * 100) + '%"></i></span><span class="hr-steps">' +
+          names.map(function (n, i) { return '<span class="hr-step ' + (i < st ? "done" : i === st ? "run" : "") + '"><span class="d"></span>' + n + "</span>" + (i < 2 ? '<span class="hr-step"><span class="ar">›</span></span>' : ""); }).join("") +
+          '</span><span class="sp"></span><span class="tip-wrap right" data-tip="이전 실행이 진행 중입니다 — 중복 실행 불가"><button class="btn sm primary" type="button" disabled>실행 중 · 시작 ' + esc(S.run.since) + "</button></span></div>" +
+          '<div class="sub"><span>수동 실행 · agenton-admin · 검토 중인 건은 덮어쓰지 않고 <b>재평가됨</b>으로 표시됩니다</span></div></div>';
+      } else {
+        h = '<div class="hr-run"><div class="row"><span class="ttl">' + ico + '최근 영향평가</span>' +
+          '<span><span class="k">실행 일시</span><span class="v mono">' + esc(RUN.at) + '</span></span>' +
+          '<span><span class="k">실행 방식</span><span class="v">' + esc(RUN.mode) + (RUN.by ? ' <small>· ' + esc(RUN.by) + "</small>" : "") + "</span></span>" +
+          '<span><span class="k">다음 실행</span><span class="v mono">' + esc(RUN.next) + '</span></span>' +
+          '<span><span class="k">처리</span><span class="v"><span class="mono">' + fmtN(RUN.total) + '</span>건 <small class="detail">(CVE ' + fmtN(RUN.cve) + " · CCE " + fmtN(RUN.cce) + ")</small></span></span>" +
+          "</div></div>";
+      }
+      $("hrRun").innerHTML = h;
+    }
+    function renderSwitch() {
+      $("hrSwitch").innerHTML = [["cve", "CVE"], ["cce", "CCE"]].map(function (t) { return '<button class="rf-sw" role="tab" type="button" data-type="' + t[0] + '" aria-selected="' + (S.type === t[0]) + '">' + t[1] + '<span class="n">' + fmtN(TOTAL[t[0]]) + "</span></button>"; }).join("");
+    }
+    function renderKpi() {
+      var k = KPI[S.type], f = S.f;
+      function tile(cls, label, n, on, extra, act) { return '<button class="hr-k ' + cls + (on ? " on" : "") + '" type="button" data-kpi="' + act + '"><span class="l">' + label + '</span><span class="n">' + fmtN(n) + (extra ? "<small>" + extra + "</small>" : "") + "</span></button>"; }
+      $("hrKpi").innerHTML = '<div class="hr-kpi"><div class="grp">' + GRADES.map(function (g) { return tile(g, g, k[g], f.grade === g, "", "g:" + g); }).join("") + "</div>" +
+        '<div class="grp">' + tile("", "미검토", k.none, f.state === "none", "", "s:none") + tile("", "검토 완료", k.done, f.state === "done", "동의 " + k.agree + " · 조정 " + k.adjust + " · 보류 " + k.hold, "s:done") + "</div>" +
+        '<div class="grp">' + tile("need", "확인 필요", k.need, f.need, "", "need") + tile("reeval", "재평가됨", k.reeval, f.reeval, "", "reeval") + tile("corr", "정정 요청 중", k.corr, f.corr, "", "corr") + "</div></div>";
+    }
+    function renderTools() {
+      var f = S.f, all = rows(), nsel = Object.keys(S.sel).length;
+      var h = '<div class="hr-tools">' +
+        '<select class="select auto" data-f="grade">' + selOpt([["", "등급 전체"]].concat(GRADES.map(function (g) { return [g, g]; })), f.grade) + "</select>" +
+        '<select class="select auto" data-f="state">' + selOpt([["", "검토 상태 전체"], ["none", "미검토"], ["agree", "동의"], ["adjust", "조정"], ["hold", "보류"]], f.state === "done" ? "" : f.state) + "</select>" +
+        '<select class="select auto" data-f="path">' + selOpt([["", "판정 경로 전체"]].concat([1, 2, 3, 4, 5, 6, 7].map(function (i) { return ["L" + i, "L" + i]; })), f.path) + "</select>" +
+        '<select class="select auto" data-f="sys">' + selOpt([["", "정보시스템 전체"]].concat(uniq(all.map(function (r) { return r.sys; })).map(function (s) { return [s, s]; })), f.sys) + "</select>" +
+        '<select class="select auto" data-f="env">' + selOpt([["", "운영환경 전체"], ["OPR", "운영(OPR)"], ["DEV", "개발"], ["QA", "품질"], ["DR", "재해복구"], ["STBY", "대기"]], f.env) + "</select>" +
+        '<select class="select auto" data-f="org">' + selOpt([["", "담당 조직 전체"]].concat(uniq(all.map(function (r) { return r.org; })).map(function (s) { return [s, s]; })), f.org) + "</select>" +
+        '<label class="check"><input type="checkbox" data-fck="need"' + (f.need ? " checked" : "") + '>확인 필요만</label>' +
+        '<label class="check"><input type="checkbox" data-fck="reeval"' + (f.reeval ? " checked" : "") + '>재평가됨만</label>' +
+        '<label class="check"><input type="checkbox" data-fck="exc"' + (f.exc ? " checked" : "") + '>유예·예외 적용만</label>' +
+        '<label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="hrQ" placeholder="' + (S.type === "cve" ? "CVE ID · 호스트명 · 정보시스템명" : "점검항목 코드 · 호스트명 · 정보시스템명") + '" value="' + esc(f.q) + '"></label>' +
+        '<div class="hr-actions"><span class="hr-selinfo">선택 <b>' + nsel + "</b>건</span>" +
+        '<button class="btn sm" type="button" data-act="bulkagree"' + (nsel ? "" : " disabled") + '>일괄 동의</button>' +
+        '<label class="cr-sw' + (S.draft ? "" : " off") + '" title="Criteria 초안 v1.3 적용 결과를 비교 컬럼으로 표시"><input type="checkbox" data-act="draft"' + (S.draft ? " checked" : "") + '><span class="tr"></span>기준 초안 비교</label></div></div>';
+      $("hrTools").innerHTML = h;
+      $("hrDraftNote").innerHTML = S.draft ? '<div class="hr-draft-note"><b>초안 v1.3 적용 시</b> 등급 변경 <b>21건</b> (하향 21) — 미등재·운영 EPSS 임계 0.1 → 0.2 · 가지 L6 P3 → P4 · P2 기한 D+7 → D+14. <span style="opacity:.8">초안은 Criteria에서 적용해야 반영됩니다.</span></div>' : "";
+      var chips = [];
+      if (f.grade) chips.push(["grade", "등급 " + f.grade]); if (f.state) chips.push(["state", "검토 " + (f.state === "done" ? "완료" : stLabel(f.state))]); if (f.path) chips.push(["path", "경로 " + f.path]);
+      if (f.sys) chips.push(["sys", f.sys]); if (f.env) chips.push(["env", OPR_LABEL[f.env]]); if (f.org) chips.push(["org", f.org]);
+      if (f.need) chips.push(["need", "확인 필요만"]); if (f.reeval) chips.push(["reeval", "재평가됨만"]); if (f.exc) chips.push(["exc", "유예·예외만"]); if (f.corr) chips.push(["corr", "정정 요청 중"]);
+      $("hrFilterBar").innerHTML = chips.length ? '<div class="hr-filterbar">필터 ' + chips.map(function (c) { return '<span class="tag" data-fclear="' + c[0] + '" title="필터 해제">' + esc(c[1]) + ' <span class="x">×</span></span>'; }).join("") + '<button class="link sm" type="button" data-fclear="all">모두 해제</button></div>' : "";
+    }
+    function pathTip(r) { var e = r.ev, h = S.type === "cve" ? "① KEV 등재" : "① 점검항목 중요도 상"; return h + " " + (e.steps[0].yes ? "예" : "아니오") + " · ② 운영 환경 " + (e.steps[1].yes ? "예" : "아니오") + " · ③ 추가 위험 신호 " + (e.steps[2].ex ? "판단 제외" : e.steps[2].yes ? "예" : "아니오"); }
+    function renderTable() {
+      var list = filtered(), cve = S.type === "cve";
+      $("hrThead").innerHTML = "<tr><th style=\"width:34px\"><input type=\"checkbox\" id=\"hrSelAll\" aria-label=\"전체 선택\"" + (list.length && list.every(function (r) { return S.sel[r.id]; }) ? " checked" : "") + "></th><th>" + (cve ? "취약점" : "점검항목") + "</th><th>자산</th><th>정보시스템</th><th>판정 경로</th><th>AI 등급</th><th>조치 기한</th><th>확인 필요</th><th>검토 상태</th><th>최종 등급</th><th class=\"hr-by\">검토자 · 일시</th>" + (S.draft ? "<th>초안 등급</th>" : "") + "</tr>";
+      var h = "";
+      if (!list.length) h = '<tr><td colspan="' + (S.draft ? 12 : 11) + '" class="list-empty">조건에 맞는 평가 건이 없습니다.</td></tr>';
+      list.forEach(function (r) {
+        var fin = finalOf(r), diff = fin !== r.ai, d = S.draft ? draftOf(r) : null, ddiff = d && (d.fin !== r.ai || d.path !== r.path);
+        h += '<tr class="' + (S.drawer === r.id ? "row-active " : "") + (ddiff ? "hr-draft-diff" : "") + '" data-row="' + r.id + '">' +
+          '<td><input type="checkbox" data-sel="' + r.id + '"' + (S.sel[r.id] ? " checked" : "") + ' aria-label="선택"></td>' +
+          '<td class="hr-vuln"><button class="lk mono" type="button" data-open="' + r.id + '">' + esc(r.vid) + '</button><div class="hr-vt" title="' + esc(r.vt) + '">' + esc(r.vt) + "</div></td>" +
+          '<td class="hr-nw"><span class="mono" style="font-weight:600">' + esc(r.host) + '</span><div class="hr-sub">자산 상태 ' + (r.inp.asset === "" ? '<span style="color:var(--warn-ink);font-weight:700">미입력</span>' : '<span class="mono">' + esc(r.inp.asset) + "</span>") + "</div></td>" +
+          '<td class="hr-sys">' + esc(r.sys) + '<span class="hr-crit' + (r.crit === "핵심" ? " core" : "") + '">' + esc(r.crit) + "</span></td>" +
+          '<td><span class="tip-wrap" data-tip="' + esc(pathTip(r)) + '"><span class="hr-path">' + r.path + "</span></span></td>" +
+          '<td class="hr-nw">' + gchip(r.ai) + (r.base ? '<span class="hr-base">(기본 ' + r.base + ")</span>" : "") + "</td>" +
+          '<td><span class="hr-due' + (isOver(r) ? " over" : "") + '">D+' + r.dl + "<small>~" + r.due.slice(5) + (isOver(r) ? " 초과" : "") + "</small></span></td>" +
+          "<td>" + (r.need ? '<span class="tip-wrap" data-tip="' + esc(r.need) + '"><span class="hr-need">⚠</span></span>' : '<span class="dash">—</span>') + "</td>" +
+          '<td class="hr-nw"><span class="st ' + r.rv.st + '"><span class="dot"></span>' + stLabel(r.rv.st) + (r.rv.st === "adjust" && r.rv.grade ? " → " + r.rv.grade : "") + "</span>" + (r.re ? '<span class="hr-re">재평가됨</span>' : "") + (r.rv.corr ? '<span class="hr-corr' + (r.rv.corr.state === "applied" ? " ok" : "") + '">' + (r.rv.corr.state === "applied" ? "정정 반영됨" : "정정 요청 중") + "</span>" : "") + "</td>" +
+          '<td class="hr-final' + (diff ? " diff" : "") + '">' + (diff ? '<span class="tip-wrap" data-tip="' + esc(r.rv.st === "adjust" ? "리뷰 조정 (" + r.rv.reason + ")" : "재평가됨 — 기존 리뷰 값 유지 중 (" + stLabel(r.rv.st) + ")") + '">' + gchip(fin) + "</span>" : gchip(fin)) + "</td>" +
+          '<td class="hr-by">' + (r.rv.by ? esc(r.rv.by) + ' · <span class="mono">' + esc(r.rv.at) + "</span>" : '<span class="dash">—</span>') + "</td>" +
+          (S.draft ? '<td class="hr-draftcol">' + (ddiff ? gchip(r.ai) + '<span class="hr-arrow">→</span>' + gchip(d.fin) + (d.path !== r.path ? '<span class="hr-base">' + r.path + " → " + d.path + "</span>" : "") : gchip(d.fin) + '<span class="hr-base">동일</span>') + "</td>" : "") + "</tr>";
+      });
+      $("hrTbody").innerHTML = h;
+      $("hrCount").innerHTML = "표시 <b>" + list.length + "</b>건 / 유형 전체 <b>" + fmtN(TOTAL[S.type]) + "</b>건 (목업은 " + rows().length + "건만 수록) · 최신 실행 <b class=\"mono\">" + esc(RUN.at) + "</b>";
+    }
+    function renderAll() { renderRun(); renderSwitch(); renderKpi(); renderTools(); renderTable(); if (S.drawer) renderDrawer(); }
+
+    /* ============================================================
+     * 드로어 — AI 판정 근거 · 맥락 · 리뷰 의견 · 이력
+     * ============================================================ */
+    function byId(id) { for (var i = 0; i < ROWS.length; i++) if (ROWS[i].id === id) return ROWS[i]; return null; }
+    function openDrawer(id) {
+      if (S.drawer && S.drawer !== id && S.dirty && !window.confirm("저장하지 않은 리뷰 의견이 있습니다. 버리고 다른 건을 열까요?")) return;
+      var r = byId(id); if (!r) return;
+      S.drawer = id; S.dirty = false;
+      S.F = { st: r.rv.st === "none" ? "" : r.rv.st, grade: r.rv.grade || "", reason: r.rv.reason || "", memo: r.rv.memo || "", corrOn: !!(r.rv.corr && r.rv.corr.state === "req"), corrItem: r.rv.corr ? r.rv.corr.item : "자산 상태", corrVal: r.rv.corr ? r.rv.corr.val : "", corrNote: r.rv.corr ? r.rv.corr.note : "", reDec: "" };
+      $("pane-vuln").classList.add("drawer-open"); $("hrDrawer").classList.add("open");
+      renderTable(); renderDrawer();
+    }
+    function closeDrawer() {
+      if (!S.drawer) return;
+      if (S.dirty && !window.confirm("저장하지 않은 리뷰 의견이 있습니다. 닫을까요?")) return;
+      S.drawer = null; S.F = null; S.dirty = false; $("hrDrawer").classList.remove("open"); $("pane-vuln").classList.remove("drawer-open"); renderTable();
+    }
+    function renderDrawer() {
+      var r = byId(S.drawer); if (!r) return;
+      var cve = r.type === "cve", e = r.ev, fin = finalOf(r), F = S.F;
+      $("hrDTitle").innerHTML = '<span class="hr-id">' + esc(r.vid) + '</span> <span style="font-weight:500;color:var(--ink-faint);font-size:13px">· 자산</span> <span class="mono" style="font-size:13.5px">' + esc(r.host) + "</span>";
+      $("hrDSub").innerHTML = '<div class="hr-ttl">' + esc(r.vt) + '</div><div class="hr-badges"><span class="k" style="font-size:11.5px;color:var(--ink-faint)">AI</span>' + gchip(r.ai) + (r.base ? '<span class="hr-base">(기본 ' + r.base + ")</span>" : "") + '<span class="k" style="font-size:11.5px;color:var(--ink-faint);margin-left:4px">최종</span>' + gchip(fin) +
+        '<span class="st ' + r.rv.st + '" style="margin-left:4px"><span class="dot"></span>' + stLabel(r.rv.st) + "</span>" + (r.re ? '<span class="hr-re">재평가됨</span>' : "") + (r.need ? '<span class="cr-need">확인 필요</span>' : "") + (r.rv.corr ? '<span class="hr-corr' + (r.rv.corr.state === "applied" ? " ok" : "") + '">' + (r.rv.corr.state === "applied" ? "정정 반영됨" : "정정 요청 중") + "</span>" : "") +
+        '<span style="flex:1"></span><button class="hr-simlink" type="button" data-act="sim">이 건으로 시뮬레이션 ›</button></div>';
+      /* 섹션 1 — AI 판정 근거 */
+      var SRC = cve ? CVE_SRC : CCE_SRC, i = r.inp, st = e.steps;
+      function yn(v) { return v ? '<span class="y">예</span>' : '<span class="n">아니오</span>'; }
+      function row(no, label, val, src, judge, need) { return '<tr' + (need ? ' class="need"' : "") + "><td><b>" + no + " " + esc(label) + "</b></td><td>" + val + '</td><td class="src">' + esc(src) + "</td><td>" + judge + (need ? '<div style="font-size:11.5px;color:var(--warn-ink);font-weight:700">확인 필요 — 아니오로 처리됨</div>' : "") + "</td></tr>"; }
+      var h = '<div class="dsec"><div class="dsec-t">AI 판정 근거 <span class="sp"></span><span style="font-weight:500">적용 기준 <a class="link sm" href="domain-knowledge.html">' + (cve ? "CVE" : "CCE") + ' <span class="mono">v1.2</span> · 2026-11-01</a> · 평가 실행 <span class="mono">' + esc(RUN.at) + '</span></span></div><table class="hr-tbl"><thead><tr><th>단계</th><th>입력값</th><th>출처 · 수집 시각</th><th>판정</th></tr></thead><tbody>';
+      if (cve) h += row("①", "KEV 등재", i.kev === "" ? '<span class="x">미입력</span>' : '<span class="mono">' + i.kev + "</span>", SRC.kev, yn(st[0].yes), st[0].need);
+      else h += row("①", "점검항목 중요도 상", i.sev === "" ? '<span class="x">미입력</span>' : "중요도 <b>" + esc(i.sev) + "</b>", SRC.sev, yn(st[0].yes), st[0].need);
+      h += row("②", "운영 환경", i.asset === "" ? '<span class="x">미입력</span>' : '자산 상태 <span class="mono">' + i.asset + "</span>", SRC.asset, yn(st[1].yes), st[1].need);
+      var v3 = cve
+        ? "EPSS " + (i.epss === "" ? '<span class="x">미수집</span>' : '<span class="mono">' + i.epss + "</span>") + " · 위험도 <b>" + esc(i.risk || "미입력") + "</b> · 기한 초과 <span class=\"mono\">" + (i.overdue || "—") + "</span> · 중요도 <b>" + esc(i.crit || "미입력") + "</b>"
+        : "외부 노출 " + (i.exposed === "" ? '<span class="x">미입력</span>' : '<span class="mono">' + i.exposed + "</span>") + ' · 기한 초과 <span class="mono">' + (i.overdue || "—") + "</span> · 중요도 <b>" + esc(i.crit || "미입력") + "</b>";
+      var s3 = cve ? "FIRST 11-11 02:40 · 스캐너 11-09 · ISPM · 정보시스템" : "네트워크 자산관리 11-10 · ISPM · 정보시스템";
+      h += row("③", "추가 위험 신호", v3 + (r.need ? '<div style="font-size:11.5px;color:var(--warn-ink)">' + esc(r.need) + "</div>" : ""), s3, (st[2].ex ? '<span class="x">판단 제외</span>' : yn(st[2].yes)) + '<div style="font-size:11.5px;color:var(--ink-faint)">' + esc(st[2].note) + "</div>", st[2].need);
+      h += row("④", "유예·예외 보정", r.exc ? "승인된 유예 <b>있음</b><div style=\"font-size:11.5px;color:var(--ink-faint)\">" + esc(r.exc) + "</div>" : "승인된 유예 없음", SRC.def, st[3].yes ? "<b>적용</b> — 기본 " + e.base + " → 보정 " + e.fin : '<span class="n">적용 안 함</span>', false);
+      h += '</tbody></table><div class="hr-result">→ 가지 <b class="mono">' + e.path + "</b> → " + gchip(e.fin) + (r.base ? '<span style="opacity:.8">(기본 ' + r.base + ")</span>" : "") + ' · 조치 기한 <b>D+' + e.dl + "</b> (~" + esc(r.due) + ")" + (isOver(r) ? ' <span style="color:#ffd3d3;font-weight:800">· 기한 초과</span>' : "") + "</div></div>";
+      /* 섹션 2 — 맥락 */
+      var o = r.others;
+      h += '<div class="dsec"><div class="dsec-t">맥락</div><div class="hr-ctx">' +
+        '<div class="r"><span class="k">담당</span><span class="v">자산 담당자 <b>' + esc(r.owner) + "</b> · 담당 조직 <b>" + esc(r.org) + '</b> · 자산 책임자 <span class="dim">팀장(' + esc(r.org) + ")</span></span></div>" +
+        '<div class="r"><span class="k">노출 · 관계</span><span class="v">외부 노출 <b>' + (r.exposed === "" ? "미입력" : r.exposed) + "</b>" + (r.exposed === "Y" ? " (공인 IP)" : "") + " · 같은 정보시스템 연결 자산 <b>" + r.linked + "</b>대</span></div>" +
+        '<div class="r"><span class="k">같은 ' + (cve ? "취약점" : "점검항목") + "의 다른 자산</span><span class=\"v\"><b>" + o.n + "</b>대 — P1 " + o.P1 + " · P2 " + o.P2 + " · P3 " + o.P3 + (o.adj ? '<br><span class="dim">리뷰된 건: ' + esc(o.adj) + " — 일관성 참고</span>" : "") + "</span></div>" +
+        '<div class="r"><span class="k">과거 유예·예외</span><span class="v">' + (r.exc ? "이 자산 × " + (cve ? "취약점" : "점검항목") + " <b>1건</b> — " + esc(r.exc) : '이 자산 × ' + (cve ? "취약점" : "점검항목") + ' 이력 없음 · 자산 전체 이력 <b>1</b>건') + "</span></div>" +
+        '<div class="r"><span class="k">과거 리뷰</span><span class="v">' + (r.rh.length ? r.rh.length + "건 — 최근 " + esc(r.rh[0].at) + " " + esc(r.rh[0].by) + " · " + stLabel(r.rh[0].st) + (r.rh[0].grade && r.rh[0].st === "adjust" ? " → " + r.rh[0].grade : "") + (r.rh[0].reason ? " (" + esc(r.rh[0].reason) + ")" : "") : '<span class="dim">없음</span>') + "</span></div></div></div>";
+      /* 섹션 3 — 리뷰 의견 */
+      var isAdj = F.st === "adjust", needReason = F.st === "adjust" || F.st === "hold";
+      h += '<div class="dsec hr-form"><div class="dsec-t">리뷰 의견 <span class="sp"></span><span style="font-weight:500">' + (r.rv.by ? "최근 " + esc(r.rv.by) + ' · <span class="mono">' + esc(r.rv.at) + "</span>" : "미검토") + "</span></div>";
+      if (r.re) h += '<div class="hr-reeval"><div class="t"><span class="hr-re" style="margin:0">재평가됨</span> AI 등급 ' + esc(r.re.prev) + " → " + esc(r.ai) + ' <span style="font-weight:500;color:var(--ink-soft);font-size:12px">· 기존 리뷰(' + stLabel(r.rv.st) + (r.rv.st === "adjust" ? " → " + r.rv.grade : "") + ")는 유지 중 — 처리 방법을 고르기 전까지 저장할 수 없습니다</span></div><div class=\"radio-row\">" +
+        '<label class="' + (F.reDec === "keep" ? "on" : "") + '"><input type="radio" name="reDec" value="keep" data-ff="reDec"' + (F.reDec === "keep" ? " checked" : "") + '><span><span class="rn">기존 리뷰 유지</span><span class="rd">최종 등급 ' + esc(fin) + " 유지 · 배지 해제</span></span></label>" +
+        '<label class="' + (F.reDec === "release" ? "on" : "") + '"><input type="radio" name="reDec" value="release" data-ff="reDec"' + (F.reDec === "release" ? " checked" : "") + '><span><span class="rn">새 AI 등급으로 해제</span><span class="rd">최종 등급 ' + esc(r.ai) + " · 리뷰를 동의로 갱신</span></span></label></div></div>";
+      h += '<div class="field"><label>판단<span class="req">*</span></label><div class="radio-row">' + [["agree", "동의", "AI 등급 그대로 확정"], ["adjust", "등급 조정", "최종 등급을 직접 지정"], ["hold", "보류", "확인 후 재검토"]].map(function (x) { return '<label class="' + (F.st === x[0] ? "on" : "") + '"><input type="radio" name="rvSt" value="' + x[0] + '" data-ff="st"' + (F.st === x[0] ? " checked" : "") + '><span><span class="rn">' + x[1] + '</span><span class="rd">' + x[2] + "</span></span></label>"; }).join("") + "</div>" + (r.need && F.st === "agree" ? '<p class="field-hint warn">미입력 단계가 있습니다 — 입력값 정정 요청을 권장합니다</p>' : "") + "</div>";
+      if (isAdj) h += '<div class="field"><label>조정 등급<span class="req">*</span> <span style="font-weight:500;color:var(--ink-faint)">(AI 등급 ' + r.ai + "은 선택 불가)</span></label><div class=\"chips\">" + GRADES.map(function (g) { return '<button class="hr-g sel ' + g + (F.grade === g ? " on" : "") + '" type="button" data-fgrade="' + g + '"' + (g === r.ai ? " disabled" : "") + ">" + g + "</button>"; }).join("") + "</div></div>";
+      if (needReason) h += '<div class="field"><label>사유 유형<span class="req">*</span></label><div class="chips' + (F._bad && !F.reason ? " bad" : "") + '">' + REASONS.map(function (x) { return '<button class="hr-chip' + (F.reason === x ? " on" : "") + '" type="button" data-freason="' + esc(x) + '">' + esc(x) + "</button>"; }).join("") + "</div></div>";
+      h += '<div class="field"><label>메모' + (F.st === "agree" ? ' <span style="font-weight:500;color:var(--ink-faint)">(선택)</span>' : "") + '</label><textarea class="textarea" data-ff="memo" rows="2" placeholder="판단 근거, 참고 사항">' + esc(F.memo) + "</textarea></div>";
+      h += '<div class="field"><label class="check"><input type="checkbox" data-ff="corrOn"' + (F.corrOn ? " checked" : "") + '>입력값 정정 요청</label>' +
+        (F.corrOn ? '<div class="hr-corrbox"><div class="frow"><div class="field"><label>항목</label><select class="select" data-ff="corrItem">' + selOpt(CORR_ITEMS, F.corrItem) + '</select></div><div class="field"><label>현재값 <span style="font-weight:500;color:var(--ink-faint)">(읽기 전용)</span></label><span class="cur">' + esc(corrCur(r, F.corrItem)) + "</span></div></div>" +
+          '<div class="field"><label>정정값<span class="req">*</span></label><input class="input" data-ff="corrVal" value="' + esc(F.corrVal) + '" placeholder="실제 값 (예: OPR, Y, 핵심, 홍길동)"></div>' +
+          '<div class="field" style="margin-bottom:4px"><label>근거 메모</label><input class="input" data-ff="corrNote" value="' + esc(F.corrNote) + '" placeholder="정정 근거"></div>' +
+          '<p class="field-hint">AgentOn은 데이터를 고치지 않습니다 — 정정 요청으로 기록·전달되며, 원천 시스템에서 수정되면 다음 평가에 반영됩니다.' + (F.st !== "hold" ? ' <b style="color:var(--warn-ink)">판단은 보류를 권장합니다.</b>' : "") + "</p></div>" : "") +
+        (r.rv.corr && r.rv.corr.state === "applied" ? '<p class="field-hint" style="color:var(--ok)">이전 정정 요청(' + esc(r.rv.corr.item) + " → " + esc(r.rv.corr.val) + ")이 반영되었습니다</p>" : "") + "</div>";
+      h += "</div>";
+      /* 섹션 4 — 이력 */
+      h += '<div class="dsec"><div class="dsec-t">이력</div><div style="font-size:12px;font-weight:700;color:var(--ink-faint);margin-bottom:6px">평가 이력 <span style="font-weight:500">(실행별 AI 등급 · 변경된 실행은 강조)</span></div><div class="hr-evalhist">' +
+        r.eh.map(function (x, idx) { var prev = r.eh[idx + 1]; return '<span class="' + (prev && prev[1] !== x[1] ? "chg" : "") + '">' + esc(x[0]) + " " + gchip(x[1]) + "</span>"; }).join("") + "</div>" +
+        '<div style="font-size:12px;font-weight:700;color:var(--ink-faint);margin:12px 0 6px">리뷰 이력</div>' +
+        (r.rh.length ? '<ul class="tl hr-rhist">' + r.rh.map(function (x) { return '<li><span class="at">' + esc(x.at) + '</span><div><span class="who">' + esc(x.by) + "</span> · " + stLabel(x.st) + (x.st === "adjust" && x.grade ? " → " + x.grade : x.grade ? " (" + x.grade + ")" : "") + (x.reason ? " · " + esc(x.reason) : "") + (x.memo ? '<div class="memo">' + esc(x.memo) + "</div>" : "") + (x.re ? '<div class="memo">재평가 처리: ' + esc(x.re) + "</div>" : "") + (x.corr ? '<div class="memo">' + esc(x.corr) + "</div>" : "") + "</div></li>"; }).join("") + "</ul>" : '<div style="font-size:12.5px;color:var(--ink-faint)">리뷰 이력 없음</div>') + "</div>";
+      $("hrDBody").innerHTML = h;
+      var canSave = !!F.st && !(r.re && !F.reDec);
+      $("hrDFoot").innerHTML = '<span style="font-size:12px;color:var(--ink-faint)">' + (r.re && !F.reDec ? "재평가됨 처리 방법을 먼저 선택하세요" : "저장 시 검토 상태·최종 등급·검토자가 갱신됩니다") + '</span><span class="sp"></span><button class="btn" type="button" data-act="cancel">취소</button><button class="btn primary" type="button" data-act="save"' + (canSave ? "" : " disabled") + ">저장</button>";
+    }
+    function saveReview() {
+      var r = byId(S.drawer), F = S.F; if (!r || !F) return;
+      if (!F.st) { toast("<b>판단을 선택하세요</b>", true); return; }
+      if (F.st === "adjust" && !F.grade) { toast("<b>조정 등급을 선택하세요</b>", true); return; }
+      if ((F.st === "adjust" || F.st === "hold") && !F.reason) { F._bad = true; renderDrawer(); toast("<b>사유 유형을 선택하세요</b> — 조정·보류는 사유 필수", true); return; }
+      if (F.corrOn && !F.corrVal.trim()) { toast("<b>정정값을 입력하세요</b>", true); return; }
+      if (r.re && !F.reDec) { toast("<b>재평가됨 처리 방법을 선택하세요</b>", true); return; }
+      var at = nowShort(), who = "agenton-admin", reNote = "";
+      if (r.re) {
+        if (F.reDec === "keep") { r.reKept = F.st === "adjust" ? null : r.re.prev; reNote = "기존 리뷰 유지 (AI " + r.re.prev + " → " + r.ai + ")"; }
+        else { r.reKept = null; F.st = "agree"; F.grade = ""; F.reason = ""; reNote = "새 AI 등급 " + r.ai + "으로 해제"; }
+        r.re = null;
+      }
+      r.rv.st = F.st; r.rv.grade = F.st === "adjust" ? F.grade : null; r.rv.reason = F.st === "agree" ? "" : F.reason; r.rv.memo = F.memo; r.rv.by = who; r.rv.at = at;
+      var corrTxt = "";
+      if (F.corrOn) { r.rv.corr = { item: F.corrItem, cur: corrCur(r, F.corrItem), val: F.corrVal.trim(), note: F.corrNote.trim(), state: "req" }; corrTxt = "정정 요청: " + F.corrItem + " " + corrCur(r, F.corrItem) + " → " + F.corrVal.trim() + " (요청 중)"; }
+      else if (r.rv.corr && r.rv.corr.state === "req") r.rv.corr = null;
+      r.rh.unshift({ at: at, by: who, st: r.rv.st, grade: r.rv.st === "adjust" ? r.rv.grade : r.ai, reason: r.rv.reason, memo: r.rv.memo, re: reNote, corr: corrTxt });
+      S.dirty = false; S.F.reDec = ""; S.F._bad = false;
+      var warn = r.need && r.rv.st === "agree" ? " · <span style='opacity:.85'>미입력 단계가 있는 건입니다</span>" : "";
+      toast("<b>" + esc(r.vid) + " · " + esc(r.host) + "</b> 리뷰 저장 — " + stLabel(r.rv.st) + (r.rv.st === "adjust" ? " → " + r.rv.grade : "") + " · 최종 " + finalOf(r) + (r.rv.corr && r.rv.corr.state === "req" ? " · 정정 요청 중" : "") + warn);
+      openDrawer(r.id); renderKpi();
+    }
+
+    /* ============================================================
+     * 팝업 — 실행 이력 · 지금 실행 · 일괄 동의 · 시뮬레이션
+     * ============================================================ */
+    function openRunHist() {
+      openModal({ title: "평가 실행 이력", sub: "최근 5회 · 전체 이력은 Agent › Monitoring", size: "lg",
+        body: '<div class="list-panel" style="box-shadow:none;border:1px solid var(--line)"><div class="scroll"><table class="hr-runhist" style="min-width:0"><thead><tr><th>실행 시각</th><th>방식</th><th>적용 기준</th><th style="text-align:right">처리</th><th style="text-align:right">등급 변경</th><th>실패</th></tr></thead><tbody>' +
+          RUN_HIST.map(function (x) { return '<tr><td class="mono">' + esc(x[0]) + "</td><td>" + esc(x[1]) + '</td><td class="mono">' + esc(x[2]) + '</td><td class="mono" style="text-align:right">' + x[3] + '</td><td class="mono" style="text-align:right">' + x[4] + "</td><td>" + (x[5] ? '<span class="fail">' + esc(x[5]) + "</span>" : '<span class="dash">—</span>') + "</td></tr>"; }).join("") + "</tbody></table></div></div>" });
+    }
+    function openRunNow() {
+      if (S.run) return;
+      openModal({ title: "취약점 영향평가 지금 실행", sub: "스케줄과 동일한 평가를 수동으로 실행합니다", size: "md",
+        body: '<div class="notice" style="margin-bottom:12px"><strong>스케줄과 동일한 평가를 지금 실행합니다.</strong> 검토 중인 건은 덮어쓰지 않고 <b>재평가됨</b>으로 표시됩니다.</div>' +
+          '<div class="kv" style="grid-template-columns:110px 1fr"><dt>적용 기준</dt><dd>CVE <span class="mono">v1.2</span> · CCE <span class="mono">v1.2</span> (현재 적용값 — 초안은 반영되지 않음)</dd><dt>평가 대상</dt><dd>최근 수집 공개 취약점 <b class="mono">' + fmtN(RUN.total) + '</b>건</dd><dt>실행자</dt><dd><span class="mono">agenton-admin</span></dd><dt>최근 실행</dt><dd><span class="mono">' + esc(RUN.at) + "</span> · " + esc(RUN.mode) + "</dd></div>" +
+          '<p class="field-hint" style="margin-top:12px">진행: 입력 수집 → 기준 적용 → 결과 반영 (약 3초). 실행 중에는 중복 실행할 수 없습니다.</p>',
+        foot: '<span class="sp"></span><button class="btn" type="button" data-m-close>취소</button><button class="btn primary" type="button" data-mact="run">지금 실행</button>',
+        actions: { run: function () { closeModal(); startRun(); } } });
+    }
+    function startRun() {
+      S.run = { step: 0, since: "방금" }; renderRun();
+      setTimeout(function () { S.run.step = 1; renderRun(); }, 1000);
+      setTimeout(function () { S.run.step = 2; S.run.since = "1분 전"; renderRun(); }, 2000);
+      setTimeout(function () { S.run.step = 3; renderRun(); setTimeout(finishRun, 250); }, 3000);
+    }
+    /* §9 고정 시나리오 */
+    function finishRun() {
+      var at = now(), md = at.slice(5, 10);
+      RUN.at = at; RUN.mode = "수동"; RUN.by = "agenton-admin"; RUN.delta = { chg: 3, nw: 1, end: 0 }; RUN.dur = "3분 48초";
+      RUN_HIST.unshift([at, "수동 · agenton-admin", "CVE v1.2 · CCE v1.2", fmtN(RUN.total + 1), "3", ""]); RUN_HIST.length = 5;
+      function setAi(r, newInp, prevAi) { Object.keys(newInp).forEach(function (k) { r.inp[k] = newInp[k]; }); applyEval(r); r.eh.unshift([md, r.ai]); if (r.rv.st !== "none" && r.ai !== prevAi) r.re = { prev: prevAi, now: r.ai }; }
+      var c6 = byId("c6"), c10 = byId("c10"), c12 = byId("c12"), c11 = byId("c11");
+      setAi(c6, { epss: "0.58", risk: "높음", crit: "핵심", kev: "Y" }, c6.ai);          /* web-prd-02 P2 → P1 (재평가됨) */
+      setAi(c10, { risk: "중간", overdue: "N" }, c10.ai);                                 /* app-stg-03 P3 → P4 (재평가됨) */
+      setAi(c12, { risk: "높음" }, c12.ai);                                                /* lb-dr-01 미검토 P4 → P3 */
+      /* 정정 요청 중 → 정정 반영됨: 자산 상태 → OPR 반영, 판단 제외 L3 → L1 */
+      var prev11 = c11.ai; setAi(c11, { asset: "OPR" }, prev11); c11.need = null; c11.rv.corr.state = "applied"; c11.rh.unshift({ at: md + " " + at.slice(11), by: "system", st: c11.rv.st, grade: "", reason: "", memo: "정정 반영됨 — 자산 상태 미입력 → OPR (자산관리 동기화)", corr: "정정 요청 상태: 반영됨" });
+      ROWS.forEach(function (r) { if (r.type === "cve" && ["c6", "c10", "c12", "c11"].indexOf(r.id) < 0) r.eh.unshift([md, r.ai]); });
+      if (!byId("c13")) ROWS.push({ id: "c13", type: "cve", vid: "CVE-2026-61001", vt: "Apache ActiveMQ Deserialization RCE", host: "api-prd-05", sys: "결제", crit: "핵심", org: "서비스운영팀", owner: "최포털", exposed: "Y", linked: 3,
+        inp: { kev: "N", asset: "OPR", epss: "", risk: "높음", overdue: "N", crit: "핵심", def: "N" }, need: "EPSS 미수집 — FIRST 응답 없음 (신규 CVE)", exc: null, rv: rv("none"), re: null, others: { n: 1, P1: 0, P2: 0, P3: 1, adj: "" }, eh: [[md, "P3"]], rh: [], isNew: true });
+      applyEval(byId("c13"));
+      var k = KPI.cve; k.reeval += 3; k.corr -= 1; k.need += 0; k.P1 += 1; k.P2 -= 1; k.none += 1; TOTAL.cve += 1; RUN.cve += 1; RUN.total += 1;
+      S.run = null; renderAll();
+      toast("<b>평가 실행 완료</b> — 처리 " + fmtN(RUN.total) + "건 · 등급 변경 3 · 신규 1 · 재평가됨 3건은 리뷰 재확인이 필요합니다");
+    }
+    function bulkAgree() {
+      var ids = Object.keys(S.sel).filter(function (id) { return S.sel[id]; }), list = ids.map(byId).filter(Boolean);
+      var re = list.filter(function (r) { return r.re; }), need = list.filter(function (r) { return r.need; }), ok = list.filter(function (r) { return !r.re; });
+      openModal({ title: "일괄 동의", sub: "선택 " + list.length + "건", size: "md",
+        body: '<div class="notice">선택한 건의 판단을 <b>동의</b>로 저장합니다 (AI 등급 그대로 최종 등급 확정). 조정·보류는 건별로만 가능합니다.</div>' +
+          (re.length ? '<p class="field-hint warn" style="margin-top:10px">재평가됨 ' + re.length + "건은 유지/해제 선택이 필요해 제외됩니다: " + re.map(function (r) { return r.host; }).join(", ") + "</p>" : "") +
+          (need.length ? '<p class="field-hint warn" style="margin-top:6px">확인 필요 ' + need.length + "건이 포함되어 있습니다 — 입력값 정정 요청을 권장합니다</p>" : "") +
+          '<ul style="margin:10px 0 0;padding-left:18px;font-size:12.5px;color:var(--ink-soft)">' + ok.map(function (r) { return "<li><span class=\"mono\">" + esc(r.vid) + " · " + esc(r.host) + "</span> → 최종 " + r.ai + "</li>"; }).join("") + "</ul>",
+        foot: '<span class="sp"></span><button class="btn" type="button" data-m-close>취소</button><button class="btn primary" type="button" data-mact="ok"' + (ok.length ? "" : " disabled") + ">" + ok.length + "건 동의</button>",
+        actions: { ok: function () {
+          var at = nowShort(); ok.forEach(function (r) { r.rv.st = "agree"; r.rv.grade = null; r.rv.reason = ""; r.rv.by = "agenton-admin"; r.rv.at = at; r.rh.unshift({ at: at, by: "agenton-admin", st: "agree", grade: r.ai, reason: "", memo: "일괄 동의" }); });
+          S.sel = {}; closeModal(); renderAll(); toast("<b>" + ok.length + "건</b> 일괄 동의 저장" + (re.length ? " · 재평가됨 " + re.length + "건 제외" : ""));
+        } } });
+    }
+    function openSim(r) {
+      var cve = r.type === "cve", ver = "applied";
+      function sel(id, label, opts, cur) { return '<div class="field"><label>' + label + '</label><select class="select" id="' + id + '">' + opts.map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === cur ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") + "</select></div>"; }
+      var i = r.inp, form = "";
+      form += cve ? sel("si-kev", "① KEV 등재", [["Y", "예"], ["N", "아니오"], ["", "미입력"]], i.kev) : sel("si-sev", "① 점검항목 중요도", [["상", "상"], ["중", "중"], ["하", "하"], ["", "미입력"]], i.sev);
+      form += sel("si-asset", "② 자산 상태", [["OPR", "운영(OPR)"], ["DEV", "개발"], ["QA", "품질"], ["DR", "재해복구"], ["STBY", "대기"], ["", "미입력"]], i.asset);
+      if (cve) form += '<div class="field"><label>EPSS <span style="font-weight:500;color:var(--ink-faint)">(비우면 미입력)</span></label><input class="input mono" id="si-epss" type="number" step="0.01" min="0" max="1" value="' + esc(i.epss) + '"></div>' + sel("si-risk", "위험도", [["높음", "높음"], ["중간", "중간"], ["낮음", "낮음"], ["", "미입력"]], i.risk);
+      else form += sel("si-exposed", "외부 노출", [["Y", "예"], ["N", "아니오"], ["", "미입력"]], i.exposed);
+      form += sel("si-overdue", "기한 초과", [["N", "아니오"], ["Y", "예"], ["", "미입력"]], i.overdue) + sel("si-crit", "정보시스템 중요도", [["핵심", "핵심"], ["일반", "일반"], ["", "미입력"]], i.crit) + sel("si-def", "④ 승인된 유예·예외", [["N", "아니오"], ["Y", "예"]], i.def);
+      function read() { var g = function (id) { var el = $(id); return el ? el.value : ""; }; return { kev: g("si-kev"), sev: g("si-sev"), asset: g("si-asset"), epss: g("si-epss"), risk: g("si-risk"), overdue: g("si-overdue"), crit: g("si-crit"), exposed: g("si-exposed"), def: g("si-def") }; }
+      function render() {
+        var rule = RULES[ver], other = RULES[ver === "applied" ? "draft" : "applied"], inp = read(), e = evalItem(r.type, inp, rule), eo = evalItem(r.type, inp, other);
+        var L = cve ? ["① KEV 등재", "② 운영 환경", "③ 추가 위험 신호", "④ 유예·예외 보정"] : ["① 점검항목 중요도 상", "② 운영 환경", "③ 추가 위험 신호", "④ 유예·예외 보정"];
+        var h = '<div class="seg" style="margin-bottom:10px"><button type="button" data-sv="applied"' + (ver === "applied" ? ' class="on"' : "") + '>적용 v1.2</button><button type="button" data-sv="draft"' + (ver === "draft" ? ' class="on"' : "") + ">초안 v1.3</button></div>";
+        h += '<ol class="cr-path">' + e.steps.map(function (s, k) { return '<li><span class="cr-no">' + (k + 1) + '</span><div><div class="t">' + L[k] + " → " + (s.ex ? "판단 제외" : s.yes ? "예" : "아니오") + (s.need ? '<span class="cr-need">확인 필요</span>' : "") + '</div><div class="d">' + esc(s.note) + "</div></div></li>"; }).join("") +
+          '<li><span class="cr-no">L</span><div><div class="t">가지 <b class="mono">' + e.path + "</b> → " + gchip(e.base) + "</div></div></li>" +
+          '<li class="fin"><span class="cr-no">P</span><div><div class="t">최종 ' + gchip(e.fin) + (e.fin !== e.base ? ' <span style="opacity:.8">(기본 ' + e.base + ")</span>" : "") + ' · 조치 기한 <span class="mono">D+' + e.dl + '</span></div><div class="d">' + (e.need ? "확인 필요 건 — Human Review 목록에서 필터 가능" : "모든 입력 정상") + " · " + (ver === "applied" ? "초안 v1.3" : "적용 v1.2") + " 기준 결과: <b>" + eo.fin + "</b>" + (eo.fin !== e.fin ? " (차이 있음)" : " (동일)") + "</div></div></li></ol>";
+        $("simRes").innerHTML = h;
+      }
+      openModal({ title: "시뮬레이션 — " + (cve ? "CVE" : "CCE") + " · " + r.vid, sub: esc(r.host) + " 입력값으로 채움 · 조치 우선순위 판단 기준 (적용 v1.2 / 초안 v1.3)", size: "lg",
+        body: '<div class="hr-sim"><div id="simForm">' + form + '</div><div id="simRes"></div></div>',
+        foot: '<span class="sp"></span><button class="btn" type="button" data-m-close>닫기</button><button class="btn primary" type="button" data-mact="run">판정</button>',
+        actions: { run: render, sv: function (el) { ver = el.getAttribute("data-sv"); render(); } } });
+      $("mBody").addEventListener("click", function (e) { var b = e.target.closest("[data-sv]"); if (b && MACT.sv) MACT.sv(b); });
+      render();
+    }
+
+    /* ============================================================
+     * 이벤트
+     * ============================================================ */
+    $("hrSwitch").addEventListener("click", function (e) { var b = e.target.closest("[data-type]"); if (!b) return; if (S.drawer) closeDrawer(); if (S.drawer) return; S.type = b.getAttribute("data-type"); S.sel = {}; S.f = { grade: "", state: "", path: "", sys: "", env: "", org: "", need: false, reeval: false, exc: false, corr: false, q: "" }; renderAll(); });
+    $("hrKpi").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-kpi]"); if (!b) return; var k = b.getAttribute("data-kpi"), f = S.f;
+      if (k.indexOf("g:") === 0) f.grade = f.grade === k.slice(2) ? "" : k.slice(2);
+      else if (k.indexOf("s:") === 0) f.state = f.state === k.slice(2) ? "" : k.slice(2);
+      else f[k] = !f[k];
+      renderKpi(); renderTools(); renderTable();
+    });
+    $("hrRun").addEventListener("click", function (e) { var a = e.target.closest("[data-act]"); if (!a) return; var k = a.getAttribute("data-act"); if (k === "runhist") openRunHist(); else if (k === "runnow") openRunNow(); });
+    $("hrTools").addEventListener("change", function (e) {
+      var el = e.target;
+      if (el.getAttribute("data-f")) { S.f[el.getAttribute("data-f")] = el.value; renderKpi(); renderTools(); renderTable(); return; }
+      if (el.getAttribute("data-fck")) { S.f[el.getAttribute("data-fck")] = el.checked; renderKpi(); renderTools(); renderTable(); return; }
+      if (el.getAttribute("data-act") === "draft") { S.draft = el.checked; renderTools(); renderTable(); return; }
+    });
+    $("hrTools").addEventListener("input", function (e) { if (e.target.id === "hrQ") { S.f.q = e.target.value; renderTable(); } });
+    $("hrTools").addEventListener("click", function (e) { var a = e.target.closest("[data-act]"); if (a && a.getAttribute("data-act") === "bulkagree") bulkAgree(); });
+    $("hrFilterBar").addEventListener("click", function (e) {
+      var t = e.target.closest("[data-fclear]"); if (!t) return; var k = t.getAttribute("data-fclear");
+      if (k === "all") S.f = { grade: "", state: "", path: "", sys: "", env: "", org: "", need: false, reeval: false, exc: false, corr: false, q: S.f.q }; else S.f[k] = typeof S.f[k] === "boolean" ? false : "";
+      renderKpi(); renderTools(); renderTable();
+    });
+    $("hrTable").addEventListener("click", function (e) {
+      var o = e.target.closest("[data-open]"); if (o) { openDrawer(o.getAttribute("data-open")); return; }
+      if (e.target.id === "hrSelAll") { var all = e.target.checked; filtered().forEach(function (r) { if (all) S.sel[r.id] = true; else delete S.sel[r.id]; }); renderTools(); renderTable(); return; }
+      var ck = e.target.closest("[data-sel]"); if (ck) { if (ck.checked) S.sel[ck.getAttribute("data-sel")] = true; else delete S.sel[ck.getAttribute("data-sel")]; renderTools(); renderTable(); return; }
+      var tr = e.target.closest("tr[data-row]"); if (tr && !e.target.closest("input, button, .tip-wrap")) openDrawer(tr.getAttribute("data-row"));
+    });
+    $("hrDrawer").addEventListener("click", function (e) {
+      if (e.target.closest("[data-hr-close]")) { closeDrawer(); return; }
+      var a = e.target.closest("[data-act]"); if (a) { var k = a.getAttribute("data-act"); if (k === "save") saveReview(); else if (k === "cancel") { S.dirty = false; closeDrawer(); } else if (k === "sim") openSim(byId(S.drawer)); return; }
+      var g = e.target.closest("[data-fgrade]"); if (g && !g.disabled) { S.F.grade = g.getAttribute("data-fgrade"); S.dirty = true; renderDrawer(); return; }
+      var rs = e.target.closest("[data-freason]"); if (rs) { S.F.reason = rs.getAttribute("data-freason"); S.F._bad = false; S.dirty = true; renderDrawer(); return; }
+    });
+    $("hrDrawer").addEventListener("change", function (e) {
+      var el = e.target, k = el.getAttribute("data-ff"); if (!k) return;
+      if (el.type === "radio") S.F[k] = el.value; else if (el.type === "checkbox") S.F[k] = el.checked; else S.F[k] = el.value;
+      if (k === "st" && S.F.st === "agree") { S.F.grade = ""; }
+      S.dirty = true; renderDrawer();
+    });
+    $("hrDrawer").addEventListener("input", function (e) { var el = e.target, k = el.getAttribute("data-ff"); if (!k || el.type === "radio" || el.type === "checkbox" || el.tagName === "SELECT") return; S.F[k] = el.value; S.dirty = true; });
+
+    renderAll();
+  })();
+  </script>
+</body>
+</html>

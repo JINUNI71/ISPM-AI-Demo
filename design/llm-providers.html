@@ -1,0 +1,7 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><title>Service Management · LLM Providers</title><body><p><a href="service-management-변경안.html#llm">Service Management의 LLM Providers 탭 열기</a></p><script>
+try {
+  const raw = localStorage.getItem('oap-llm-model-prototype-v1');
+  if (raw) { const s = JSON.parse(raw); if (Array.isArray(s.models) && s.links) window.name = 'oap-llm-prototype-migration:' + JSON.stringify({models:s.models.map(({uid,name,model,endpoint,keyState,kind,provider,keyUpdatedAt,keyHistory}) => ({uid,name,model,endpoint,keyState,kind,provider,keyUpdatedAt,keyHistory:Array.isArray(keyHistory) ? keyHistory.map(({at,action}) => ({at,action})) : []})),links:s.links}); }
+} catch {}
+location.replace('service-management-변경안.html#llm');
+</script></body></html>

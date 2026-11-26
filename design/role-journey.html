@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>역할별 AI 업무 여정</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Noto Sans KR",system-ui,sans-serif;color:#0F1E47;background:#F8F8FB}
+header{display:flex;align-items:center;gap:16px;padding:14px 24px;background:#fff;border-bottom:1px solid #E5E6EB;position:sticky;top:0;z-index:2}
+header h1{font-size:16px;margin:0;font-weight:700}header small{color:#6b7280}
+header a{color:#1665D8;text-decoration:none;font-size:13px}
+button{margin-left:auto;font:inherit;font-size:12px;padding:6px 12px;border:1px solid #c3c7d0;border-radius:8px;background:#fff;cursor:pointer}
+.wrap{padding:20px;overflow:auto}
+svg{display:block;background:#fff;border-radius:12px;box-shadow:2px 2px 4px rgba(0,0,0,.04)}
+.fit svg{width:100%;height:auto}
+svg text{font-family:"Noto Sans KR",system-ui,sans-serif}
+.blk{box-sizing:border-box;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:8px 12px;font-size:15px;line-height:1.45;color:#0F1E47;word-break:keep-all}
+.sum{font-size:15px;line-height:1.6;color:#0F1E47;word-break:keep-all}
+section{margin:24px 20px 40px;padding:20px 24px;background:#fff;border-radius:12px;box-shadow:2px 2px 4px rgba(0,0,0,.04)}
+section h2{margin:0 0 12px;font-size:20px}
+table{border-collapse:collapse;font-size:14px}th,td{padding:8px 14px;border-bottom:1px solid #E5E6EB;text-align:left}th{background:#F8F8FB}
+td.hl{background:#fbeee7}
+.note{margin:12px 0 0;font-size:12px;color:#6b7280;line-height:1.6}
+</style></head><body>
+<header><a href="./">← 목업 목록</a><h1>역할별 AI 업무 여정</h1><small>화이트보드 정적 사본 · 2026-11-23 기준</small>
+<button type="button" id="z">원본 크기로 보기</button></header>
+<div class="wrap fit" id="w">
+<svg viewBox="-40 -300 2680 1540" width="2680" height="1540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="역할별 AI 업무 여정"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="#3a4256"/></marker><marker id="aht" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="#c8643b"/></marker></defs><rect x="-20" y="80" width="1690" height="580" rx="14" fill="#ffffff" stroke="#cfd3db" stroke-width="1.5"/>
+<text x="-20" y="68" font-size="17" font-weight="700" fill="#0F1E47">자산 담당자 (기안자 · 신청자)</text>
+<rect x="1710" y="80" width="580" height="320" rx="14" fill="#ffffff" stroke="#cfd3db" stroke-width="1.5"/>
+<text x="1710" y="68" font-size="17" font-weight="700" fill="#0F1E47">내부검토자 (검토부서 · 전결권자)</text>
+<rect x="1710" y="444" width="580" height="312" rx="14" fill="#ffffff" stroke="#cfd3db" stroke-width="1.5"/>
+<text x="1710" y="432" font-size="17" font-weight="700" fill="#0F1E47">내부 검토선 (ICT 담당자 · 보안 점검자)</text>
+<rect x="2330" y="80" width="290" height="200" rx="14" fill="#ffffff" stroke="#cfd3db" stroke-width="1.5"/>
+<text x="2330" y="68" font-size="17" font-weight="700" fill="#0F1E47">외부 결재선</text>
+<text x="355.0" y="-30" font-size="16" font-weight="700" text-anchor="middle" fill="#0F1E47">① 발견</text>
+<text x="645.0" y="-30" font-size="16" font-weight="700" text-anchor="middle" fill="#0F1E47">② 대응 결정</text>
+<text x="935.0" y="-30" font-size="16" font-weight="700" text-anchor="middle" fill="#0F1E47">③ 입력</text>
+<text x="1225.0" y="-30" font-size="16" font-weight="700" text-anchor="middle" fill="#0F1E47">④ AI 검토</text>
+<text x="1515.0" y="-30" font-size="16" font-weight="700" text-anchor="middle" fill="#0F1E47">⑤ 신청 · 요청</text>
+<text x="1855.0" y="-30" font-size="16" font-weight="700" text-anchor="middle" fill="#0F1E47">⑥ 검토</text>
+<text x="2145.0" y="-30" font-size="16" font-weight="700" text-anchor="middle" fill="#0F1E47">⑦ 전결 · 판정</text>
+<text x="2475.0" y="-30" font-size="16" font-weight="700" text-anchor="middle" fill="#0F1E47">⑧ 외부 결재</text>
+<text x="0" y="850" font-size="26" font-weight="700" fill="#0F1E47">역할별 변화</text>
+<text x="0" y="171" font-size="15" font-weight="700" fill="#0F1E47">예외·유예</text>
+<text x="0" y="524" font-size="15" font-weight="700" fill="#0F1E47">수기점검</text>
+<path d="M470 170 L530 170" fill="none" stroke="#3a4256" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M760 170 L820 170" fill="none" stroke="#3a4256" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M1050 170 L1110 170" fill="none" stroke="#3a4256" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M1340 170 L1400 170" fill="none" stroke="#3a4256" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M470 523 L820 523" fill="none" stroke="#3a4256" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M1050 523 L1110 523" fill="none" stroke="#3a4256" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M1340 523 L1400 523" fill="none" stroke="#3a4256" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M1970 170 L2030 170" fill="none" stroke="#3a4256" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M1970 523 L2030 523" fill="none" stroke="#3a4256" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M645 294 L645 230" fill="none" stroke="#c8643b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#aht)"/>
+<path d="M935 294 L935 230" fill="none" stroke="#3a4256" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M935 404 L935 468" fill="none" stroke="#c8643b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#aht)"/>
+<path d="M1515 294 L1515 230" fill="none" stroke="#c8643b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#aht)"/>
+<path d="M2145 289 L2145 225" fill="none" stroke="#c8643b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#aht)"/>
+<path d="M2145 642 L2145 578" fill="none" stroke="#c8643b" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#aht)"/>
+<path d="M1225 110 L1225 90 L935 90 L935 110" fill="none" stroke="#3a4256" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#ah)"/>
+<text x="1080" y="82" font-size="12" text-anchor="middle" fill="#4a5568">증적 보완 → 재검토</text>
+<path d="M1225 578 L1225 608 L935 608 L935 578" fill="none" stroke="#3a4256" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#ah)"/>
+<text x="1080" y="600" font-size="12" text-anchor="middle" fill="#4a5568">증적 보완 → 재검토</text>
+<path d="M1630 170 L1740 170" fill="none" stroke="#3a4256" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M1630 523 L1740 523" fill="none" stroke="#3a4256" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M2260 170 L2360 170" fill="none" stroke="#3a4256" stroke-width="1.6" marker-end="url(#ah)"/>
+<rect x="240" y="110" width="230" height="120" rx="10" fill="#e9e3fd" stroke="#b9a9f3" stroke-width="1.5"/>
+<foreignObject x="240" y="110" width="230" height="120"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>AI 위험 분석</b><br/>우선 확인 대상 · 판단 근거 (1110)</div></foreignObject>
+<rect x="530" y="110" width="230" height="120" rx="10" fill="#dbe8fb" stroke="#9fbde9" stroke-width="1.5"/>
+<foreignObject x="530" y="110" width="230" height="120"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>조치 / 예외·유예 결정</b><br/>판단은 담당자</div></foreignObject>
+<rect x="820" y="110" width="230" height="120" rx="10" fill="#ffffff" stroke="#c3c7d0" stroke-width="1.5"/>
+<foreignObject x="820" y="110" width="230" height="120"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>사유 · 임시보안 대책 작성</b><br/>증적 첨부 · 모두 직접 입력</div></foreignObject>
+<rect x="1110" y="110" width="230" height="120" rx="10" fill="#e9e3fd" stroke="#b9a9f3" stroke-width="1.5"/>
+<foreignObject x="1110" y="110" width="230" height="120"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>[AI 검토]</b><br/>증적 판단 + 전결 조건</div></foreignObject>
+<rect x="1400" y="110" width="230" height="120" rx="10" fill="#dbe8fb" stroke="#9fbde9" stroke-width="1.5"/>
+<foreignObject x="1400" y="110" width="230" height="120"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>전결 / 일반 나눠 신청</b><br/>탭 확인 → 체크 → 신청 → 남은 행 다시 신청</div></foreignObject>
+<rect x="530" y="294" width="230" height="110" rx="10" fill="#ffffff" stroke="#c8643b" stroke-width="1.8" stroke-dasharray="6 4"/>
+<foreignObject x="530" y="294" width="230" height="110"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>연결 공백</b><br/>위험 분석 근거가 신청 화면으로 안 넘어감</div></foreignObject>
+<rect x="820" y="294" width="230" height="110" rx="10" fill="#e9e3fd" stroke="#b9a9f3" stroke-width="1.5"/>
+<foreignObject x="820" y="294" width="230" height="110"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>AI 입력 도우미</b> · 2211-02 목업 반영<br/>사유 초안(승인 사례) · 증적 촬영 안내</div></foreignObject>
+<rect x="1400" y="294" width="230" height="110" rx="10" fill="#ffffff" stroke="#c8643b" stroke-width="1.8" stroke-dasharray="6 4"/>
+<foreignObject x="1400" y="294" width="230" height="110"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>나눠 신청 제안</b><br/>시스템이 &#x27;전결 2 · 일반 4&#x27; 제안 → 확인만</div></foreignObject>
+<rect x="240" y="468" width="230" height="110" rx="10" fill="#ffffff" stroke="#c3c7d0" stroke-width="1.5"/>
+<foreignObject x="240" y="468" width="230" height="110"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>수기점검 대상 확인</b><br/>점검 결과에서</div></foreignObject>
+<rect x="820" y="468" width="230" height="110" rx="10" fill="#ffffff" stroke="#c3c7d0" stroke-width="1.5"/>
+<foreignObject x="820" y="468" width="230" height="110"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>결과 · 증적 입력</b><br/>PASS/FAIL · 증적 첨부</div></foreignObject>
+<rect x="1110" y="468" width="230" height="110" rx="10" fill="#e9e3fd" stroke="#b9a9f3" stroke-width="1.5"/>
+<foreignObject x="1110" y="468" width="230" height="110"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>AI 증적 판단</b><br/>적합 / 부적합 / 판단불가</div></foreignObject>
+<rect x="1400" y="468" width="230" height="110" rx="10" fill="#ffffff" stroke="#c3c7d0" stroke-width="1.5"/>
+<foreignObject x="1400" y="468" width="230" height="110"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>[점검 완료] → 최종 검토 요청</b></div></foreignObject>
+<rect x="1740" y="115" width="230" height="110" rx="10" fill="#dbe8fb" stroke="#9fbde9" stroke-width="1.5"/>
+<foreignObject x="1740" y="115" width="230" height="110"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>전결 문서 재확인</b><br/>AI 검토 내역으로 조건 확인</div></foreignObject>
+<rect x="2030" y="115" width="230" height="110" rx="10" fill="#dbe8fb" stroke="#9fbde9" stroke-width="1.5"/>
+<foreignObject x="2030" y="115" width="230" height="110"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>전결 승인 / [일반 결재로 전환]</b><br/>전결 건은 외부 결재 생략</div></foreignObject>
+<rect x="2030" y="289" width="230" height="90" rx="10" fill="#ffffff" stroke="#c8643b" stroke-width="1.8" stroke-dasharray="6 4"/>
+<foreignObject x="2030" y="289" width="230" height="90"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>AI 판정 동의 / 이견 기록</b><br/>전환 사유 = 불일치 지표</div></foreignObject>
+<rect x="1740" y="468" width="230" height="110" rx="10" fill="#dbe8fb" stroke="#9fbde9" stroke-width="1.5"/>
+<foreignObject x="1740" y="468" width="230" height="110"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>최종 검토 건 확인</b><br/>AI 집계로 부적합·판단불가부터</div></foreignObject>
+<rect x="2030" y="468" width="230" height="110" rx="10" fill="#dbe8fb" stroke="#9fbde9" stroke-width="1.5"/>
+<foreignObject x="2030" y="468" width="230" height="110"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>[판정하기] → [검토 완료]</b><br/>판정은 사람 · AI 의견 참고</div></foreignObject>
+<rect x="2030" y="642" width="230" height="90" rx="10" fill="#ffffff" stroke="#c8643b" stroke-width="1.8" stroke-dasharray="6 4"/>
+<foreignObject x="2030" y="642" width="230" height="90"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>AI 의견 동의 / 이견 기록</b><br/>판정과 다를 때 사유 남기기</div></foreignObject>
+<rect x="2360" y="115" width="230" height="110" rx="10" fill="#ffffff" stroke="#c3c7d0" stroke-width="1.5"/>
+<foreignObject x="2360" y="115" width="230" height="110"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>일반 결재 건만 결재</b><br/>전결 건은 수신 통보 · Critical 시 사업부장급</div></foreignObject>
+<rect x="0" y="1140" width="2210" height="64" rx="10" fill="#ffffff" stroke="#c8643b" stroke-width="1.8" stroke-dasharray="6 4"/>
+<foreignObject x="0" y="1140" width="2210" height="64"><div xmlns="http://www.w3.org/1999/xhtml" class="blk"><b>모든 역할 · AI 어시스턴트 패널</b> — 지금은 일반 질의응답 → 제안: 현재 화면의 선택 행 · 항목번호를 받아 바로 질문</div></foreignObject>
+<foreignObject x="0" y="880" width="600" height="240"><div xmlns="http://www.w3.org/1999/xhtml" class="sum"><b>자산 담당자</b><br/><b>✔ 줄어든 것</b><br/>· 반려 후 재작업 (증적 오류를 입력 때 발견)<br/>· 전결 건 결재 대기<br/><b>＋ 늘어난 것</b><br/>· [AI 검토] 실행 · 보완 루프<br/>· 전결 / 일반 나눠 신청<br/>· 새로 익힐 상태값 14개</div></foreignObject>
+<foreignObject x="700" y="880" width="480" height="240"><div xmlns="http://www.w3.org/1999/xhtml" class="sum"><b>내부검토자</b><br/><b>✔</b> 저위험 건은 외부 결재 생략<br/><b>＋</b> AI 판정이 맞는지 재확인할 책임</div></foreignObject>
+<foreignObject x="1260" y="880" width="480" height="240"><div xmlns="http://www.w3.org/1999/xhtml" class="sum"><b>내부 검토선</b><br/><b>✔</b> 모든 증적 열기 → 부적합·판단불가부터<br/><b>＋</b> AI 의견 읽기 (판정은 그대로 사람)</div></foreignObject>
+<foreignObject x="1820" y="880" width="400" height="240"><div xmlns="http://www.w3.org/1999/xhtml" class="sum"><b>외부 결재선</b><br/><b>✔</b> 결재 건수 감소 (전결 건 제외)<br/><b>＋</b> 없음</div></foreignObject>
+<rect x="0" y="-150" width="200" height="40" rx="10" fill="#ffffff" stroke="#c3c7d0" stroke-width="1.5"/>
+<text x="100" y="-125" font-size="13" text-anchor="middle" fill="#0F1E47">현행 유지</text>
+<rect x="224" y="-150" width="200" height="40" rx="10" fill="#dbe8fb" stroke="#9fbde9" stroke-width="1.5"/>
+<text x="324" y="-125" font-size="13" text-anchor="middle" fill="#0F1E47">사용자 일 변경 · 추가</text>
+<rect x="448" y="-150" width="200" height="40" rx="10" fill="#e9e3fd" stroke="#b9a9f3" stroke-width="1.5"/>
+<text x="548" y="-125" font-size="13" text-anchor="middle" fill="#0F1E47">AI가 하는 일</text>
+<rect x="672" y="-150" width="200" height="40" rx="10" fill="#fff" stroke="#c8643b" stroke-width="1.8" stroke-dasharray="6 4"/>
+<text x="772" y="-125" font-size="13" text-anchor="middle" fill="#0F1E47">제안 · 지금 없음</text>
+<text x="0" y="-250" font-size="40" font-weight="700" fill="#0F1E47">ISPM 인프라보안 - 역할별 AI 업무 여정</text>
+<text x="0" y="-195" font-size="24" fill="#c8643b" font-weight="700">검토·결재는 줄고, 신청자 일은 늘었다</text></svg>
+</div>
+<section><h2>역할별 단계 수 · 체감</h2><table><tr><th>역할</th><th>As-Is 사용자 행위</th><th>To-Be 사용자 행위</th><th>체감 이득</th><th>남은 부담</th></tr><tr><td>자산 담당자 · 예외·유예</td><td>4 (선택 → 입력 → 신청 → 상신)</td><td class=hl>8 + 보완 루프</td><td>전결 건 결재 단축</td><td class=hl>단계 2배 · 새 상태값 14개</td></tr><tr><td>자산 담당자 · 수기점검</td><td>4 (입력 → 첨부 → 완료 → 요청)</td><td>4 + 보완 루프</td><td>반려 후 재작업 감소</td><td class=hl>AI 실행 시점 · 차단 여부 미정</td></tr><tr><td>내부검토자</td><td>2 (검토 → 결재선 전달)</td><td>2 (재확인 → 전결/전환)</td><td>저위험 건 외부 결재 생략</td><td>AI 판정 재확인 책임</td></tr><tr><td>내부 검토선</td><td>3 (검토 → 판정 → 완료)</td><td>3</td><td>확인 범위 축소</td><td>—</td></tr><tr><td>외부 결재선</td><td>1</td><td>1 (건수 감소)</td><td>결재 건수 감소</td><td>—</td></tr></table>
+<p class="note">단계 수 = 화면 설계 기준 사용자 행위 수 (예외/유예 · 수기점검 워크플로우 보드 기준). 예외·유예 To-Be 8 = 항목 선택 · 사유·증적 입력 · [AI 검토] · 그룹 탭 확인 · 행 체크 · [신청]·확인 · 남은 행 다시 신청 · 상신.<br>새 상태값 14개 = 증적 판단 3 · 조건 판정 4 · 행 검토 상태 4 · 그룹 탭 3. 소요 시간은 파일럿에서 측정.<br>11-23: AI 입력 도우미(사유 초안 · 증적 촬영 안내)를 SCR-FO-2211-02 목업에 반영 — 수기점검(2216-01) 증적 안내는 제안 상태.</p>
+</section>
+<script>
+document.getElementById('z').onclick=function(){var w=document.getElementById('w');w.classList.toggle('fit');this.textContent=w.classList.contains('fit')?'원본 크기로 보기':'화면에 맞추기'};
+</script>
+</body></html>
